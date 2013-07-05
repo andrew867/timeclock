@@ -351,6 +351,11 @@ $metar = "CYYT";
 $city = "St. Johns, NL, Canada";
 
 
+/* Display weather in US or metric measurements. Options are "f" or "c". Default is "c" */
+
+$weather_units = "c";
+
+
 /* --- APP NAME, VERSION NUMBER, ETC. --- */
 
 

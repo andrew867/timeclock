@@ -75,26 +75,53 @@ if ($display_weather == 'yes') {
     include 'phpweather.php';
     $metar = get_metar($metar);
     $data = process_metar($metar);
-    $mph = " kmh";
-	$miles = " km";
-
-    // weather info //
-
-    if (!isset($data['temp_c'])) {$temp = '';} else {$temp = $data['temp_c'];}
-    if (!isset($data['windchill_c'])) {$windchill = '';} else {$windchill = $data['windchill_c'];}
-    if (!isset($data['wind_dir_text_short'])) {$wind_dir = '';} else {$wind_dir = $data['wind_dir_text_short'];}
-    if (!isset($data['wind_meters_per_second'])) {$wind = '';} else {$wind = round($data['wind_meters_per_second']/1000*60*60);}
-    if ($wind == 0) {$wind_dir = 'None'; $mph = ''; $wind = '';} else {$wind_dir = $wind_dir;}
-    if (!isset($data['visibility_km'])) {$visibility = '';} else {$visibility = $data['visibility_km'].$miles;}
-    if (!isset($data['rel_humidity'])) {$humidity = 'None';} else {$humidity = round($data['rel_humidity'], 0);}
-    if (!isset($data['time'])) {$time = '';} else {$time = date($timefmt, $data['time']);}
-    if (!isset($data['cloud_layer1_condition'])) {$cloud_cover = '';} else {$cloud_cover = $data['cloud_layer1_condition'];}
-    if (($temp <> '') && ($temp >= '70') && ($humidity <> '')) {
-        $heatindex = number_format(-42.379 + (2.04901523 * $temp) + (10.1433312 * $humidity) - (0.22475541 * $temp * $humidity)
-                                   - (0.00683783 * ($temp * $temp)) - (0.05481717 * ($humidity * $humidity))
-                                   + (0.00122874 * ($temp * $temp) * $humidity) + (0.00085282 * $temp * ($humidity * $humidity))
-                                   - (0.00000199 * ($temp * $temp) * ($humidity * $humidity)));
-    }
+	
+	if ($weather_units == "f") {
+		$mph = " mph";
+		$miles = " miles";
+	
+		// weather info //
+	
+		if (!isset($data['temp_f'])) {$temp = '';} else {$temp = $data['temp_f'];}
+		if (!isset($data['windchill_f'])) {$windchill = '';} else {$windchill = $data['windchill_f'];}
+		if (!isset($data['wind_dir_text_short'])) {$wind_dir = '';} else {$wind_dir = $data['wind_dir_text_short'];}
+		if (!isset($data['wind_miles_per_hour'])) {$wind = '';} else {$wind = round($data['wind_miles_per_hour']);}
+		if ($wind == 0) {$wind_dir = 'None'; $mph = ''; $wind = '';} else {$wind_dir = $wind_dir;}
+		if (!isset($data['visibility_miles'])) {$visibility = '';} else {$visibility = $data['visibility_miles'].$miles;}
+		if (!isset($data['rel_humidity'])) {$humidity = 'None';} else {$humidity = round($data['rel_humidity'], 0);}
+		if (!isset($data['time'])) {$time = '';} else {$time = date($timefmt, $data['time']);}
+		if (!isset($data['cloud_layer1_condition'])) {$cloud_cover = '';} else {$cloud_cover = $data['cloud_layer1_condition'];}
+		if (($temp <> '') && ($temp >= '70') && ($humidity <> '')) {
+			$heatindex = number_format(-42.379 + (2.04901523 * $temp) + (10.1433312 * $humidity) - (0.22475541 * $temp * $humidity)
+										- (0.00683783 * ($temp * $temp)) - (0.05481717 * ($humidity * $humidity))
+										+ (0.00122874 * ($temp * $temp) * $humidity) + (0.00085282 * $temp * ($humidity * $humidity))
+										- (0.00000199 * ($temp * $temp) * ($humidity * $humidity)));
+		}
+	} else {
+		$mph = " kmh";
+		$miles = " km";
+	
+		// weather info //
+	
+		if (!isset($data['temp_c'])) {$temp = '';} else {$temp = $data['temp_c'];}
+		if (!isset($data['temp_f'])) {$tempF = '';} else {$tempF = $data['temp_f'];}
+		if (!isset($data['windchill_c'])) {$windchill = '';} else {$windchill = $data['windchill_c'];}
+		if (!isset($data['wind_dir_text_short'])) {$wind_dir = '';} else {$wind_dir = $data['wind_dir_text_short'];}
+		if (!isset($data['wind_meters_per_second'])) {$wind = '';} else {$wind = round($data['wind_meters_per_second']/1000*60*60);}
+		if ($wind == 0) {$wind_dir = 'None'; $mph = ''; $wind = '';} else {$wind_dir = $wind_dir;}
+		if (!isset($data['visibility_km'])) {$visibility = '';} else {$visibility = $data['visibility_km'].$miles;}
+		if (!isset($data['rel_humidity'])) {$humidity = 'None';} else {$humidity = round($data['rel_humidity'], 0);}
+		if (!isset($data['time'])) {$time = '';} else {$time = date($timefmt, $data['time']);}
+		if (!isset($data['cloud_layer1_condition'])) {$cloud_cover = '';} else {$cloud_cover = $data['cloud_layer1_condition'];}
+		if (($tempF <> '') && ($tempF >= '70') && ($humidity <> '')) {
+			$heatindexF = number_format(-42.379 + (2.04901523 * $tempF) + (10.1433312 * $humidity) - (0.22475541 * $tempF * $humidity)
+										- (0.00683783 * ($tempF * $tempF)) - (0.05481717 * ($humidity * $humidity))
+										+ (0.00122874 * ($tempF * $tempF) * $humidity) + (0.00085282 * $tempF * ($humidity * $humidity))
+										- (0.00000199 * ($tempF * $tempF) * ($humidity * $humidity)));
+			$heatindex = round(($heatindexF - 32)*5/9);
+		}
+	}
+	
     if ((isset($heatindex)) || ($windchill <> '')) {
         if (!isset($heatindex)) {
             $feelslike = $windchill;
