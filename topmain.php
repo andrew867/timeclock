@@ -90,6 +90,10 @@ elseif ($use_reports_password == "no") {
         text-decoration:none;'>Reports&nbsp;&nbsp;</a></td>\n";
 }
 
+echo "    <td align=right valign=middle width=23><img src='images/icons/time.png' border='0'>&nbsp;&nbsp;</td>\n";   
+echo "    <td align=right valign=middle width=10><a href='punchclock/menu.php' style='color:#000000;font-family:Tahoma;font-size:10pt;
+        text-decoration:none;'>Punchclock&nbsp;&nbsp;</a></td>\n";
+
 if ((isset($_SESSION['valid_user'])) || (isset($_SESSION['valid_reports_user'])) || (isset($_SESSION['time_admin_valid_user']))) {
     echo "    <td align=right valign=middle width=20><img src='images/icons/arrow_rotate_clockwise.png' border='0'>&nbsp;</td>\n";
     echo "    <td align=right valign=middle width=10><a href='logout.php' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>

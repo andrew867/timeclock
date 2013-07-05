@@ -728,6 +728,7 @@ if (!empty($to_date)) {
 //if (!empty($from_date)) {$from_timestamp = strtotime($from_date) - @$tzo;}
 //if (!empty($to_date)) {$to_timestamp = strtotime($to_date) + 86400 - @$tzo;}
 
+/*
 $time = time();
 $rpt_hour = gmdate('H',$time);
 $rpt_min = gmdate('i',$time);
@@ -736,6 +737,9 @@ $rpt_month = gmdate('m',$time);
 $rpt_day = gmdate('d',$time);
 $rpt_year = gmdate('Y',$time);
 $rpt_stamp = mktime ($rpt_hour, $rpt_min, $rpt_sec, $rpt_month, $rpt_day, $rpt_year);
+*/
+
+$rpt_stamp = time();
 
 $rpt_stamp = $rpt_stamp + @$tzo;
 $rpt_time = date($timefmt, $rpt_stamp);

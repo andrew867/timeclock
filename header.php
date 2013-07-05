@@ -89,5 +89,6 @@ elseif ($use_server_tz == "yes") {
 } else {
     $tzo = "1";
 }
+$tzo = 0;
 ?>
 <body>

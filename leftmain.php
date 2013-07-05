@@ -75,16 +75,17 @@ if ($display_weather == 'yes') {
     include 'phpweather.php';
     $metar = get_metar($metar);
     $data = process_metar($metar);
-    $mph = "mph";
+    $mph = " kmh";
+	$miles = " km";
 
     // weather info //
 
-    if (!isset($data['temp_f'])) {$temp = '';} else {$temp = $data['temp_f'];}
-    if (!isset($data['windchill_f'])) {$windchill = '';} else {$windchill = $data['windchill_f'];}
+    if (!isset($data['temp_c'])) {$temp = '';} else {$temp = $data['temp_c'];}
+    if (!isset($data['windchill_c'])) {$windchill = '';} else {$windchill = $data['windchill_c'];}
     if (!isset($data['wind_dir_text_short'])) {$wind_dir = '';} else {$wind_dir = $data['wind_dir_text_short'];}
-    if (!isset($data['wind_miles_per_hour'])) {$wind = '';} else {$wind = round($data['wind_miles_per_hour']);}
+    if (!isset($data['wind_meters_per_second'])) {$wind = '';} else {$wind = round($data['wind_meters_per_second']/1000*60*60);}
     if ($wind == 0) {$wind_dir = 'None'; $mph = ''; $wind = '';} else {$wind_dir = $wind_dir;}
-    if (!isset($data['visibility_miles'])) {$visibility = '';} else {$visibility = $data['visibility_miles'];}
+    if (!isset($data['visibility_km'])) {$visibility = '';} else {$visibility = $data['visibility_km'].$miles;}
     if (!isset($data['rel_humidity'])) {$humidity = 'None';} else {$humidity = round($data['rel_humidity'], 0);}
     if (!isset($data['time'])) {$time = '';} else {$time = date($timefmt, $data['time']);}
     if (!isset($data['cloud_layer1_condition'])) {$cloud_cover = '';} else {$cloud_cover = $data['cloud_layer1_condition'];}
@@ -258,7 +259,7 @@ if ($display_weather == "yes") {
     }
 
     echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Visibility: $visibility miles</td></tr>\n";
+    echo "        <tr><td align=left valign=middle class=misc_items>Visibility: $visibility</td></tr>\n";
     echo "        <tr><td height=4></td></tr>\n";
     echo "        <tr><td align=left valign=middle class=misc_items><font color='FF0000'>Last Updated: $time</font></td></tr>\n";
 }

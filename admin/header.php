@@ -70,6 +70,8 @@ $tzo = $tzo * 60;}
 } elseif ($use_server_tz == "yes") {
   $tzo = date('Z');
 } else {
-  $tzo = "1";}
+  $tzo = "1";
+}
+$tzo = 0;
 echo "<body>\n";
 ?>

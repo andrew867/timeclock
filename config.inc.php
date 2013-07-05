@@ -18,9 +18,9 @@ username and password information!
               --- $db_name is the mysql database you created during the install. */
 
 $db_hostname = "localhost";
-$db_username = "";
-$db_password = "";
-$db_name = "";
+$db_username = "timeclock";
+$db_password = "P4ssw0rd1!";
+$db_name = "timeclock";
 
 
 /* --- RECOMMENDED CHANGES --- */
@@ -78,7 +78,7 @@ $disable_sysedit = "no";
    "yes" or "no". If "yes" is chosen, users will be required to enter a password
    whenever they change their status. Default is "no". */
 
-$use_passwd = "no";
+$use_passwd = "yes";
 
 
 /* If you only want certain users to have the ability to view and run the reports, 
@@ -150,7 +150,7 @@ $calendar_style = "amer";
                 5) g:iA
                 6) g:ia    */
 
-$timefmt = "g:i a";
+$timefmt = "g:ia";
 
 
 /* Display only activity for the the current day instead of the last entry from each user.
@@ -219,13 +219,13 @@ $color2 = "#FBFBFB";
    them to -- websites, other web-based applications, etc. Default number of links is 6.
    Set $links to "none" to ignore this option. Ex: $links = "none"; */
 
-$links = array("http://slashdot11.org/","http://slashdot22.org/","http://slashdot33.org/","http://slashdot44.org/","http://slashdot55.org/","http://slashdot66.org/");
+$links = "none";
 
 
 /* Insert/change/delete below the display names for the links you inserted above. 
    If $links is set to "none", this option is ignored. */
 
-$display_links = array("Book a Meeting Room","Google News","Mailing Lists","Slashdot","Vacation Calendar");
+$display_links = "none";
 
 
 /* --- REPORTING INFO --- */
@@ -327,7 +327,7 @@ $use_server_tz = "yes";
 /* Include local weather info on the left side of the main page just below the Submit button.
    If you would like to include this feature, set $display_weather to "yes". Default is "no". */
 
-$display_weather = "no";
+$display_weather = "yes";
 
 
 /* ICAO (International Civil Aviation Organization) for your local airport. This is the
@@ -339,14 +339,14 @@ $display_weather = "no";
    $display_weather is set to "no", this option is ignored. If $display_weather is set to
    "yes", you MUST provide an ICAO here. */
 
-$metar = "KJAN";
+$metar = "CYYT";
 
 
 /* This is the city and country (or can be city and state) of the airport for
    the ICAO used above. The max length for this field is 100 characters.
    If $display_weather is set to "no", this option is ignored. */
 
-$city = "Jackson, Mississippi";
+$city = "St. Johns, NL, Canada";
 
 
 /* --- APP NAME, VERSION NUMBER, ETC. --- */
@@ -362,7 +362,6 @@ $title = "$app_name $app_version";
 
 
 /* --- DO NOT CHANGE ANYTHING BELOW THIS LINE!!! --- */
-
 
 $dbversion = "1.4";
 ?>

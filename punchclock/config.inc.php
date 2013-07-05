@@ -69,7 +69,7 @@ $entry_display_timecard = "yes";
    Set the limit to 0 if overtime is not to be computed. Set the $overtime_week_limit to the
    number of hours needed to work in a week before the time becomes overtime. Default value is 40. */
 
-$overtime_week_limit = 40;
+$overtime_week_limit = 35;
 
 /* The day of the week starting a pay period can be specified by setting $begin_week_day to
    0 for Sunday, 1 for Monday, and so on. The default is 0 for Sunday. */
