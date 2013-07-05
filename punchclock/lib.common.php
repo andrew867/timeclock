@@ -212,8 +212,15 @@ function make_timestamp($date_str) {
 
 function server_timezone_offset() {
 	// Get time zone offset of this server.
-	//return date('Z');
-	return 0;
+	global $use_server_tz;
+	
+	if ($use_server_tz == "yes") {
+		$tzo = date('Z');
+	}
+	else {
+		$tzo = 0;
+	}
+	return $tzo;
 }
 
 function timezone_offset() {
@@ -228,11 +235,10 @@ function timezone_offset() {
 		}
 	} 
 	elseif ($use_server_tz == "yes") {
-		//$tzo = date('Z');
-		$tzo = 0;
+		$tzo = date('Z');
 	}
 	else {
-		$tzo = "1";
+		$tzo = 0;
 	}
 	return $tzo;
 }
