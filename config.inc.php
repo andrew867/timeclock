@@ -315,10 +315,11 @@ $use_client_tz = "no";
 
 
 /* To display the punch-in/out times in the timezone of the web server, leave this option set
-   to "yes". Setting this option to "no" AND setting the above $use_client_tz option to "no",
-   will display the punch-in/out times in GMT. Default is "yes". */
+   to "yes". If using PHP 5.1+ then leave this as-is, to change the time zone please use
+   date.timezone in your php.ini. If you leave date.timezone unset the default is GMT. 
+   The default setting is "no". */
 
-$use_server_tz = "yes";
+$use_server_tz = "no";
 
 
 /* --- WEATHER INFO ---  */

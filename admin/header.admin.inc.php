@@ -1,16 +1,13 @@
-<?php 
+<html>
+<?php
 
-include 'functions.php';
+include '../functions.php';
 
-ob_start();
-echo "<html>\n";
-
-// grab the connecting ip address. //
+// grab the connecting ip address for the audit log. if more than 1 ip address is returned, accept the first ip and discard the rest. //
 
 $connecting_ip = get_ipaddress();
-
 if (empty($connecting_ip)) {
-	return FALSE;
+    return FALSE;
 }
 
 // determine if connecting ip address is allowed to connect to PHP Timeclock //
@@ -23,11 +20,12 @@ if ($restrict_ips == "yes") {
 		}
 	}
 	if (!isset($allowed)) {
-		echo "You are not authorized to view this page."; exit;
+		echo "You are not authorized to view this page.";
+		exit;
 	}
 }
 
-// connect to db anc check for correct db version //
+// check for correct db version //
 
 @ $db = mysql_pconnect($db_hostname, $db_username, $db_password);
 if (!$db) {
@@ -39,7 +37,6 @@ mysql_select_db($db_name);
 $table = "dbversion";
 $result = mysql_query("SHOW TABLES LIKE '".$db_prefix.$table."'");
 @$rows = mysql_num_rows($result);
-
 if ($rows == "1") {
 	$dbexists = "1";
 } else {
@@ -61,25 +58,7 @@ if (($use_client_tz == "yes") && ($use_server_tz == "yes")) {
 echo "<head>\n";
 if ($use_client_tz == "yes") {
 	if (!isset($_COOKIE['tzoffset'])) {
-		include 'tzoffset.php';
-		echo "<meta http-equiv='refresh' content='0;URL=timeclock.php'>\n";
+		include '../tzoffset.php';
+		echo "<meta http-equiv='refresh' content='0;URL=index.php'>\n";
 	}
 }
-
-echo "<link rel='stylesheet' type='text/css' media='screen' href='css/default.css' />\n";
-echo "<link rel='stylesheet' type='text/css' media='print' href='css/print.css' />\n";
-
-// set refresh rate for each page //  
-
-if ($refresh == "none") {
-	echo "</head>\n";
-} else {
-	echo "<meta http-equiv='refresh' content=\"$refresh;URL=timeclock.php\">\n";
-	echo "<script language=\"javascript\" src=\"scripts/pnguin_timeclock.js\"></script>\n";
-	echo "</head>\n";
-}
-
-setTimeZone();
-
-?>
-<body>
