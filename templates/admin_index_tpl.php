@@ -176,12 +176,15 @@ echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% alig
                       user's browser. Default is \"<b>no</b>\".
                   </td></tr>\n";
 $row_count++; $row_color = ($row_count % 2) ? $color2 : $color1;
-echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>use_server_tz:</td>
-                  <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$use_server_tz</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Setting this option to \"yes\" 
-                      will display the punch-in/out times according to the timezone of the web server. Setting this option to \"no\" AND setting 
-                      'use_client_tz' to \"no\" will display the punch-in/out times in GMT. Default is \"<b>yes</b>\".
-                  </td></tr>\n";
+echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>use_server_tz:</td>\n";
+echo "                  <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$use_server_tz</td>\n";
+echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Setting this option to 
+                        \"no\" AND setting 'use_client_tz' to \"no\" will display the punch-in/out times according to your php.ini's date.timezone setting.  
+                        If using PHP 5.1+ then choose \"no\" and set date.timezone in your php.ini file. 
+                        Leaving date.timezone unset may cause PHP to choose the wrong timezone. 
+                        Otherwise setting this option to \"yes\" will display the punch-in/out times according to the timezone of the web server through date(\"Z\"). 
+                        Default is \"<b>no</b>\".";
+echo "                  </td></tr>\n";
 $row_count = '0'; $row_color = ($row_count % 2) ? $color2 : $color1;
 echo "              <tr><td nowrap style='border:solid #888888;border-width:0px 0px 1px 0px;' colspan=3>&nbsp;</td></tr>\n";
 echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>Display Settings</th></tr>\n";
