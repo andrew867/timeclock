@@ -838,8 +838,11 @@ echo "                  <td bgcolor='$row_color' class=table_rows_red width=10% 
 echo "              <input type=\"hidden\" name=\"use_server_tz\" value=\"2\">\n";
 }
 echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Setting this option to 
-                      \"yes\" will display the punch-in/out times according to the timezone of the web server. Setting this option to \"no\" AND setting 
-                      'use_client_tz' to \"no\" will display the punch-in/out times in GMT. Default is \"<b>yes</b>\".
+                        \"no\" AND setting 'use_client_tz' to \"no\" will display the punch-in/out times according to your php.ini's date.timezone setting.  
+                        If using PHP 5.1+ then choose \"no\" and set date.timezone in your php.ini file. 
+                        Leaving date.timezone unset may cause PHP to choose the wrong timezone. 
+                        Otherwise setting this option to \"yes\" will display the punch-in/out times according to the timezone of the web server through date(\"Z\"). 
+                        Default is \"<b>no</b>\".
                  </td></tr>\n";
 $row_count = '0'; $row_color = ($row_count % 2) ? $color2 : $color1;
 echo "              <tr><td nowrap style='border:solid #888888;border-width:0px 0px 1px 0px;' colspan=3>&nbsp;</td></tr>\n";
