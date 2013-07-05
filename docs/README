@@ -1,0 +1,44 @@
+PHP Timeclock
+Version 1.04
+http://sourceforge.net/projects/timeclock
+Copyright (C) 2006 Ken Papizan <pappyzan_at_users.sourceforge.net>
+
+
+LICENSING:
+
+This product is distributed under the GPL. This program is free software; 
+you can redistribute it and/or modify it under the terms of the GNU General 
+Public License version 2, as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but WITHOUT 
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS 
+FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+Please read through the LICENSE file for more information about the license.
+
+Parts of this distribution consist of code from the PHP Weather project by Martin Geisler and others. 
+PHP Weather is licensed under the GPL.
+
+
+PURPOSE:
+
+PHP Timeclock is a web-based application that is designed to replace manual punchclocks or
+timeclocks to keep up with employees' work hours. In a very basic sense, it can replace 
+sign-in/sign-out sheets that many companies use to track where their employees are at any
+given point of the day.
+
+Reports can be generated to simply list employees' time, or to tally up employees' time
+for a designated period.
+
+The main page displays all the latest punch-in/out activity for each user, and can be configured 
+to display only a certain office or group, and/or only the current day's activity.
+
+
+LATEST ENHANCEMENTS:
+
+NONE, this is a bug fix release. These fixes are detailed in the CHANGELOG included in this release.
+
+
+Let's move along to the INSTALL file. 
+

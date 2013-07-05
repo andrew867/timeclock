@@ -1,0 +1,124 @@
+PHP Timeclock
+Version 1.04
+http://sourceforge.net/projects/timeclock
+Copyright (C) 2006 Ken Papizan <pappyzan_at_users.sourceforge.net>
+
+
+REQUIREMENTS:
+
+--- at least PHP 4.1.x, with mysql support
+--- MySQL
+--- Webserver
+--- Javascript enabled web browser
+
+
+TESTED:
+
+--- PHP 4.34, 5.1.2 with mysql support
+--- MySQL 3.23.49, 4.0.17, 5.0.18
+--- Apache 1.3.22, 1.3.29, 2.2.0
+--- Firefox 1.0 - 1.5.0.4, Firefox 1.0 Preview Release, IE 6.0 SP1, IE 6.0 SP2 for XP, IE 7.0 beta 2
+
+Any version of mysql or webserver software that supports php, whether it's an earlier 
+version than what's tested or later, will probably work fine. Any web browser that supports
+css2 should work fine (IE5+, Mozilla 1.0+, Firefox). 
+
+***********************************************************************************************
+Beginning with version 0.9.4, an option has been provided to display punch-in/out times 
+according to the timezone of the connecting client system. The client must enable cookies and 
+javascript in their web browser in order to take advantage of this option.
+***********************************************************************************************
+
+
+INSTALLATION:
+
+New Install
+-----------
+--- Unpack the distribution into your webserver's document root directory. 
+--- Create a database named "timeclock" or whatever you wish to name it.
+--- Create a mysql user named "timeclock" (or whatever you wish to name it) with a password.
+    Give this user at least SELECT, UPDATE, INSERT, DELETE, ALTER, and CREATE privileges to ONLY 
+    this database.
+--- Import the tables using the create_tables.sql script included in this distribution.
+--- Edit config.inc.php.
+--- Open index.php with your web browser.
+--- Click on the Administration link on the right side of the page. Input "admin" (without the quotes) 
+    for the username and "admin" (without the quotes) for the password. Please change the password 
+    for this admin user after the initial setup of PHP Timeclock is complete.
+--- Create at least one office by clicking on the Create Office link on the left side of the page. 
+    You MUST create an office to achieve the desired results. Create more offices if needed.
+--- Create at least one group by clicking on the Create Group link on the left side of the page. 
+    You MUST create a group to achieve the desired results. Create more groups if needed.
+--- Add your users by clicking on the Create New Users link, and assign them to the office(s) and
+    group(s) you created above. Give Sys Admin level access for users who will administrate 
+    PHP Timeclock. Give Time Admin level access for users who will need to edit users' time, but 
+    who will not need Sys Admin level access. If you require the reports to be secured so only 
+    certain users can run them, then give these users reports level access. 
+
+    *** Admin level access and reports level access are completely separate from each other. Just 
+    *** because a user has admin level access does not give that user reports level access. You must 
+    *** specifically give them reports level access when you are creating or editing the users, 
+    *** if you choose to secure these reports for these users. To make PHP Timeclock lock down the 
+    *** reports to only these users, set the use_reports_password setting in config.inc.php to "yes".
+
+
+Upgrading from 1.02 or 1.03
+---------------------------
+--- Backup and move your current installation.
+--- Unpack the distribution into your webserver's document root directory. 
+--- Edit config.inc.php or simply replace the new config.inc.php with your previous config.inc.php.
+
+
+Upgrading from 1.01 or 1.0
+--------------------------
+--- Backup and move your current installation.
+--- Unpack the distribution into your webserver's document root directory. 
+--- Edit config.inc.php.
+--- Either login to PHP Timeclock and run the Upgrade Database script within the Admin section, or
+    upgrade the database by running the queries that are contained in the alter_tables.sql script.
+
+
+Upgrading from 0.9.4 or 0.9.4-1
+-------------------------------
+--- Backup and move your current installation.
+--- Unpack the distribution into your webserver's document root directory. 
+--- Upgrade the database by running the queries that are contained in the 
+    alter_tables.sql script included in this distribution against the PHP Timeclock
+    database. The Upgrade Database link in the Administration section of PHP Timeclock will 
+    not work for this particular upgrade since the admin user needs to be added to the database 
+    initially. Meaning, you cannot even get to the Upgrade Database page until the admin user 
+    is added to the database.
+--- Edit config.inc.php.
+--- Open index.php with your web browser.
+--- Click on the Administration link on the right side of the page. Input "admin" (without the quotes) 
+    for the username and "admin" (without the quotes) for the password. Please change the password 
+    for this admin user after the initial setup of PHP Timeclock is complete.
+--- Create at least one office by clicking on the Create Office link on the left side of the page. 
+    You MUST create an office to achieve the desired results. Create more offices if needed.
+--- Create at least one group by clicking on the Create Group link on the left side of the page. 
+    You MUST create a group to achieve the desired results. Create more groups if needed.
+--- Edit your users by clicking on the User Summary link, then click on their username, and then 
+    assign them to the office(s) and group(s) you created above. Give Sys Admin level access for 
+    users who will administrate PHP Timeclock. Give Time Admin level access for users who will 
+    need to edit users' time, but who will not need Sys Admin level access. If you require the
+    reports to be secured so only certain users can run them, then give these users reports
+    level access. 
+
+    *** Admin level access and reports level access are completely separate from each other. Just 
+    *** because a user has admin level access does not give that user reports level access. You must 
+    *** specifically give them reports level access when you are creating or editing the users, 
+    *** if you choose to secure these reports for these users. To make PHP Timeclock lock down the 
+    *** reports to only these users, set the use_reports_password setting in config.inc.php to "yes".
+
+
+Upgrading from releases prior to 0.9.4 
+--------------------------------------
+--- The best way to upgrade from versions prior to 0.9.4 is to download version 0.9.4
+    and upgrade to that version first. Then follow the upgrade instructions included
+    in that version of the distribution. 
+
+    The reason for doing it this way is that the timestamps are stored differently for versions
+    0.9.4 and higher than in previous versions. Upgrading to 0.9.4 first will preserve the 
+    punch-in/out history for each user.
+
+

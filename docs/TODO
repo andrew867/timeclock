@@ -1,0 +1,67 @@
+PHP Timeclock
+Version 1.04
+http://sourceforge.net/projects/timeclock
+Copyright (C) 2006 Ken Papizan <pappyzan_at_users.sourceforge.net>
+
+
+TODO:
+
+--- Create an option dealing with emailing reports. Maybe allow all reports to be emailed to 
+    a specific email address or multiple email addresses. Maybe even allow each user's reports
+    to be emailed to his/her self. There are many different ways to go with this. Maybe 
+    consider using CRON on unix systems and AT on windows systems to help with an automatic
+    scheduling for this. Any ideas you might have concerning this option are welcomed.
+--- Create an option to allow each user to add/edit/delete their OWN time, but no one 
+    else's. Currently a user must have Admin privileges in order to do this.
+--- Offer php timeclock in as many different languages as possible. Help in translating the app
+    to ANY language will be appreciated. If you contacted me earlier regarding this, please
+    feel free to contact me again.
+--- Add an option to export the reports in pdf format.
+--- Create some sort of install script that will make new installs a little easier.
+
+
+ADDED FROM TODO IN v1.02, 6/5/06:
+
+--- Add a 'disabled' property to all users. This would give you the ability to take the username
+    out of the list of available names to punch-in/out without having to delete the user in
+    order to do so.
+--- Add an option to export the reports in csv format.
+
+
+ADDED FROM TODO IN v1.0, 3/6/06:
+
+--- Tally the hours in a report showing the total number of hours per requested period.
+--- Add a location/dept option that displays on the main page what location/dept a user 
+    is a member of.
+--- Make the css code work for nicer printing out of Mozilla/Firefox.
+
+
+ADDED FROM TODO IN v0.9.4, 5/24/05:
+
+--- Add current weather info for your region in the left side of each page beneath submit
+    button.
+
+
+ADDED FROM TODO IN v0.9.3, 3/21/05:
+
+--- Add the ability for the admin to change a clock in/out time for a user. This way, if
+    someone forgets to sign in or signs in too late, the admin can change it.
+--- Add the option to allow a 'reports' user access to the reports in the admin section,
+    but not access anything else in the admin section.
+--- Add an option to allow the ability to show only the status of current users for only the
+    current day. 
+
+
+ADDED FROM TODO IN v0.9.2, 11/15/04:
+
+--- Add more CSS for better looking printing (IE for sure, maybe/maybe not Opera).
+--- Add the option to only allow the admin access to view the reports. If you choose to 
+    only allow the admin access, then the reports will be moved to the admin section.
+
+
+ADDED FROM TODO IN v0.9.1, 10/26/04:
+
+--- Add a security option where users would need to input their password when changing 
+    their status. This would be accomplished by adding a password field to the employees
+    table. You would have the option to turn it on or off.
+--- Create a script to make adding/deleting users easier.

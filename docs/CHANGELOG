@@ -1,0 +1,349 @@
+PHP Timeclock
+Version 1.04
+http://sourceforge.net/projects/timeclock
+Copyright (C) 2006 Ken Papizan <pappyzan_at_users.sourceforge.net>
+
+
+PHP Timeclock Changelog
+
+1.04  11/15/07
+-----------------------
+--- BUG #1510062: Modified sysedit.php and config.inc.php to fix allowed_networks
+    bug.
+--- BUG #1532762: Modified SHOW TABLE statements to correct typo. Also modified
+    (but didn't test) the upgrade script to account for wildcards.
+--- BUG #1544207: Modified report files to fix bad cancel link.
+--- BUG #1713146: Modified files using gmdate to prevent possible race condition.
+
+1.03  6/20/06
+-----------------------
+--- Fixed a bug in the Audit Log report where incorrect dates and times were 
+    being displayed. (Thanks to Brett Moss for finding this bug.)
+--- Fixed a bug in the Total Hours report where incorrect dates were being
+    displayed. (Thanks to Brett Moss for finding this bug.)
+--- Fixed numerous other bugs in the Total Hours report. (Thanks to Brett Moss
+    for finding these bugs.)
+
+
+1.02  6/5/06
+-----------------------
+--- Fixed numerous bugs in the Edit Time page concerning European style dates.
+    The times would not always be edited if $calendar_style = "euro" in
+    config.inc.php.
+--- Fixed a bug in the Delete Time page concerning European style dates. The times
+    would not always delete if $calendar_style = "euro" in config.inc.php.
+--- Fixed a bug in the Add Time page concerning European style dates. The time
+    would not always add if $calendar_style = "euro" in config.inc.php. And if by
+    chance it DID add, it would not add it for the day specified.
+--- Fixed a bug in the Change Password and Create User pages concerning the eregi
+    functions included within those pages. On some installs, this error
+    message would appear while attempting to change passwords or create users: 
+    "Warning: eregi(): Invalid content of \{\}". (Thanks to Jim Blansett for 
+    finding this bug.)
+--- Fixed bugs in the Total Hours and Daily Time reports concerning European 
+    style dates. The reports would not display the expected correct results if 
+    $calendar_style = "euro" in config.inc.php.
+--- Fixed a bug in the Upgrade Database page. If magic_quotes_runtime was turned
+    on in php.ini, the script would tell you that your mysql user did not have
+    the appropriate privileges to the PHP Timeclock database, even if the user 
+    did.
+--- Fixed a bug where if the "Remember Me" checkbox is checked on the main page 
+    and output_buffering is set to "Off" in php.ini, a php error would display
+    and the "Remember Me" functionality would not work.
+--- Added a 'disabled' property to the employees table, this allows for users
+    to be marked as disabled instead of deleting them entirely from the 
+    database.
+--- Added the ability to track a user's ip address when they sign-in/out, and to
+    therefore report on it. This ip information is available for each report.
+    There are two variables in config.inc.php dealing with this. One is to 
+    turn on ip_logging, and the other is a default setting for the reports if 
+    ip_logging is turned on. (Thanks for the idea Jason Mortensen.)
+--- Added a report entitled "Audit Log". This report details each addition, 
+    deletion, or edit of a person's time. It does NOT display the individual
+    punch-ins/outs that are performed via the main page, but it does display the
+    details of all additions, deletions, and edits of a person's time for a
+    given date range when it's done via the Add/Edit/Delete Time pages.
+--- Added the ability to allow only certain networks or ip addresses to connect
+    to PHP Timeclock. (Thanks for the idea Jim Blansett.)
+--- Added the option to utilize table prefixes within PHP Timeclock. This can 
+    be helpful if you have an existing mysql database that you would like to 
+    use with this app. (Thanks for the idea Fred.)
+--- Added an option to export the reports in csv format.
+--- Removed the Admin user from the dropdown on the main page and from 
+    displaying it's punch-in/out details on the main page. This user should not
+    be punching-in/out anyways. Also removed it from the dropdowns for the 
+    reports (except for the Audit Log), and from displaying it's punch-in/out 
+    details in the reports.
+--- Added the "Notes" column heading in the Time Report as it was mistakenly
+    omitted in prior releases.
+--- Removed the Email Address column from the User Summary and User Search (just
+    the results on this page) pages. To view or change a person's email address, 
+    simply click on their username or the edit icon that corresponds with their 
+    username.
+
+1.01  3/23/06
+-----------------------
+--- Fixed the Hours Worked report so it would calculate the correct number of hours 
+    worked. The hours were not always correct if a user was currently punched in.
+--- Fixed a bug where if there was a multiple of 40 names listed on the front page, the
+    footer would not correctly align to the right of the page.
+--- Fixed a bug where if $display_current_users = "yes", $display_office = "all", and 
+    $display_group = "all" in config.inc.php, the main page of the application would 
+    unexpectantly print out the last query that was run, then exit and die.
+--- Fixed a bug on the Edit Office page where if there were identical group names that
+    were affiliated with different parent offices, the number of users displayed for 
+    one of these groups for the current office being edited would not be correct.
+--- Fixed the Edit System Settings page to display distinct groups in the display_group
+    dropdown box if there were multiple groups with the same groupname in the database.
+    This would only happen if display_office was set to "all", and groups with the same 
+    groupname, but affiliated with different officenames, existed in the database.
+--- Added report_start_time and report_end_time variables for the Hours Worked report.
+    These variables have been added if the report needs to be run from a certain start 
+    time on the starting day of the report to a certain end time on the ending day of 
+    the report. These are configurable in config.inc.php.
+--- Provided the option to print the Display Names on the reports, also configurable in
+    config.inc.php. 
+--- Provided the option to view a triple dropdown consisting of Offices, Groups, and 
+    Usernames, or a single dropdown consisting of Usernames when setting the paramaters
+    of the report for ALL reports.
+--- The currently logged in username is now displayed in the top left of each page just
+    under the logo. (Thanks for the idea Jason Mortensen.)
+--- Added a 'Remember Me?' option to the main page of the app that automatically 
+    selects the last username that logged in from a particular computer. This is done
+    via a cookie, so cookies must be enabled within the user's browser for this to 
+    work as expected. (Thanks for the idea Jason Mortensen.)
+--- Took out the code in display.php that had anything to do with timerpt.php, and 
+    stuffed that code into timerpt.php.
+--- Replaced the transparent pngs provided by Mark James with updated, compressed 
+    transparent pngs from Mark James.
+
+1.0  3/6/06
+-----------------------
+--- Added a report to tally a user's hours. This was done with a little help from Adam
+    Woodbeck. He was nice enough to provide a working report he had written, so we 
+    utilized some of his code to create this report.
+--- Added the ability to display times in 24-hour format.
+--- Added the ability to display dates in many various formats.
+--- Added a way to logout of the admin section. Had to change the way the admin user
+    logged on, seeing as how there is no way to TRUELY logout when using http-auth, or
+    even login at all if php is running in cgi mode. Sessions are now being utilized for 
+    logging in and out of the admin and reporting sections.
+--- Added a way to edit user properties. 
+--- Added pages to allow for adding, deleting, and editing of punch-in/out statuses.
+--- Allowed for the ability for more than one login to have administrative access.
+    Authentication is performed via mysql now, instead of a plaintext name and password
+    in config.inc.php. $admin_username and $admin_password have been removed from 
+    config.inc.php.
+--- Allowed for the ability for more than one login to have access to ONLY add, edit, or 
+    delete a user's time. This is a separate permission that any user can be given.
+    If a user has Time Admin access, it does not mean that user will have Sys Admin 
+    permission or access to the reports. It simply means that the specified user has 
+    permission to add, edit, or delete a user's time.
+--- Allowed for the ability for more than one login to have reporting access.
+    Authentication is performed via mysql now, instead of a plaintext name and password
+    in config.inc.php. $reports_username and $reports_password have been removed from 
+    config.inc.php.
+--- Each user can now be assigned as a Sys Admin user, Time Admin user, and/or a reports 
+    user. Just because a user has admin access does not mean that user can view the 
+    reports. In order for a user to have access to the reports, you must give them that 
+    access via the admin section or globally set $use_reports_password to "no" within
+    config.inc.php.
+--- Added some property fields to the usernames. Now when creating or editing a username,
+    the following user properties are required: Username, Display Name, Email Address, 
+    Office, and Group. The email address field is currently not used for anything in this
+    release, but it will be utilized in a future release in some way.
+--- Added a User Search page, for if you have many users and wish to find the properties
+    of a user without scrolling through the entire user list.
+--- Added Offices to which each username in the database MUST be a member of.
+--- Added Groups, which are also mandatory for a user to be a member of, that are 
+    subcategories of the Offices. Basically, think of Groups as being departments of a 
+    company, and Offices as being the different office locations of a company. If you 
+    have only one office location within your company, you might want to setup only 
+    one office. And the same goes for Groups.
+--- Added the option to display punch-in/out times for only users of a certain office,
+    or office/group combination on the main page.
+--- Added the ability to add or delete an individual punch-in/out time.
+--- All statuses are now determined to be either "in" or "out" in the database. This makes
+    for more useful reporting.
+--- Added a page to display the current options (system settings) configured within 
+    config.inc.php.
+--- Added a page where you can edit the current options (system settings) within 
+    config.inc.php. 
+--- Added a printer friendly page for the main page. If you need to print out the current
+    listing on the main page, simply click on the link titled "printer friendly page" in 
+    the top right of the main page, then print it.
+--- The Upgrade Database page within the admin section has been improved, and should
+    work more reliably in most environments.
+--- Fixed the reports so they now paginate correctly when printed from web browsers that 
+    are not Internet Explorer. In previous releases, the reports paginated ONLY if your 
+    browser was IE.
+--- Added a few nice little icons provided by Mark James from 
+    http://www.famfamfam.com/lab/icons/silk/.
+--- Added a couple of javascript scripts provided by Matt Kruse from http://mattkruse.com.
+    One is a color picker so a color can be given for individual punch-in/out statuses, 
+    and the other one is a calendar popup which is utilized in several places within this
+    app.
+--- Added a javascript script provided by Joshua Paine from 
+    http://demo.fairsky.us/javascript/png.html It renders the transparent pngs (provided 
+    by Mark James) for Internet Explorer versions 6 and below.
+--- Added a number of security fixes throughout thie app.
+--- Performed general code cleanup on a number of files.
+
+
+0.9.4-1	5/27/05
+-----------------------
+--- Fixed a bug in the time report - if the "To" and "From" dates were the same, 
+    either no punch-in/out times would display, or just some of the times would display.
+--- Fixed a bug in displaying the punch-in/out times on the main page if 
+    $show_current_users_only was set to "yes" in config.inc.php. Either none of the 
+    times would display, or just some of the times would display.
+--- This bug was also found when attempting to change a user's time.
+--- Added "This script also makes other minor changes to the database." to the database
+    upgrade script description in dbupgrade.php.
+
+
+0.9.4	5/24/05
+-----------------------
+--- Required the use of at least version 4.1.0 of PHP. This was done to move from the
+    use of long PHP predefined variable arrays ($HTTP_*_VARS) to PHP superglobal
+    variable arrays ($_*), which were introduced in PHP 4.1.0. With PHP5's ability
+    to disable the ($HTTP_*_VARS) arrays using 'register_long_arrays=Off' in php.ini,
+    i felt it was time to make the switch everywhere in the code.  
+--- Changed the way time was being stored in the database from a mysql timestamp to a 
+    unix timestamp. This provides the ability to utilize timezone functionalities
+    and quite possibly other functions for future use.
+--- Added a database upgrade script within the app, dbupgrade.php. You can now 
+    choose to upgrade the database via the command line using the mysql statments
+    included in upgrade_database.sql (as you could have always done), or go to the 
+    administration section of the app and choose to upgrade the db from there. FOR
+    THIS RELEASE, YOU WILL NEED TO USE THE UPGRADE SCRIPT, dbupgrade.php. This is 
+    because of the need to convert all of your current mysql timestamps into unix 
+    timestamps. Yes, you CAN do this without the script, but the script also takes 
+    into account the timezone of the server so the new unix timestamps will be stored
+    in GMT.
+--- Added the ability to display punch-in/out times in 3 different ways:
+    1) times can now be displayed according to the end user's timezone. This is done
+       with the use of javascript and the addition of a cookie to the user's system.
+    2) times can be displayed according to the web server's timezone. This is the way
+       times in all previous versions of the distribution have been displayed (it is
+       also the default setting of this release).
+    3) times will be displayed in GMT if neither of the two above options are chosen.
+    This is set in config.inc.php.
+--- Added an option to display current, local weather stats. This is done with code 
+    from the PHP Weather project by Martin Geisler and others. PHP Weather is 
+    licensed under the GPL.  
+--- When printing the main page or the time report, the date and time it is run is 
+    reflected according to how you chose to display your punch-in/out times via 
+    config.inc.php, instead of just assuming you want to use the timezone of the 
+    webserver. This affects ONLY the printouts of these pages.
+--- Removed the $time_entry_title variable in config.inc.php and stuffed it into 
+    timereport.php. All this variable did was provide an easy way to change the time 
+    report title.
+--- Removed the $left_side_width variable in config.inc.php. This variable set the width
+    for the left side of each page. The value for this variable has now been hard-coded 
+    into leftmain.php.
+--- Combined leftmain.php and timeclack.php into one file, leftmain.php.
+--- Fixed a bug where the wrong time and date were being reported in an error message
+    when a user's time was changed.
+--- Performed general code cleanup on a number of files.
+
+
+0.9.3	3/21/05   
+-----------------------
+--- Added the ability to change a user's time entry in the administration section.
+--- When notes are included in a user's time entry, they are input into the database in 
+    all lowercase, instead of just being displayed on the screen as lowercase. They were
+    being strung to lowercase on the screen after they were entered into the database, 
+    but they are now instead initially input into the database as lowercase. This is almost
+    not worth mentioning, but it is a minor change, thus it's here in the changelog. 
+--- Renamed the Employee Report to Time Report, and added the option to run this report
+    for all usernames. Doing this negated the need for having the Monthly Report,
+    Today's Report, and Date Report. These reports have been removed. 
+--- Moved the Timeclock Admin link to from the left side of the page to the far right 
+    part of the topbar and renamed it to Administration.
+--- Combined topmain.php and topmain_alt.php into one file, and removed topmain_alt.php.
+--- Fixed a formatting problem on the home page and the reports where the rows of data were  
+    a couple of spaces more to the left than the column headings. Fixing this also fixed an
+    odd bug where if you refreshed the home page repeatedly, the rows of data would 
+    sometimes be extremely out of line with the column headings.
+--- Added some security to all form fields by disallowing certain characters to be used 
+    when filling in the form fields.
+--- Limited the size of the form fields to match the size of the corresponding fields in 
+    the database.
+--- Removed the $fqdn option in config.inc.php as it was pretty much a useless option
+    anyway. It was a variable to provide a fully qualified domain name for the path to the 
+    distribution files.
+--- Removed the $move_reports option in config.inc.php and replaced it with 
+    $use_reports_password, an option to require a username and password to view the 
+    reports.
+--- Added a username and password option in config.inc.php to give some users the ability 
+    to view the reports, but not access anything else in the admin section. These variables are
+    set in config.inc.php with the $reports_username and $reports_password variables. This 
+    is not the best way to allow authentication when accessing the reports, but it is one 
+    of the easiest. Another way of accomplishing the same goal is adding a 'groups' field
+    in the db and assigning everyone to a group and requiring authentication via the users'
+    username and password. I don't care to do it that way just yet.
+--- Added the ability to display only the current day's activity on the front page instead
+    of the last entry from each user. This is done with the $show_current_users_only 
+    option in config.inc.php.
+
+
+0.9.2   11/15/04
+-----------------------
+--- Fixed timeclack.php so a php information message wouldn't occur if $use_passwd was set 
+    to "no" in config.inc.php.
+--- Added the option to move all reports to the administration section. If $move_reports
+    is set to "yes" in config.inc.php, then the reports are moved to the administration
+    section of the app.
+--- Moved the $use_passwd, $admin_username, $admin_passwd options in config.inc.php
+    from the 'required changes' section to the 'optional changes' section.
+--- Removed the $website and $domain_name variables in config.inc.php. These were variables
+    for your website link and name in the bottom left of each page. They were removed for 
+    aesthetic reasons.
+--- Added the word 'New' to the 'Password(s)' column heading in chngpasswd.php. The heading 
+    now reads 'New Password(s)' instead of 'Password(s)'.
+--- Fixed the 'Notes' column on all pages to align more to the left instead of centering 
+    itself in the middle of the column. 
+--- Added better printing functionality for IE (Internet Explorer 4.x and higher) via css 
+    for the reports. The reports still print unter Mozilla/Firefox, they're just not
+    formatted as nicely with the column headings on each page.
+
+
+0.9.1-1	10/31/04
+-----------------------
+--- Fixed a bug where headers were sometimes being sent twice.
+
+
+0.9.1	10/26/04
+-----------------------
+--- Added the option to use passwords for submitting an employee's status.
+    The php crypt() function is used for this. Unfortunately, doing it this way forces
+    you to add users with passwords and/or change passwords using ONLY this app or some
+    other php script using the crypt() function. Adding passwords directly into the 
+    mysql database will not work. This option is set in config.inc.php with the 
+    $use_passwd variable.
+--- Added a field named 'employee_password' to the employees table. If "none" is chosen
+    for $use_passwd in config.inc.php, then this field is ignored.
+--- Added a password blank in leftmain.php if $use_passwd = "yes" in config.inc.php.
+--- Added a Timeclock Administration section which contains scripts to add/delete users
+    and to change users' passwords. This section is password protected.
+--- Added an admin username and password for the Timeclock Administration section. These
+    variables are set in config.inc.php with the $admin_username and $admin_password
+    variables. 
+--- Added the option to change the width of leftmain.php (the section where you sign-in).
+    This is added only to make the width easier to change, in case you have a few 
+    usernames that are so long that they're wider than the current setting. 
+    This option is set in config.inc.php with the $left_side_width variable.
+--- Removed the $index variable in config.inc.php. This was a variable for your index
+    page. It provided no extra functionality unless you wanted to have a different
+    index page.
+--- Changed the default example links for the $links variable in config.inc.php to 
+    all point to slashdot.org. They were pointing to http://111/, http://222/, up to 
+    http://666/.
+--- Combined daterptinfo.php and daterpt.php into one page, did the same for employeerpt.php
+    and employeerptinfo.php, currmonthrpt.php and currmonthrptinfo.php, todayrpt.php and
+    todayrptinfo.php, current_status.php and timeclock.php.
+--- Removed alink and avisited classes from default.css, as they were not being used 
+    anywhere in the code anyway.
+--- Rewrote the code so it wouldn't matter if register_globals or magic_quotes_gpc are 
+    enabled/disabled in your php.ini.

@@ -1,0 +1,238 @@
+.install {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+}
+.install_bold {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+        font-weight: bold;
+        padding-left:25px;
+        padding-right:25px;
+        color: #333333;
+}
+.install_bold_center {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+        font-weight: bold;
+        padding-left:65px;
+        color: #333333;
+}
+.install_little_text {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 9px;
+        padding-right:25px;
+        padding-left:25px;
+}
+.install_paragraph {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+        padding-left:25px;
+        padding-right:25px;
+}
+.install_paragraph_center {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+}
+.install_table {
+	border: solid #CCCCCC;
+	border-width: 1px 1px 1px 1px;
+}
+.admin_headings {
+	text-decoration: none;
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+        color: #27408b;
+}
+.column_headings {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 10pt;
+	text-decoration: underline;
+	color: 27408b;
+}
+.current_left_rows {
+        background-color: #eeeeee;
+	border: solid #748771;
+	border-width: 0px 0px 1px 0px;
+	padding-left: 10px;
+        color: #27408b;
+	font-weight: bold;
+}
+.current_left_rows_indent {
+	text-decoration: none;
+        color: #748771;
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+        background-color: #eeeeee;
+	border: solid #748771;
+	border-width: 0px 0px 0px 0px;
+	padding-left: 32px;
+	font-weight: bold;
+}
+.display_hide {
+	display: none;
+}
+.display_row {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	padding-left: 10px;
+	color: 000;
+	border-width: 1px 1px 1px 1px;
+	border-color: 000;
+}
+.footer_links {
+	font-weight: none;
+	text-decoration: none;
+        color: #27408b;
+}
+.header {
+        height:45px;
+        background-color: #748771;
+	border: solid #cdc0b0;
+	border-width: 0px 0px 1px 0px;
+}
+.left_main {
+	background-color: #FCFCFF;
+	border: solid #cdc0b0;
+	border-width: 0px 1px 1px 1px;
+}
+.left_rows {
+	background-color: #FCFCFF;
+	border: solid #808088;
+	border-width: 0px 0px 1px 0px;
+	padding-left: 10px;
+}
+.left_rows_border_top {
+	background-color: #FCFCFF;
+	border: solid #808088;
+	border-width: 1px 0px 1px 0px;
+	padding-left: 10px;
+}
+.left_rows_headings {
+	font-weight: bold;
+	background-color: #FCFCFF;
+	border: solid #808088;
+	border-width: 0px 0px 1px 0px;
+	padding-left: 10px;
+        color: #000000;
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+}
+.left_rows_indent {
+	text-decoration: none;
+        color: #748771;
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	background-color: #FCFCFF;
+	border: solid #808088;
+	border-width: 0px 0px 0px 0px;
+	padding-left: 32px;
+}
+.misc_items {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	padding-left: 10px;
+	padding-right: 10px;
+	color: 748771;
+}
+.notdisplay {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	padding-left: 10px;
+	display: none;
+}
+.notdisplay_rpt {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	display: none;
+}
+.notprint {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	padding-left: 10px;
+}
+.right_main {
+	background-color: #FCFCFF;
+	border: solid #cdc0b0;
+	border-width: 0px 1px 1px 1px;
+}
+.right_main_text {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	background-color: #FCFCFF;
+	padding-left: 10px;
+}
+.rightside_heading {
+	border-color : #bbb;
+	border-style : solid;
+	border-width : 0px 0px 1px 0px;
+	background-color: #eee;
+	text-align : left;
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 13px;
+	font-weight : bold;
+	padding : 4px;
+}
+.table_border {
+	border-color : #bbb;
+	border-style : solid;
+	border-width : 1px 1px 1px 1px;
+}
+.table_heading {
+	background-color : #eeeeee;
+	border-color : #bbbbbb;
+	border-style : solid;
+	border-width : 0px 1px 1px 0px;
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	font-weight : bold;
+	padding : 4px;
+}
+.table_heading_no_color {
+	background-color: #FCFCFF;
+	text-align : left;
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	font-weight : bold;
+	padding : 4px;
+}
+.table_rows {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	padding : 2px;
+}
+.table_rows_green {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	color: #009900;
+	padding : 2px;
+}
+.table_rows_red {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	color: #FF0000;
+	padding : 2px;
+}
+.title_underline {
+	text-decoration: underline;
+	color: #27408b;
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 10pt;
+	padding-left: 0px;
+}
+.topmain_row_color {
+	font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
+	font-size: 11px;
+	background-color: #cdc0b0;
+	border: solid #748771;
+	border-width: 1px 0px 1px 0px;
+}
+a:active {
+	color: #748771;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+	font-size: 11px;
+        color: #853d27;
+}
+

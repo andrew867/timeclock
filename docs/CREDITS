@@ -1,0 +1,32 @@
+PHP Timeclock
+Version 1.04
+http://sourceforge.net/projects/timeclock
+Copyright (C) 2006 Ken Papizan <pappyzan_at_users.sourceforge.net>
+
+
+PHP Timeclock Credits -- Many thanks to the developers listed below.
+--------------------------------------------------------------------
+Affinity4 ------ Sponsorship of development by paying for Jacob's time on the project.
+                 http://www.affinity4.com
+Jacob Allred --- bug fixes and feature enhancements. Jacob also coded the majority of the v2
+                 changes.
+                 http://www.jacoballred.com
+                 http://www.fakenamegenerator.com
+Matt Kruse ----- two of his javascript scripts are utilized in this app. One is a color picker 
+                 and the other is a calendar popup.
+                 http://mattkruse.com
+Joshua Paine --- provided a javascript script that renders transparent pngs for Internet Explorer
+                 versions 6 and below.
+                 http:////demo.fairsky.us/javascript/png.html
+Mark James ----- provided the transparent png icons that are scattered throughout the app.
+                 http://www.famfamfam.com/lab/icons/silk/
+Adam Woodbeck -- provided code that is included in the Hours Worked report.
+Martin Geisler - provided code to display current, local weather stats. This code is included in
+                 his own sourceforge.net project, PHP Weather.
+                 http://sourceforge.net/projects/phpweather
+Greg Breland --- provided code and coding help in many, many places throughout the app. He has 
+                 a couple of projects currently in development: Squidfire, a script that parses 
+                 Squid logs, and WeldAE, which is a platform for building database driven 
+                 applications.
+                 http://sourceforge.net/projects/squidfire
+                 http://weldae.org
