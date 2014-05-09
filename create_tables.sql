@@ -97,7 +97,7 @@ CREATE TABLE info (
 
 CREATE TABLE metars (
   metar varchar(255) NOT NULL default '',
-  timestamp timestamp(14) NOT NULL,
+  timestamp timestamp NOT NULL,
   station varchar(4) NOT NULL default '',
   PRIMARY KEY  (station),
   UNIQUE KEY station (station)
