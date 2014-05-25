@@ -12,23 +12,21 @@ if (isset($_POST['login_userid']) && (isset($_POST['login_password']))) {
     $login_userid = $_POST['login_userid'];
     $login_password = crypt($_POST['login_password'], 'xy');
 
-    $query = "select empfullname, employee_passwd, admin, time_admin from ".$db_prefix."employees
-              where empfullname = '".$login_userid."'";
+    $query = "select empfullname, employee_passwd, admin, time_admin from " . $db_prefix . "employees
+              where empfullname = '" . $login_userid . "'";
     $result = mysql_query($query);
 
-    while ($row=mysql_fetch_array($result)) {
+    while ($row = mysql_fetch_array($result)) {
 
-        $admin_username = "".$row['empfullname']."";
-        $admin_password = "".$row['employee_passwd']."";
-        $admin_auth = "".$row['admin']."";
-        $time_admin_auth = "".$row['time_admin']."";
-    }  
+        $admin_username = "" . $row['empfullname'] . "";
+        $admin_password = "" . $row['employee_passwd'] . "";
+        $admin_auth = "" . $row['admin'] . "";
+        $time_admin_auth = "" . $row['time_admin'] . "";
+    }
 
     if (($login_userid == @$admin_username) && ($login_password == @$admin_password) && ($admin_auth == "1")) {
         $_SESSION['valid_user'] = $login_userid;
-    }
-
-    elseif (($login_userid == @$admin_username) && ($login_password == @$admin_password) && ($time_admin_auth == "1")) {
+    } elseif (($login_userid == @$admin_username) && ($login_password == @$admin_password) && ($time_admin_auth == "1")) {
         $_SESSION['time_admin_valid_user'] = $login_userid;
     }
 
@@ -37,9 +35,7 @@ if (isset($_POST['login_userid']) && (isset($_POST['login_password']))) {
 if (isset($_SESSION['valid_user'])) {
     echo "<script type='text/javascript' language='javascript'> window.location.href = 'admin/index.php';</script>";
     exit;
-}
-
-elseif (isset($_SESSION['time_admin_valid_user'])) {
+} elseif (isset($_SESSION['time_admin_valid_user'])) {
     echo "<script type='text/javascript' language='javascript'> window.location.href = 'admin/timeadmin.php';</script>";
     exit;
 

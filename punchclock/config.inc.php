@@ -119,7 +119,7 @@ $default_in_or_out = 1;
 include "$TIMECLOCK_PATH/config.inc.php";
 
 // Time constants
-$one_day = (24 * 60 * 60);		// number of timestamp units (seconds) in a day
-$one_week = (7 * 24 * 60 * 60);		// number of timestamp units (seconds) in a week
+$one_day = (24 * 60 * 60); // number of timestamp units (seconds) in a day
+$one_week = (7 * 24 * 60 * 60); // number of timestamp units (seconds) in a week
 
 ?>

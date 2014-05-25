@@ -17,7 +17,7 @@ ob_end_clean();
 chdir($punchclock_path);
 
 // Need to adjust relative links to point to timeclock path.
-$header =  preg_replace('/( (src|href)=[\'"])(?!http:)/',"$1$TIMECLOCK_URL/",$header);
+$header = preg_replace('/( (src|href)=[\'"])(?!http:)/', "$1$TIMECLOCK_URL/", $header);
 
 print $header;
 ?>

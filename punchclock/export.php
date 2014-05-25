@@ -11,16 +11,16 @@ require_once 'lib.select.php';
 turn_off_magic_quotes();
 
 session_start();
-$_SESSION['application'] = $current_page;        // security
+$_SESSION['application'] = $current_page; // security
 
 ////////////////////////////////////////
 // Authorize
 if ($use_reports_password == "yes") {
-	if (!isset($_SESSION['valid_reports_user']) && !isset($_SESSION['valid_user'])) {
-		include 'setup_timeclock.php';		// authorize and initialize like timeclock.php
-		$PAGE_TITLE = "Export - $title";
-		include 'header.php';
-		print <<<End_Of_HTML
+    if (!isset($_SESSION['valid_reports_user']) && !isset($_SESSION['valid_user'])) {
+        include 'setup_timeclock.php'; // authorize and initialize like timeclock.php
+        $PAGE_TITLE = "Export - $title";
+        include 'header.php';
+        print <<<End_Of_HTML
 <table width=100% border=0 cellpadding=7 cellspacing=1 style="margin-top:12px;">
   <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Reports</td></tr>
   <tr class=right_main_text>
@@ -33,23 +33,23 @@ if ($use_reports_password == "yes") {
   </tr>
 </table>
 End_Of_HTML;
-		include "footer.php";
-		exit;
-	}
+        include "footer.php";
+        exit;
+    }
 }
 
 ////////////////////////////////////////
 // Get report parameters
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-	// Report parameters entry
-	setcookie ('dragtable-export_table', '', time() - 3600, $_SERVER['PHP_SELF']);	// delete cookie, put columns in default order
+    // Report parameters entry
+    setcookie('dragtable-export_table', '', time() - 3600, $_SERVER['PHP_SELF']); // delete cookie, put columns in default order
 
-	$PAGE_TITLE = "Export - $title";
-	include "header_reports.php";
-	include "header_timeclock.php";
+    $PAGE_TITLE = "Export - $title";
+    include "header_reports.php";
+    include "header_timeclock.php";
 
-	print <<<End_Of_HTML
+    print <<<End_Of_HTML
 
 <table width="100%" height="85%" border="0" cellpadding="0" cellspacing="1" style="border:solid #BBB 1px;">
   <tr valign="top">
@@ -66,9 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
               <tr><td height="15"></td></tr>
 End_Of_HTML;
 
-	if ($username_dropdown_only == "yes") {
-		$select_options = select_options("select empfullname,displayname from {$db_prefix}employees order by displayname asc");
-		print <<<End_Of_HTML
+    if ($username_dropdown_only == "yes") {
+        $select_options = select_options("SELECT empfullname,displayname FROM {$db_prefix}employees ORDER BY displayname ASC");
+        print <<<End_Of_HTML
 
               <tr><td class="table_rows" height="25" width="20%" style="padding-left:32px;" nowrap>Username:</td>
                   <td colspan="2" align="left" width="80%" style="color:red;font-family:Tahoma;font-size:10px;padding-left:20px;">
@@ -78,9 +78,8 @@ $select_options
                  </select>&nbsp;*</td>
               </tr>
 End_Of_HTML;
-	}
-	else {
-		print <<<End_Of_HTML
+    } else {
+        print <<<End_Of_HTML
 
               <tr>
                 <td class="table_rows" height="25" width="20%" style="padding-left:32px;" nowrap>Choose Office:</td>
@@ -101,9 +100,9 @@ End_Of_HTML;
                 </td>
               </tr>
 End_Of_HTML;
-	}
+    }
 
-	print <<<End_Of_HTML
+    print <<<End_Of_HTML
 
               <tr>
                 <td class="table_rows" width="20%" nowrap style="padding-left:32px;">From Date: ($tmp_datefmt)</td>
@@ -126,8 +125,8 @@ End_Of_HTML;
 
 End_Of_HTML;
 
-	// Report options entry
-	print <<<End_Of_HTML
+    // Report options entry
+    print <<<End_Of_HTML
 
             <div style="position:absolute;visibility:hidden;background-color:#ffffff;layer-background-color:#ffffff;" id="mydiv" height=200>&nbsp;</div>
 
@@ -135,8 +134,8 @@ End_Of_HTML;
 
 End_Of_HTML;
 
-	// Column option checkboxes
-	print <<<End_Of_HTML
+    // Column option checkboxes
+    print <<<End_Of_HTML
               <tr>
                 <td class="table_rows" height="25" valign="bottom">1.&nbsp;&nbsp;&nbsp;Select the table columns that are to be exported.</td>
               </tr>
@@ -154,8 +153,8 @@ End_Of_HTML;
 
 End_Of_HTML;
 
-	// Next/Cancel buttons
-	print <<<End_Of_HTML
+    // Next/Cancel buttons
+    print <<<End_Of_HTML
               <tr><td height="10"></td></tr>
             </table>
 
@@ -175,37 +174,37 @@ End_Of_HTML;
 
 End_Of_HTML;
 
-	include "footer_timeclock.php";
+    include "footer_timeclock.php";
 
-	print <<<End_Of_HTML
+    print <<<End_Of_HTML
 </body>
 </html>
 End_Of_HTML;
-	exit;
+    exit;
 
 }
 
 ////////////////////////////////////////
 // Generate report
 
-include 'setup_timeclock.php';		// authorize and initialize like timeclock.php
+include 'setup_timeclock.php'; // authorize and initialize like timeclock.php
 
 // Program parameters.
-$from_date	= isset($_POST['from_date'])	? $_POST['from_date']	: null;
-$to_date	= isset($_POST['to_date'])	? $_POST['to_date']	: null;
-$date_fmt	= isset($_POST['date_fmt'])	? $_POST['date_fmt']	: null;
-$user_name	= isset($_POST['user_name'])	? $_POST['user_name']	: null;
-$group_name	= isset($_POST['group_name'])	? $_POST['group_name']	: null;
-$office_name	= isset($_POST['office_name'])	? $_POST['office_name']	: null;
+$from_date = isset($_POST['from_date']) ? $_POST['from_date'] : null;
+$to_date = isset($_POST['to_date']) ? $_POST['to_date'] : null;
+$date_fmt = isset($_POST['date_fmt']) ? $_POST['date_fmt'] : null;
+$user_name = isset($_POST['user_name']) ? $_POST['user_name'] : null;
+$group_name = isset($_POST['group_name']) ? $_POST['group_name'] : null;
+$office_name = isset($_POST['office_name']) ? $_POST['office_name'] : null;
 
 // Program options.
-$c_reg_ot	= bool($_POST['c_reg_ot']);
-$c_inout	= bool($_POST['c_inout']);
-$c_date		= bool($_POST['c_date']);
-$c_employee	= bool($_POST['c_employee']);
-$c_name		= bool($_POST['c_name']);
-$c_group	= bool($_POST['c_group']);
-$c_office	= bool($_POST['c_office']);
+$c_reg_ot = bool($_POST['c_reg_ot']);
+$c_inout = bool($_POST['c_inout']);
+$c_date = bool($_POST['c_date']);
+$c_employee = bool($_POST['c_employee']);
+$c_name = bool($_POST['c_name']);
+$c_group = bool($_POST['c_group']);
+$c_office = bool($_POST['c_office']);
 
 ////////////////////////////////////////
 $PAGE_TITLE = "Export - $title";

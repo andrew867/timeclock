@@ -13,14 +13,15 @@ $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
 if (!isset($_SESSION['valid_user'])) {
 
-echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
-echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Administration</td></tr>\n";
-echo "  <tr class=right_main_text>\n";
-echo "    <td align=center valign=top scope=row>\n";
-echo "      <table width=200 border=0 cellpadding=5 cellspacing=0>\n";
-echo "        <tr class=right_main_text><td align=center>You are not presently logged in, or do not have permission to view this page.</td></tr>\n";
-echo "        <tr class=right_main_text><td align=center>Click <a class=admin_headings href='../login.php'><u>here</u></a> to login.</td></tr>\n";
-echo "      </table><br /></td></tr></table>\n"; exit;
+    echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
+    echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Administration</td></tr>\n";
+    echo "  <tr class=right_main_text>\n";
+    echo "    <td align=center valign=top scope=row>\n";
+    echo "      <table width=200 border=0 cellpadding=5 cellspacing=0>\n";
+    echo "        <tr class=right_main_text><td align=center>You are not presently logged in, or do not have permission to view this page.</td></tr>\n";
+    echo "        <tr class=right_main_text><td align=center>Click <a class=admin_headings href='../login.php'><u>here</u></a> to login.</td></tr>\n";
+    echo "      </table><br /></td></tr></table>\n";
+    exit;
 }
 
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
@@ -79,45 +80,46 @@ echo "                <th class=table_heading nowrap width=3% align=center>Delet
 
 $row_count = 0;
 
-$query = "select * from ".$db_prefix."offices order by officename";
+$query = "select * from " . $db_prefix . "offices order by officename";
 $result = mysql_query($query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row = mysql_fetch_array($result)) {
 
-$query2 = "select office from ".$db_prefix."employees where office = '".$row['officename']."'";
-$result2 = mysql_query($query2);
-@$user_cnt = mysql_num_rows($result2);
+    $query2 = "select office from " . $db_prefix . "employees where office = '" . $row['officename'] . "'";
+    $result2 = mysql_query($query2);
+    @$user_cnt = mysql_num_rows($result2);
 
-$query3 = "select * from ".$db_prefix."groups where officeid = '".$row['officeid']."'";
-$result3 = mysql_query($query3);
-@$group_cnt = mysql_num_rows($result3);
+    $query3 = "select * from " . $db_prefix . "groups where officeid = '" . $row['officeid'] . "'";
+    $result3 = mysql_query($query3);
+    @$group_cnt = mysql_num_rows($result3);
 
-$row_count++;
-$row_color = ($row_count % 2) ? $color2 : $color1;
+    $row_count++;
+    $row_color = ($row_count % 2) ? $color2 : $color1;
 
-echo "              <tr class=table_border bgcolor='$row_color'><td nowrap class=table_rows width=7%>&nbsp;$row_count</td>\n";
-echo "                <td nowrap class=table_rows width=79%>&nbsp;<a class=footer_links title='Edit Office: ".$row["officename"]."'
-                    href=\"officeedit.php?officename=".$row["officename"]."\">".$row["officename"]."</a></td>\n";
-echo "                <td class=table_rows width=4% align=center>$group_cnt</td>\n";
-echo "                <td class=table_rows width=4% align=center>$user_cnt</td>\n";
+    echo "              <tr class=table_border bgcolor='$row_color'><td nowrap class=table_rows width=7%>&nbsp;$row_count</td>\n";
+    echo "                <td nowrap class=table_rows width=79%>&nbsp;<a class=footer_links title='Edit Office: " . $row["officename"] . "'
+                    href=\"officeedit.php?officename=" . $row["officename"] . "\">" . $row["officename"] . "</a></td>\n";
+    echo "                <td class=table_rows width=4% align=center>$group_cnt</td>\n";
+    echo "                <td class=table_rows width=4% align=center>$user_cnt</td>\n";
 
-if ((strpos($user_agent, "MSIE 6")) || (strpos($user_agent, "MSIE 5")) || (strpos($user_agent, "MSIE 4")) || (strpos($user_agent, "MSIE 3"))) {
+    if ((strpos($user_agent, "MSIE 6")) || (strpos($user_agent, "MSIE 5")) || (strpos($user_agent, "MSIE 4")) || (strpos($user_agent, "MSIE 3"))) {
 
-echo "                <td class=table_rows width=3% align=center><a style='color:#27408b;text-decoration:underline;' 
-                    href=\"officeedit.php?officename=".$row["officename"]."\" title=\"Edit Office: ".$row["officename"]."\">
+        echo "                <td class=table_rows width=3% align=center><a style='color:#27408b;text-decoration:underline;'
+                    href=\"officeedit.php?officename=" . $row["officename"] . "\" title=\"Edit Office: " . $row["officename"] . "\">
                     Edit</a></td>\n";
-echo "                <td class=table_rows width=3% align=center><a style='color:#27408b;text-decoration:underline;' 
-                    href=\"officedelete.php?officename=".$row["officename"]."\" title=\"Delete Office: ".$row["officename"]."\">
+        echo "                <td class=table_rows width=3% align=center><a style='color:#27408b;text-decoration:underline;'
+                    href=\"officedelete.php?officename=" . $row["officename"] . "\" title=\"Delete Office: " . $row["officename"] . "\">
                     Delete</a></td></tr>\n";
-} else {
-echo "                <td class=table_rows width=3% align=center><a href=\"officeedit.php?officename=".$row["officename"]."\" 
-                    title=\"Edit Office: ".$row["officename"]."\">
+    } else {
+        echo "                <td class=table_rows width=3% align=center><a href=\"officeedit.php?officename=" . $row["officename"] . "\"
+                    title=\"Edit Office: " . $row["officename"] . "\">
                     <img border=0 src='../images/icons/application_edit.png' /></a></td>\n";
-echo "                <td class=table_rows width=3% align=center><a href=\"officedelete.php?officename=".$row["officename"]."\" 
-                    title=\"Delete Office: ".$row["officename"]."\">
+        echo "                <td class=table_rows width=3% align=center><a href=\"officedelete.php?officename=" . $row["officename"] . "\"
+                    title=\"Delete Office: " . $row["officename"] . "\">
                     <img border=0 src='../images/icons/delete.png' /></a></td></tr>\n";
-}
+    }
 }
 echo "            </table></td></tr>\n";
-include '../footer.php'; exit;
+include '../footer.php';
+exit;
 ?>

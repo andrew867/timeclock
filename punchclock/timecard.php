@@ -12,48 +12,53 @@ turn_off_magic_quotes();
 
 // Check for logout
 if (isset($_REQUEST['logout'])) {
-	session_stop();
-	unset($_GET['emp']);			// safety
-	unset($_REQUEST['empfullname']);	// safety
-	exit_next(preg_replace('/[^\/]*$/','',$_SERVER['PHP_SELF']));	// goto index page
+    session_stop();
+    unset($_GET['emp']); // safety
+    unset($_REQUEST['empfullname']); // safety
+    exit_next(preg_replace('/[^\/]*$/', '', $_SERVER['PHP_SELF'])); // goto index page
 }
 
 session_start();
-$_SESSION['application'] = $current_page;	// security
+$_SESSION['application'] = $current_page; // security
 
-include 'setup_timeclock.php';			// authorize and initialize
+include 'setup_timeclock.php'; // authorize and initialize
 
 // Parse arguments.
-$emp		= isset($_GET['emp'])			? $_GET['emp']			: null;
-$empfullname	= isset($_REQUEST['empfullname'])	? $_REQUEST['empfullname']	: null;
+$emp = isset($_GET['emp']) ? $_GET['emp'] : null;
+$empfullname = isset($_REQUEST['empfullname']) ? $_REQUEST['empfullname'] : null;
 
-if (! $empfullname) $empfullname = $emp;		// from url or form entry
+if (!$empfullname)
+    $empfullname = $emp; // from url or form entry
 
 // Lookup valid employee
 if ($empfullname) {
-	$empfullname = lookup_employee($empfullname);
-	if (! $empfullname) {
-		$error_msg .= "Name was not recognized. Please re-enter your name.\n";
-		unset($_SESSION['authenticated']);
-	}
+    $empfullname = lookup_employee($empfullname);
+    if (!$empfullname) {
+        $error_msg .= "Name was not recognized. Please re-enter your name.\n";
+        unset($_SESSION['authenticated']);
+    }
 }
 
 // Authorize employee
 $authorized = $empfullname && isset($_SESSION['authenticated']) ? ($_SESSION['authenticated'] == $empfullname) : false;
-if (! $authorized) $authorized = ($empfullname && isset($_SESSION['valid_user'])) ? true : false;		// check if administrator
-if (! $authorized) $authorized = ($empfullname && isset($_SESSION['time_admin_valid_user'])) ? true : false;	// check if time administrator
-if (! $authorized) {
-	##die(error_msg("Not authorized to run this report."));
-	$_SESSION['login_error_msg'] = $error_msg;
-	$_SESSION['login_return_url'] = $_SERVER['REQUEST_URI'];
-	exit_next("login.php".($empfullname ? "?emp=$u_empfullname" : ''));
+if (!$authorized)
+    $authorized = ($empfullname && isset($_SESSION['valid_user'])) ? true : false; // check if administrator
+if (!$authorized)
+    $authorized = ($empfullname && isset($_SESSION['time_admin_valid_user'])) ? true : false; // check if time administrator
+if (!$authorized) {
+    ##die(error_msg("Not authorized to run this report."));
+    $_SESSION['login_error_msg'] = $error_msg;
+    $_SESSION['login_return_url'] = $_SERVER['REQUEST_URI'];
+    exit_next("login.php" . ($empfullname ? "?emp=$u_empfullname" : ''));
 }
 
 // Find which week to print timecard.
 $local_timestamp_in_week = isset($_REQUEST['t']) ? ($_REQUEST['t']) : local_timestamp();
 
-if (isset($_REQUEST['prev'])) $local_timestamp_in_week -= $one_week;
-if (isset($_REQUEST['next'])) $local_timestamp_in_week += $one_week;
+if (isset($_REQUEST['prev']))
+    $local_timestamp_in_week -= $one_week;
+if (isset($_REQUEST['next']))
+    $local_timestamp_in_week += $one_week;
 
 // Display timecard.
 $PAGE_TITLE = "Timecard - $title";
@@ -77,7 +82,7 @@ End_Of_HTML;
 
 include 'header.php';
 
-print timecard_html($empfullname,$local_timestamp_in_week);
+print timecard_html($empfullname, $local_timestamp_in_week);
 
 print <<<End_Of_HTML
 

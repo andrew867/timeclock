@@ -3,20 +3,23 @@
  * Export display of hours.
  */
 
-if (! isset($_SESSION['application'])) { header('Location:export.php'); exit; }
+if (!isset($_SESSION['application'])) {
+    header('Location:export.php');
+    exit;
+}
 
 require_once 'class.Timecard.php';
 
 // Construct query parameters
-$begin_local_timestamp = make_timestamp($from_date);		// begins at midnight
-$end_local_timestamp = make_timestamp($to_date) + $one_day - 1;	// through end of day
+$begin_local_timestamp = make_timestamp($from_date); // begins at midnight
+$end_local_timestamp = make_timestamp($to_date) + $one_day - 1; // through end of day
 
 $begin_utm_timestamp = utm_timestamp($begin_local_timestamp);
 $end_utm_timestamp = utm_timestamp($end_local_timestamp);
 
-$employee_clause = $user_name == 'All' ? '' : "   and {$db_prefix}employees.empfullname = '".mysql_real_escape_string($user_name)."'\n";
-$office_clause = $office_name == 'All' ? '' : "   and {$db_prefix}employees.office = '".mysql_real_escape_string($office_name)."'\n";
-$groups_clause = $group_name  == 'All' ? '' : "   and {$db_prefix}employees.groups = '".mysql_real_escape_string($group_name)."'\n";
+$employee_clause = $user_name == 'All' ? '' : "   and {$db_prefix}employees.empfullname = '" . mysql_real_escape_string($user_name) . "'\n";
+$office_clause = $office_name == 'All' ? '' : "   and {$db_prefix}employees.office = '" . mysql_real_escape_string($office_name) . "'\n";
+$groups_clause = $group_name == 'All' ? '' : "   and {$db_prefix}employees.groups = '" . mysql_real_escape_string($group_name) . "'\n";
 
 // Select employees whose timecards need to be scanned.
 $query = <<<End_Of_SQL
@@ -28,43 +31,50 @@ where timestamp between $begin_utm_timestamp and $end_utm_timestamp
 End_Of_SQL;
 
 $result = mysql_query($query)
-  or trigger_error("export_display: Cannot select employees. ".mysql_error(),E_USER_WARNING);
+or trigger_error("export_display: Cannot select employees. " . mysql_error(), E_USER_WARNING);
 
 // Scan employee timecards between given dates and record computed hours.
 setup_record_hours();
 $week_begin_local_timestamp = work_week_begin($begin_local_timestamp);
-$GLOBALS['tc_begin_local_timestamp'] = $begin_local_timestamp;	// for filtering records between week begin and report begin date
+$GLOBALS['tc_begin_local_timestamp'] = $begin_local_timestamp; // for filtering records between week begin and report begin date
 
-while ($row=mysql_fetch_array($result)) {
+while ($row = mysql_fetch_array($result)) {
 
-	$empfullname = $row['fullname'];
+    $empfullname = $row['fullname'];
 
-	// Scan all employee timecards for each week between begin and end dates.
-	$begin = $week_begin_local_timestamp;
-	while ($begin < $end_local_timestamp) {
-		$end = min(($begin + $one_week),$end_local_timestamp);
+    // Scan all employee timecards for each week between begin and end dates.
+    $begin = $week_begin_local_timestamp;
+    while ($begin < $end_local_timestamp) {
+        $end = min(($begin + $one_week), $end_local_timestamp);
 
-		// Walk each timecard and insert records into temporary database table t_computed_hours.
-		$tc = new Timecard($empfullname,$begin,$end);
-		list($timecard_row_count, $total_hours, $overtime_hours) = $tc->walk(null,record_hours,null);
+        // Walk each timecard and insert records into temporary database table t_computed_hours.
+        $tc = new Timecard($empfullname, $begin, $end);
+        list($timecard_row_count, $total_hours, $overtime_hours) = $tc->walk(null, record_hours, null);
 
-		$begin = $end;
-	}
+        $begin = $end;
+    }
 }
 
 // Setup export columns and query.
 $cols = '';
-if ($c_office)	$cols .= ",office";
-if ($c_group)	$cols .= ",groups";
-if ($c_employee)$cols .= ",empfullname";
-if ($c_name)	$cols .= ",displayname";
-if ($c_date)	$cols .= ",hours_date";
-if ($c_inout)	$cols .= ",`inout`,color";
-if ($c_reg_ot)	$cols .= ",reg_ot";
+if ($c_office)
+    $cols .= ",office";
+if ($c_group)
+    $cols .= ",groups";
+if ($c_employee)
+    $cols .= ",empfullname";
+if ($c_name)
+    $cols .= ",displayname";
+if ($c_date)
+    $cols .= ",hours_date";
+if ($c_inout)
+    $cols .= ",`inout`,color";
+if ($c_reg_ot)
+    $cols .= ",reg_ot";
 
-$group_by_clause = $cols ? "group by ".substr($cols,1)."\n" : '';
-$order_by_clause = $cols ? "order by ".substr($cols,1)."\n" : '';
-$order_by_clause = preg_replace('/reg_ot/','reg_ot desc',$order_by_clause);
+$group_by_clause = $cols ? "group by " . substr($cols, 1) . "\n" : '';
+$order_by_clause = $cols ? "order by " . substr($cols, 1) . "\n" : '';
+$order_by_clause = preg_replace('/reg_ot/', 'reg_ot desc', $order_by_clause);
 
 // Select hour records.
 $query = <<<End_Of_SQL
@@ -74,23 +84,23 @@ select coalesce(sum(hours),0) as sum_hours $cols
 End_Of_SQL;
 
 $result = mysql_query($query)
-  or trigger_error("export_display: Cannot select hours. ".mysql_error(),E_USER_WARNING);
+or trigger_error("export_display: Cannot select hours. " . mysql_error(), E_USER_WARNING);
 
 // Print export page header.
-$begin_date = date('l F j, Y',$begin_local_timestamp);
-$end_date = date('l F j, Y',$end_local_timestamp);
+$begin_date = date('l F j, Y', $begin_local_timestamp);
+$end_date = date('l F j, Y', $end_local_timestamp);
 $h_user_name = htmlentities($user_name);
 $h_group_name = htmlentities($group_name);
 $h_office_name = htmlentities($office_name);
-$chk_reg_ot	= $c_reg_ot	? ' checked="checked"' : '';
-$chk_inout	= $c_inout	? ' checked="checked"' : '';
-$chk_date	= $c_date	? ' checked="checked"' : '';
-$chk_employee	= $c_employee	? ' checked="checked"' : '';
-$chk_name	= $c_name	? ' checked="checked"' : '';
-$chk_group	= $c_group	? ' checked="checked"' : '';
-$chk_office	= $c_office	? ' checked="checked"' : '';
-$options_style	    = isset($_POST['redo']) ? ''		: ' style="display:none"';
-$options_link_class = isset($_POST['redo']) ? ' class="open"'	: '';
+$chk_reg_ot = $c_reg_ot ? ' checked="checked"' : '';
+$chk_inout = $c_inout ? ' checked="checked"' : '';
+$chk_date = $c_date ? ' checked="checked"' : '';
+$chk_employee = $c_employee ? ' checked="checked"' : '';
+$chk_name = $c_name ? ' checked="checked"' : '';
+$chk_group = $c_group ? ' checked="checked"' : '';
+$chk_office = $c_office ? ' checked="checked"' : '';
+$options_style = isset($_POST['redo']) ? '' : ' style="display:none"';
+$options_link_class = isset($_POST['redo']) ? ' class="open"' : '';
 
 print <<<End_Of_HTML
 <div class="export">
@@ -130,11 +140,11 @@ End_Of_HTML;
 
 // Build export table html.
 $row_count = 0;
-while ($row=mysql_fetch_array($result)) {
+while ($row = mysql_fetch_array($result)) {
 
-	if ($row_count == 0) {
-		// Table header
-		print <<<End_Of_HTML
+    if ($row_count == 0) {
+        // Table header
+        print <<<End_Of_HTML
 
 <div class="select-buttons">
 <a href="javascript:;" class="select-button" onclick="Utils.Selection.clear();Utils.Selection.add(Utils.Ranges.selectNode(jQuery('#export_table').get(0)))">Select All</a>
@@ -147,61 +157,75 @@ while ($row=mysql_fetch_array($result)) {
     <th align="right" title="Click to sort table, drag to rearrange columns.">Hours</th>
 
 End_Of_HTML;
-	if ($c_reg_ot)	echo "    <th align=\"left\">Reg/OT</th>\n";
-	if ($c_inout)	echo "    <th align=\"left\">Task/Status</th>\n";
-	if ($c_date)	echo "    <th align=\"left\">Date</th>\n";
-	if ($c_employee)echo "    <th align=\"left\">Employee</th>\n";
-	if ($c_name)	echo "    <th align=\"left\">Name</th>\n";
-	if ($c_group)	echo "    <th align=\"left\">Group</th>\n";
-	if ($c_office)	echo "    <th align=\"left\">Office</th>\n";
-	print <<<End_Of_HTML
+        if ($c_reg_ot)
+            echo "    <th align=\"left\">Reg/OT</th>\n";
+        if ($c_inout)
+            echo "    <th align=\"left\">Task/Status</th>\n";
+        if ($c_date)
+            echo "    <th align=\"left\">Date</th>\n";
+        if ($c_employee)
+            echo "    <th align=\"left\">Employee</th>\n";
+        if ($c_name)
+            echo "    <th align=\"left\">Name</th>\n";
+        if ($c_group)
+            echo "    <th align=\"left\">Group</th>\n";
+        if ($c_office)
+            echo "    <th align=\"left\">Office</th>\n";
+        print <<<End_Of_HTML
   </tr>
   </thead>
   <tbody>
 End_Of_HTML;
-	}
+    }
 
-	// Every row
-	$row_count++;
-	$row_class = ($row_count % 2) ? 'odd' : 'even';
+    // Every row
+    $row_count++;
+    $row_class = ($row_count % 2) ? 'odd' : 'even';
 
-	$hours		= sprintf("%01.02f",$row['sum_hours']);
-	$reg_ot		= $row['reg_ot'] == 'O' ? 'OT' : 'Reg';
-	$h_inout	= htmlentities($row['inout']);
-	$h_color	= $row['color'] ? htmlentities($row['color']) : 'inherit';
-	$date		= $row['hours_date'];
-	$h_empfullname	= htmlentities($row['empfullname']);
-	$h_name		= htmlentities($row['displayname']);
-	$h_groups	= htmlentities($row['groups']);
-	$h_office	= htmlentities($row['office']);
+    $hours = sprintf("%01.02f", $row['sum_hours']);
+    $reg_ot = $row['reg_ot'] == 'O' ? 'OT' : 'Reg';
+    $h_inout = htmlentities($row['inout']);
+    $h_color = $row['color'] ? htmlentities($row['color']) : 'inherit';
+    $date = $row['hours_date'];
+    $h_empfullname = htmlentities($row['empfullname']);
+    $h_name = htmlentities($row['displayname']);
+    $h_groups = htmlentities($row['groups']);
+    $h_office = htmlentities($row['office']);
 
-	print <<<End_Of_HTML
+    print <<<End_Of_HTML
 
   <tr class="display_row $row_class">
     <td align="right">$hours</td>
 
 End_Of_HTML;
-	if ($c_reg_ot)	echo "    <td align=\"center\">$reg_ot</td>\n";
-	if ($c_inout)	echo "    <td align=\"left\" style=\"color:$h_color\">$h_inout</td>\n";
-	if ($c_date)	echo "    <td align=\"left\">$date</td>\n";
-	if ($c_employee)echo "    <td align=\"left\">$h_empfullname</td>\n";
-	if ($c_name)	echo "    <td align=\"left\">$h_name</td>\n";
-	if ($c_group)	echo "    <td align=\"left\">$h_groups</td>\n";
-	if ($c_office)	echo "    <td align=\"left\">$h_office</td>\n";
-	print <<<End_Of_HTML
+    if ($c_reg_ot)
+        echo "    <td align=\"center\">$reg_ot</td>\n";
+    if ($c_inout)
+        echo "    <td align=\"left\" style=\"color:$h_color\">$h_inout</td>\n";
+    if ($c_date)
+        echo "    <td align=\"left\">$date</td>\n";
+    if ($c_employee)
+        echo "    <td align=\"left\">$h_empfullname</td>\n";
+    if ($c_name)
+        echo "    <td align=\"left\">$h_name</td>\n";
+    if ($c_group)
+        echo "    <td align=\"left\">$h_groups</td>\n";
+    if ($c_office)
+        echo "    <td align=\"left\">$h_office</td>\n";
+    print <<<End_Of_HTML
   </tr>
 End_Of_HTML;
 }
 
 if ($row_count > 0) {
-	print <<<End_Of_HTML
+    print <<<End_Of_HTML
 
   </tbody>
 </table>
 
 End_Of_HTML;
 } else {
-	print error_msg("No records were found.");
+    print error_msg("No records were found.");
 }
 
 print <<<End_Of_HTML
@@ -216,8 +240,8 @@ mysql_free_result($result);
 
 ////////////////////////////////////////
 function setup_record_hours() {
-	// Create temp database table to hold records of computed timecard hours.
-	$sql = <<<End_Of_SQL
+    // Create temp database table to hold records of computed timecard hours.
+    $sql = <<<End_Of_SQL
 create temporary table t_computed_hours (
   `hours` float,
   `reg_ot` char(1),
@@ -230,74 +254,74 @@ create temporary table t_computed_hours (
   `office` varchar(50)
 )
 End_Of_SQL;
-	mysql_query("drop table if exists t_computed_hours");
-	mysql_query($sql)
-	  or trigger_error("export_display: Cannot create temporary table t_computed_hours. ".mysql_error(),E_USER_WARNING);
+    mysql_query("DROP TABLE IF EXISTS t_computed_hours");
+    mysql_query($sql)
+    or trigger_error("export_display: Cannot create temporary table t_computed_hours. " . mysql_error(), E_USER_WARNING);
 }
 
 function record_hours($tc) {
-	// Insert records of computed hours into temp database table.
-	// Helper function for Timecard::walk().
+    // Insert records of computed hours into temp database table.
+    // Helper function for Timecard::walk().
 
-	if ($tc->in_or_out == 1) {
-		// Don't record records between the beginning of the work week and the report's begin date.
-		if ($tc->end_time < $GLOBALS['tc_begin_local_timestamp']) return;
-		if ($tc->start_time < $GLOBALS['tc_begin_local_timestamp']) {
-			// Person punched in before start time of report and punched out after.
-			// Adjust hours to be just those from the beginning of day.
-			$start_time = $GLOBALS['tc_begin_local_timestamp'];
-			$begin_hours = compute_hours($start_time, $tc->end_time);
-			if ($begin_hours < $tc->overtime) {
-				$overtime = $tc->overtime - $begin_hours;
-				$hours = $tc->hours;
-			}
-			else {
-				$overtime = 0;
-				$hours - $tc->hours - ($begin_hours - $tc->overtime);
-			}
-		}
-		else {
-			// Normal case.
-			$start_time = $tc->start_time;
-			$hours = $tc->hours;
-			$overtime = $tc->overtime;
-		}
+    if ($tc->in_or_out == 1) {
+        // Don't record records between the beginning of the work week and the report's begin date.
+        if ($tc->end_time < $GLOBALS['tc_begin_local_timestamp'])
+            return;
+        if ($tc->start_time < $GLOBALS['tc_begin_local_timestamp']) {
+            // Person punched in before start time of report and punched out after.
+            // Adjust hours to be just those from the beginning of day.
+            $start_time = $GLOBALS['tc_begin_local_timestamp'];
+            $begin_hours = compute_hours($start_time, $tc->end_time);
+            if ($begin_hours < $tc->overtime) {
+                $overtime = $tc->overtime - $begin_hours;
+                $hours = $tc->hours;
+            } else {
+                $overtime = 0;
+                $hours - $tc->hours - ($begin_hours - $tc->overtime);
+            }
+        } else {
+            // Normal case.
+            $start_time = $tc->start_time;
+            $hours = $tc->hours;
+            $overtime = $tc->overtime;
+        }
 
-		if (round($hours,3) > 0) {
-			$reg_ot = 'R';
-			$q_inout     = mysql_real_escape_string($tc->row['inout']);
-			$q_color     = mysql_real_escape_string($tc->row['color']);
-			$q_employee  = mysql_real_escape_string($tc->row['fullname']);
-			$q_name      = mysql_real_escape_string($tc->row['displayname']);
-			$q_group     = mysql_real_escape_string($tc->row['groups']);
-			$q_office    = mysql_real_escape_string($tc->row['office']);
-			#$date        = date('Y-m-d H:i',$start_time); ## debug
-			$date        = date('Y-m-d',$start_time);
-			$sql = <<<End_Of_SQL
+        if (round($hours, 3) > 0) {
+            $reg_ot = 'R';
+            $q_inout = mysql_real_escape_string($tc->row['inout']);
+            $q_color = mysql_real_escape_string($tc->row['color']);
+            $q_employee = mysql_real_escape_string($tc->row['fullname']);
+            $q_name = mysql_real_escape_string($tc->row['displayname']);
+            $q_group = mysql_real_escape_string($tc->row['groups']);
+            $q_office = mysql_real_escape_string($tc->row['office']);
+            #$date        = date('Y-m-d H:i',$start_time); ## debug
+            $date = date('Y-m-d', $start_time);
+            $sql = <<<End_Of_SQL
 insert into t_computed_hours (hours,reg_ot,`inout`,color,hours_date,empfullname,displayname,groups,office)
 values ($hours,'$reg_ot','$q_inout','$q_color','$date','$q_employee','$q_name','$q_group','$q_office')
 End_Of_SQL;
-			mysql_query($sql)
-			  or trigger_error("export_display: Cannot insert regular hours into temp table. ".mysql_error(),E_USER_WARNING);
-		}
+            mysql_query($sql)
+            or trigger_error("export_display: Cannot insert regular hours into temp table. " . mysql_error(), E_USER_WARNING);
+        }
 
-		if (round($overtime,3) > 0) {
-			$reg_ot = 'O';
-			$q_inout     = mysql_real_escape_string($tc->row['inout']);
-			$q_color     = mysql_real_escape_string($tc->row['color']);
-			$q_employee  = mysql_real_escape_string($tc->row['fullname']);
-			$q_name      = mysql_real_escape_string($tc->row['displayname']);
-			$q_group     = mysql_real_escape_string($tc->row['groups']);
-			$q_office    = mysql_real_escape_string($tc->row['office']);
-			#$date        = date('Y-m-d H:i',$start_time); ## debug
-			$date        = date('Y-m-d',$start_time);
-			$sql = <<<End_Of_SQL
+        if (round($overtime, 3) > 0) {
+            $reg_ot = 'O';
+            $q_inout = mysql_real_escape_string($tc->row['inout']);
+            $q_color = mysql_real_escape_string($tc->row['color']);
+            $q_employee = mysql_real_escape_string($tc->row['fullname']);
+            $q_name = mysql_real_escape_string($tc->row['displayname']);
+            $q_group = mysql_real_escape_string($tc->row['groups']);
+            $q_office = mysql_real_escape_string($tc->row['office']);
+            #$date        = date('Y-m-d H:i',$start_time); ## debug
+            $date = date('Y-m-d', $start_time);
+            $sql = <<<End_Of_SQL
 insert into t_computed_hours (hours,reg_ot,`inout`,color,hours_date,empfullname,displayname,groups,office)
 values ($overtime,'$reg_ot','$q_inout','$q_color','$date','$q_employee','$q_name','$q_group','$q_office')
 End_Of_SQL;
-			mysql_query($sql)
-			  or trigger_error("export_display: Cannot insert overtime hours into temp table. ".mysql_error(),E_USER_WARNING);
-		}
-	}
+            mysql_query($sql)
+            or trigger_error("export_display: Cannot insert overtime hours into temp table. " . mysql_error(), E_USER_WARNING);
+        }
+    }
 }
+
 ?>

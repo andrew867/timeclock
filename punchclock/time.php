@@ -18,34 +18,34 @@
 require_once "lib.common.php";
 
 $timestamp = utm_timestamp() + timezone_offset();
-$timeclock = date('l F j, Y H:i',$timestamp);		// initial display
+$timeclock = date('l F j, Y H:i', $timestamp); // initial display
 
 // Define javascript replacement function for changing Date.toLocaleString() text according to $timefmt config option.
 switch ($timefmt) {
-case 'G:i':
-	// 24 hour w/o leading 0
-	$replace_func = "function(p0,p1,p2,p3,p4,p5) { return timer.time.getHours().toString().replace(/^0(!:0)/,'')+':'+p2+':'+p3; }";
-	break;
-case 'H:i':
-	// 24 hour
-	$replace_func = "function(p0,p1,p2,p3,p4,p5) { return ((timer.time.getHours() < 10) ? '0' : '')+timer.time.getHours()+':'+p2+':'+p3; }";
-	break;
-case 'g:i A':
-	// 12 hour AM/PM
-	$replace_func = "function(p0,p1,p2,p3,p4,p5) { return p1+':'+p2+':'+p3+p4+p5; }";
-	break;
-case 'g:i a':
-	// 12 hour am/pm
-	$replace_func = "function(p0,p1,p2,p3,p4,p5) { return p1+':'+p2+':'+p3+p4+p5.toLowerCase(); }";
-	break;
-case 'g:iA':
-	// 12 hour AM/PM
-	$replace_func = "function(p0,p1,p2,p3,p4,p5) { return p1+':'+p2+':'+p3+p5; }";
-	break;
-case 'g:ia':
-	// 12 hour am/pm
-	$replace_func = "function(p0,p1,p2,p3,p4,p5) { return p1+':'+p2+':'+p3+p5.toLowerCase(); }";
-	break;
+    case 'G:i':
+        // 24 hour w/o leading 0
+        $replace_func = "function(p0,p1,p2,p3,p4,p5) { return timer.time.getHours().toString().replace(/^0(!:0)/,'')+':'+p2+':'+p3; }";
+        break;
+    case 'H:i':
+        // 24 hour
+        $replace_func = "function(p0,p1,p2,p3,p4,p5) { return ((timer.time.getHours() < 10) ? '0' : '')+timer.time.getHours()+':'+p2+':'+p3; }";
+        break;
+    case 'g:i A':
+        // 12 hour AM/PM
+        $replace_func = "function(p0,p1,p2,p3,p4,p5) { return p1+':'+p2+':'+p3+p4+p5; }";
+        break;
+    case 'g:i a':
+        // 12 hour am/pm
+        $replace_func = "function(p0,p1,p2,p3,p4,p5) { return p1+':'+p2+':'+p3+p4+p5.toLowerCase(); }";
+        break;
+    case 'g:iA':
+        // 12 hour AM/PM
+        $replace_func = "function(p0,p1,p2,p3,p4,p5) { return p1+':'+p2+':'+p3+p5; }";
+        break;
+    case 'g:ia':
+        // 12 hour am/pm
+        $replace_func = "function(p0,p1,p2,p3,p4,p5) { return p1+':'+p2+':'+p3+p5.toLowerCase(); }";
+        break;
 }
 
 

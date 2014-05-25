@@ -8,10 +8,10 @@
 $current_page = "menu.php";
 
 session_start();
-$_SESSION['application'] = $current_page;	// security
+$_SESSION['application'] = $current_page; // security
 
 include 'config.inc.php';
-include 'setup_timeclock.php';			// authorize and initialize
+include 'setup_timeclock.php'; // authorize and initialize
 
 $PAGE_TITLE = "Menu = $title";
 $PAGE_STYLE = <<<End_Of_HTML
@@ -28,41 +28,42 @@ End_Of_HTML;
 include 'header.php';
 ?>
 <ul id="entry_links">
-  <li><a href="entry.php">My Time Entry</a></li>
-  <li><a href="timecard.php">My Timecard</a></li>
+    <li><a href="entry.php">My Time Entry</a></li>
+    <li><a href="timecard.php">My Timecard</a></li>
 </ul>
 <?php
 // Construct list of links to punchclocks for each office.
 
-$result = mysql_query("select officename from offices order by officename");
+$result = mysql_query("SELECT officename FROM offices ORDER BY officename");
 
 $row_count = 0;
-while ($row=mysql_fetch_array($result)) {
-	$row_count++;
-	if ($row_count == 1) {
-		 print <<<End_Of_HTML
+while ($row = mysql_fetch_array($result)) {
+    $row_count++;
+    if ($row_count == 1) {
+        print <<<End_Of_HTML
 
 <ul id="office_links">
 End_Of_HTML;
-	}
+    }
 
-	$h_officename = htmlentities($row["officename"]);
-	$u_officename = rawurlencode($row["officename"]);
+    $h_officename = htmlentities($row["officename"]);
+    $u_officename = rawurlencode($row["officename"]);
 
-	$targetname = preg_replace('/\W/','',$row["officename"]);
-# Uncomment the following to open punchclock in new window with minimum chrome.
-#	print <<<End_Of_HTML
-#
-#  <li><a href="punchclock.php?office=$u_officename" target="$targetname" onclick="window.open('','$targetname','resizable,scrollbars').focus();return true;">$h_officename Punchclock</a></li>
-#End_Of_HTML;
-# Uncomment following to open punchclock in current browser window.
-	print <<<End_Of_HTML
+    $targetname = preg_replace('/\W/', '', $row["officename"]);
+    # Uncomment the following to open punchclock in new window with minimum chrome.
+    #	print <<<End_Of_HTML
+    #
+    #  <li><a href="punchclock.php?office=$u_officename" target="$targetname" onclick="window.open('','$targetname','resizable,scrollbars').focus();return true;">$h_officename Punchclock</a></li>
+    #End_Of_HTML;
+    # Uncomment following to open punchclock in current browser window.
+    print <<<End_Of_HTML
 
   <li><a href="punchclock.php?office=$u_officename">$h_officename Punchclock</a></li>
 End_Of_HTML;
 }
 
-if ($row_count > 0) print <<<End_Of_HTML
+if ($row_count > 0)
+    print <<<End_Of_HTML
 
 </ul>
 
@@ -71,7 +72,7 @@ End_Of_HTML;
 mysql_free_result($result);
 
 if ($row_count == 0) {
-	 print <<<End_Of_HTML
+    print <<<End_Of_HTML
 <ul id="office_links">
   <li><a href="punchclock.php">Punchclock</a></li>
 </ul>
@@ -81,13 +82,13 @@ End_Of_HTML;
 ?>
 
 <ul id="timeclock_links">
-  <li><a href="<?php echo "$TIMECLOCK_URL"; ?>/timeclock.php">Timeclock Main Program</a></li>
-  <li><a href="<?php echo "$TIMECLOCK_URL"; ?>/login_reports.php">Timeclock Reports</a></li>
-  <li><a href="<?php echo "$TIMECLOCK_URL"; ?>/login.php">Timeclock Administration</a></li>
+    <li><a href="<?php echo "$TIMECLOCK_URL"; ?>/timeclock.php">Timeclock Main Program</a></li>
+    <li><a href="<?php echo "$TIMECLOCK_URL"; ?>/login_reports.php">Timeclock Reports</a></li>
+    <li><a href="<?php echo "$TIMECLOCK_URL"; ?>/login.php">Timeclock Administration</a></li>
 </ul>
 
 <ul id="export_links">
-  <li><a href="export.php">Export Hours</a></li>
+    <li><a href="export.php">Export Hours</a></li>
 </ul>
 
 <?php include 'footer.php'; ?>

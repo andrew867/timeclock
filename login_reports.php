@@ -12,16 +12,16 @@ if (isset($_POST['login_userid']) && (isset($_POST['login_password']))) {
     $login_userid = $_POST['login_userid'];
     $login_password = crypt($_POST['login_password'], 'xy');
 
-    $query = "select empfullname, employee_passwd, reports from ".$db_prefix."employees
-              where empfullname = '".$login_userid."'";
+    $query = "select empfullname, employee_passwd, reports from " . $db_prefix . "employees
+              where empfullname = '" . $login_userid . "'";
     $result = mysql_query($query);
 
-    while ($row=mysql_fetch_array($result)) {
+    while ($row = mysql_fetch_array($result)) {
 
-        $reports_username = "".$row['empfullname']."";
-        $reports_password = "".$row['employee_passwd']."";
-        $reports_auth = "".$row['reports']."";
-    }  
+        $reports_username = "" . $row['empfullname'] . "";
+        $reports_password = "" . $row['employee_passwd'] . "";
+        $reports_auth = "" . $row['reports'] . "";
+    }
 
     if (($login_userid == @$reports_username) && ($login_password == @$reports_password) && ($reports_auth == "1")) {
         $_SESSION['valid_reports_user'] = $login_userid;

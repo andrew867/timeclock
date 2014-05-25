@@ -11,49 +11,50 @@ turn_off_magic_quotes();
 
 // Check for logout
 if (isset($_REQUEST['logout'])) {
-	session_stop();
-	unset($_GET['emp']);			// safety
-	unset($_REQUEST['empfullname']);	// safety
-	// Fall through and display login form.
+    session_stop();
+    unset($_GET['emp']); // safety
+    unset($_REQUEST['empfullname']); // safety
+    // Fall through and display login form.
 }
 
 session_start();
-$_SESSION['application'] = $current_page;	// security
+$_SESSION['application'] = $current_page; // security
 
-$return_url = isset($_SESSION['login_return_url']) ? $_SESSION['login_return_url'] : '/';	
-$msg        = isset($_SESSION['login_msg'])        ? $_SESSION['login_msg']        : '';	
-$error_msg  = isset($_SESSION['login_error_msg'])  ? $_SESSION['login_error_msg']  : '';	
-unset($_SESSION['login_msg']);			// reinitialize
-unset($_SESSION['login_error_msg']);		// reinitialize
+$return_url = isset($_SESSION['login_return_url']) ? $_SESSION['login_return_url'] : '/';
+$msg = isset($_SESSION['login_msg']) ? $_SESSION['login_msg'] : '';
+$error_msg = isset($_SESSION['login_error_msg']) ? $_SESSION['login_error_msg'] : '';
+unset($_SESSION['login_msg']); // reinitialize
+unset($_SESSION['login_error_msg']); // reinitialize
 
-include 'setup_timeclock.php';			// authorize and initialize
+include 'setup_timeclock.php'; // authorize and initialize
 
 // Parse arguments.
-$emp		= isset($_REQUEST['emp'])		? $_REQUEST['emp']		: null;
-$empfullname	= isset($_REQUEST['empfullname'])	? $_REQUEST['empfullname']	: null;
-$password	= isset($_REQUEST['password'])		? $_REQUEST['password']		: null;
+$emp = isset($_REQUEST['emp']) ? $_REQUEST['emp'] : null;
+$empfullname = isset($_REQUEST['empfullname']) ? $_REQUEST['empfullname'] : null;
+$password = isset($_REQUEST['password']) ? $_REQUEST['password'] : null;
 
-if (! $empfullname) $empfullname = $emp;	// from url or form entry
+if (!$empfullname)
+    $empfullname = $emp; // from url or form entry
 
 if ($empfullname) {
-	$empfullname = lookup_employee($empfullname);
-	if (! $empfullname) {
-		$error_msg .= "Name was not recognized. Please re-enter your name.\n";
-	}
+    $empfullname = lookup_employee($empfullname);
+    if (!$empfullname) {
+        $error_msg .= "Name was not recognized. Please re-enter your name.\n";
+    }
 }
 
 ////////////////////////////////////////
-if (! $empfullname) {
-	unset($_SESSION['authenticated']);
+if (!$empfullname) {
+    unset($_SESSION['authenticated']);
 
-	// Get employee name
+    // Get employee name
 
-	$PAGE_TITLE = "Login - $title";
-	$PAGE_STYLE = <<<End_Of_HTML
+    $PAGE_TITLE = "Login - $title";
+    $PAGE_STYLE = <<<End_Of_HTML
 <link rel="stylesheet" type="text/css" media="screen" href="css/jquery.suggest.css" />
 End_Of_HTML;
 
-	$PAGE_SCRIPT = <<<End_Of_HTML
+    $PAGE_SCRIPT = <<<End_Of_HTML
 <script type="text/javascript" src="scripts/jquery.suggest.js"></script>
 <script type="text/javascript">
 //<![CDATA[
@@ -65,10 +66,12 @@ $(function(){
 </script>
 End_Of_HTML;
 
-	include 'header.php';
-	if ($msg) print msg($msg);
-	if ($error_msg) print error_msg($error_msg);
-	print <<<End_Of_HTML
+    include 'header.php';
+    if ($msg)
+        print msg($msg);
+    if ($error_msg)
+        print error_msg($error_msg);
+    print <<<End_Of_HTML
 
 <div id="employee_entry_form">
 <form action="{$_SERVER['PHP_SELF']}" method="get">
@@ -93,48 +96,50 @@ End_Of_HTML;
 
 End_Of_HTML;
 
-	include 'footer.php';
-	exit;
+    include 'footer.php';
+    exit;
 }
 
 ////////////////////////////////////////
 if ($use_passwd == 'yes') {
-	$authenticated = isset($_SESSION['authenticated']) ? ($_SESSION['authenticated'] == $empfullname) : false;
+    $authenticated = isset($_SESSION['authenticated']) ? ($_SESSION['authenticated'] == $empfullname) : false;
 
-	if ((! $authenticated) && (isset($_SESSION['time_admin_valid_user']) || isset($_SESSION['valid_user']))) {
-		// Allow time administrators and system administrators to bypass the password screen.
-		$_SESSION['authenticated'] = $empfullname;
-		$authenticated = true;
-	}
+    if ((!$authenticated) && (isset($_SESSION['time_admin_valid_user']) || isset($_SESSION['valid_user']))) {
+        // Allow time administrators and system administrators to bypass the password screen.
+        $_SESSION['authenticated'] = $empfullname;
+        $authenticated = true;
+    }
 
-	if (! $authenticated && $password) {
+    if (!$authenticated && $password) {
 
-		// Validate password
-		if (is_valid_password($empfullname,$password)) {
-			$_SESSION['authenticated'] = $empfullname;
-			$authenticated = true;
-		} else {
-			$error_msg .= "Password is incorrect. Please try again.\n";
-		}
-	}
+        // Validate password
+        if (is_valid_password($empfullname, $password)) {
+            $_SESSION['authenticated'] = $empfullname;
+            $authenticated = true;
+        } else {
+            $error_msg .= "Password is incorrect. Please try again.\n";
+        }
+    }
 
-	if (! $authenticated) {
-		$u_empfullname = rawurlencode($empfullname);
-		$h_empfullname = htmlentities($empfullname);
-		$h_name_header = $show_display_name == 'yes' ? htmlentities(get_employee_name($empfullname)) : $h_empfullname;
+    if (!$authenticated) {
+        $u_empfullname = rawurlencode($empfullname);
+        $h_empfullname = htmlentities($empfullname);
+        $h_name_header = $show_display_name == 'yes' ? htmlentities(get_employee_name($empfullname)) : $h_empfullname;
 
-		// Security: make sure no one is already authenticated before displaying password screen.
-		unset($_SESSION['authenticated']);
+        // Security: make sure no one is already authenticated before displaying password screen.
+        unset($_SESSION['authenticated']);
 
-		// Authenticate employee
-		$PAGE_TITLE = "Login - $title";
-		$PAGE_SCRIPT = <<<End_Of_HTML
+        // Authenticate employee
+        $PAGE_TITLE = "Login - $title";
+        $PAGE_SCRIPT = <<<End_Of_HTML
 <script type="text/javascript">$(function(){ $('form input:first').focus(); });</script>
 End_Of_HTML;
-		include 'header.php';
-		if ($msg) print msg($msg);
-		if ($error_msg) print error_msg($error_msg);
-		print <<<End_Of_HTML
+        include 'header.php';
+        if ($msg)
+            print msg($msg);
+        if ($error_msg)
+            print error_msg($error_msg);
+        print <<<End_Of_HTML
 <div id="password_entry_form">
 <form action="{$_SERVER['PHP_SELF']}" method="post">
 <table align=center class=table_border width=100% border=0 cellpadding=3 cellspacing=0>
@@ -162,15 +167,15 @@ End_Of_HTML;
 </form>
 </div>
 End_Of_HTML;
-		include 'footer.php';
-		exit;
-	}
+        include 'footer.php';
+        exit;
+    }
 }
 
 ////////////////////////////////////////
 // Successful login
 $_SESSION['authenticated'] = $empfullname;
-$return_url = preg_replace('/\bemp(fullname)?=.*?&(.*)$/','$2',$return_url);		// remove possible emp= from url
-$return_url .= (preg_match('/[?]/',$return_url) ? '&' : '?') . "emp=".rawurlencode($empfullname); // add emp= argument to url
+$return_url = preg_replace('/\bemp(fullname)?=.*?&(.*)$/', '$2', $return_url); // remove possible emp= from url
+$return_url .= (preg_match('/[?]/', $return_url) ? '&' : '?') . "emp=" . rawurlencode($empfullname); // add emp= argument to url
 exit_next($return_url);
 ?>

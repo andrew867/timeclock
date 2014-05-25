@@ -19,35 +19,35 @@ turn_off_magic_quotes();
 #session_stop();
 
 session_start();
-$_SESSION['application'] = $current_page;	// security
+$_SESSION['application'] = $current_page; // security
 
-include 'setup_timeclock.php';			// authorize and initialize like timeclock.php
+include 'setup_timeclock.php'; // authorize and initialize like timeclock.php
 
 $PAGE_TITLE = "Punchclock - $title";
 
 // Program options.
 if (isset($_REQUEST['office'])) {
-	$office = $_REQUEST['office'];
-	$h_office = htmlentities($office);
-	$q_office = mysql_real_escape_string($office);
-	$u_office = rawurlencode($office);
+    $office = $_REQUEST['office'];
+    $h_office = htmlentities($office);
+    $q_office = mysql_real_escape_string($office);
+    $u_office = rawurlencode($office);
 
-	$display_office = $office ? $office : 'all';		// override config option
-	$PAGE_TITLE = "Punchclock - $h_office - $title";	// browser window title
+    $display_office = $office ? $office : 'all'; // override config option
+    $PAGE_TITLE = "Punchclock - $h_office - $title"; // browser window title
 }
 
 if (isset($_REQUEST['group'])) {
-	$group = $_REQUEST['group'];
-	$h_group = htmlentities($group);
-	$q_group = mysql_real_escape_string($group);
-	$u_group = rawurlencode($group);
+    $group = $_REQUEST['group'];
+    $h_group = htmlentities($group);
+    $q_group = mysql_real_escape_string($group);
+    $u_group = rawurlencode($group);
 
-	$display_group = $group ? $group : 'all';		// override config option
+    $display_group = $group ? $group : 'all'; // override config option
 }
 
 if ($punchclock_select_offices == "yes") {
-	$select_options = select_options("select officename from {$db_prefix}offices order by officename",$office);
-	$select_offices = <<<End_Of_HTML
+    $select_options = select_options("SELECT officename FROM {$db_prefix}offices ORDER BY officename", $office);
+    $select_offices = <<<End_Of_HTML
 <select id="select_offices" onchange="location.href='?office='+encodeURIComponent(this.value)+'&amp;group='">
 <option value="">-- All Offices --</option>
 $select_options
@@ -57,14 +57,14 @@ End_Of_HTML;
 }
 
 if ($punchclock_select_groups == "yes") {
-	$sql = $office
-		? "select groupname from {$db_prefix}groups"
-		. " join {$db_prefix}offices on {$db_prefix}groups.officeid = {$db_prefix}offices.officeid"
-		. " where {$db_prefix}offices.officename = '$q_office'"
-		. " order by groupname"
-		: "select groupname from {$db_prefix}groups order by groupname";
-	$select_options = select_options($sql,$group);
-	$select_groups = <<<End_Of_HTML
+    $sql = $office
+        ? "select groupname from {$db_prefix}groups"
+          . " join {$db_prefix}offices on {$db_prefix}groups.officeid = {$db_prefix}offices.officeid"
+          . " where {$db_prefix}offices.officename = '$q_office'"
+          . " order by groupname"
+        : "SELECT groupname FROM {$db_prefix}groups ORDER BY groupname";
+    $select_options = select_options($sql, $group);
+    $select_groups = <<<End_Of_HTML
 <select id="select_groups" onchange="location.href='?office=$u_office&amp;group='+encodeURIComponent(this.value)">
 <option value="">-- All Groups --</option>
 $select_options
@@ -83,7 +83,8 @@ media print {
 }
 </style>
 End_Of_HTML;
-if ($punchclock_refresh != "none") $punchclock_refresh_script = "display.schedule_refresh($punchclock_refresh);";
+if ($punchclock_refresh != "none")
+    $punchclock_refresh_script = "display.schedule_refresh($punchclock_refresh);";
 $PAGE_SCRIPT = <<<End_Of_HTML
 <script type="text/javascript" src="scripts/jquery.scrollTo-1.3.3-min.js"></script>
 <script type="text/javascript" src="scripts/jquery.nyroModal-1.6.2.min.js"></script>

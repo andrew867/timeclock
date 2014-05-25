@@ -12,14 +12,15 @@ echo "<title>$title - Status Summary</title>\n";
 
 if (!isset($_SESSION['valid_user'])) {
 
-echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
-echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Administration</td></tr>\n";
-echo "  <tr class=right_main_text>\n";
-echo "    <td align=center valign=top scope=row>\n";
-echo "      <table width=200 border=0 cellpadding=5 cellspacing=0>\n";
-echo "        <tr class=right_main_text><td align=center>You are not presently logged in, or do not have permission to view this page.</td></tr>\n";
-echo "        <tr class=right_main_text><td align=center>Click <a class=admin_headings href='../login.php'><u>here</u></a> to login.</td></tr>\n";
-echo "      </table><br /></td></tr></table>\n"; exit;
+    echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
+    echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Administration</td></tr>\n";
+    echo "  <tr class=right_main_text>\n";
+    echo "    <td align=center valign=top scope=row>\n";
+    echo "      <table width=200 border=0 cellpadding=5 cellspacing=0>\n";
+    echo "        <tr class=right_main_text><td align=center>You are not presently logged in, or do not have permission to view this page.</td></tr>\n";
+    echo "        <tr class=right_main_text><td align=center>Click <a class=admin_headings href='../login.php'><u>here</u></a> to login.</td></tr>\n";
+    echo "      </table><br /></td></tr></table>\n";
+    exit;
 }
 
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
@@ -78,42 +79,42 @@ echo "                <th class=table_heading nowrap width=3% align=center>Delet
 
 $row_count = 0;
 
-$query = "select * from ".$db_prefix."punchlist";
+$query = "select * from " . $db_prefix . "punchlist";
 $result = mysql_query($query);
 
-while ($row=mysql_fetch_array($result)) {
+while ($row = mysql_fetch_array($result)) {
 
-$punchitem = "".$row['punchitems']."";
-$color = "".$row['color']."";
-$in_or_out = "".$row['in_or_out']."";
+    $punchitem = "" . $row['punchitems'] . "";
+    $color = "" . $row['color'] . "";
+    $in_or_out = "" . $row['in_or_out'] . "";
 
-$row_count++;
-$row_color = ($row_count % 2) ? $color2 : $color1;
+    $row_count++;
+    $row_color = ($row_count % 2) ? $color2 : $color1;
 
-if ($in_or_out == '1') {
-  $in_or_out_tmp = 'In';
-} elseif ($in_or_out == '0') {
-  $in_or_out_tmp = 'Out';
-}
+    if ($in_or_out == '1') {
+        $in_or_out_tmp = 'In';
+    } elseif ($in_or_out == '0') {
+        $in_or_out_tmp = 'Out';
+    }
 
-echo "              <tr class=table_border bgcolor='$row_color'><td nowrap class=table_rows width=7%>&nbsp;$row_count</td>\n";
-echo "                <td nowrap class=table_rows width=23%>&nbsp;<a class=footer_links title='Edit Status: $punchitem'
+    echo "              <tr class=table_border bgcolor='$row_color'><td nowrap class=table_rows width=7%>&nbsp;$row_count</td>\n";
+    echo "                <td nowrap class=table_rows width=23%>&nbsp;<a class=footer_links title='Edit Status: $punchitem'
                     href='statusedit.php?statusname=$punchitem'>$punchitem</a></td>\n";
-echo "                <td class=table_rows width=60% align=left style='color:$color';>&nbsp;$color</td>\n";
-echo "                <td nowrap class=table_rows width=4% align=center>$in_or_out_tmp</td>\n";
+    echo "                <td class=table_rows width=60% align=left style='color:$color';>&nbsp;$color</td>\n";
+    echo "                <td nowrap class=table_rows width=4% align=center>$in_or_out_tmp</td>\n";
 
-if ((strpos($user_agent, "MSIE 6")) || (strpos($user_agent, "MSIE 5")) || (strpos($user_agent, "MSIE 4")) || (strpos($user_agent, "MSIE 3"))) {
+    if ((strpos($user_agent, "MSIE 6")) || (strpos($user_agent, "MSIE 5")) || (strpos($user_agent, "MSIE 4")) || (strpos($user_agent, "MSIE 3"))) {
 
-echo "                <td class=table_rows width=3% align=center><a style='color:#27408b;text-decoration:underline;' title=\"Edit Status: $punchitem\" 
+        echo "                <td class=table_rows width=3% align=center><a style='color:#27408b;text-decoration:underline;' title=\"Edit Status: $punchitem\"
                     href=\"statusedit.php?statusname=$punchitem\">Edit</a></td>\n";
-echo "                <td class=table_rows width=3% align=center><a style='color:#27408b;text-decoration:underline;' title=\"Delete Status: $punchitem\" 
+        echo "                <td class=table_rows width=3% align=center><a style='color:#27408b;text-decoration:underline;' title=\"Delete Status: $punchitem\"
                     href=\"statusdelete.php?statusname=$punchitem\">Delete</a></td></tr>\n";
-} else {
-echo "                <td class=table_rows width=3% align=center><a title=\"Edit Status: $punchitem\" href=\"statusedit.php?statusname=$punchitem\">
+    } else {
+        echo "                <td class=table_rows width=3% align=center><a title=\"Edit Status: $punchitem\" href=\"statusedit.php?statusname=$punchitem\">
                     <img border=0 src='../images/icons/application_edit.png' /></a></td>\n";
-echo "                <td class=table_rows width=3% align=center><a title=\"Delete Status: $punchitem\" href=\"statusdelete.php?statusname=$punchitem\">
+        echo "                <td class=table_rows width=3% align=center><a title=\"Delete Status: $punchitem\" href=\"statusdelete.php?statusname=$punchitem\">
                     <img border=0 src='../images/icons/delete.png' /></a></td></tr>\n";
-}
+    }
 }
 echo "          </table></td></tr>\n";
 include '../footer.php';

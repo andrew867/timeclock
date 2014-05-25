@@ -63,125 +63,111 @@ if (($display_current_users == "yes") && ($display_office == "all") && ($display
     $a = $current_users_date + $calc - @$tzo;
     $b = $current_users_date - @$tzo;
 
-    $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
-              from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
-              where ".$db_prefix."info.timestamp = ".$db_prefix."employees.tstamp and ".$db_prefix."info.fullname = ".$db_prefix."employees.empfullname
-              and ".$db_prefix."info.`inout` = ".$db_prefix."punchlist.punchitems and ((".$db_prefix."info.timestamp < '".$a."') and 
-              (".$db_prefix."info.timestamp >= '".$b."')) and ".$db_prefix."employees.disabled <> '1' and ".$db_prefix."employees.empfullname <> 'admin'
+    $query = "select " . $db_prefix . "info.*, " . $db_prefix . "employees.*, " . $db_prefix . "punchlist.*
+              from " . $db_prefix . "info, " . $db_prefix . "employees, " . $db_prefix . "punchlist
+              where " . $db_prefix . "info.timestamp = " . $db_prefix . "employees.tstamp and " . $db_prefix . "info.fullname = " . $db_prefix . "employees.empfullname
+              and " . $db_prefix . "info.`inout` = " . $db_prefix . "punchlist.punchitems and ((" . $db_prefix . "info.timestamp < '" . $a . "') and
+              (" . $db_prefix . "info.timestamp >= '" . $b . "')) and " . $db_prefix . "employees.disabled <> '1' and " . $db_prefix . "employees.empfullname <> 'admin'
               order by `$sortcolumn` $sortdirection";
     $result = mysql_query($query);
-} 
-
-elseif (($display_current_users == "yes") && ($display_office != "all") && ($display_group == "all")) { 
+} elseif (($display_current_users == "yes") && ($display_office != "all") && ($display_group == "all")) {
 
     $current_users_date = strtotime(date($datefmt));
     $calc = 86400;
     $a = $current_users_date + $calc - @$tzo;
     $b = $current_users_date - @$tzo;
 
-    $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
-              from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
-              where ".$db_prefix."info.timestamp = ".$db_prefix."employees.tstamp and ".$db_prefix."info.fullname = ".$db_prefix."employees.empfullname
-              and ".$db_prefix."info.`inout` = ".$db_prefix."punchlist.punchitems and ".$db_prefix."employees.office = '".$display_office."' 
-              and ((".$db_prefix."info.timestamp < '".$a."') and (".$db_prefix."info.timestamp >= '".$b."'))
-              and ".$db_prefix."employees.disabled <> '1' and ".$db_prefix."employees.empfullname <> 'admin'
+    $query = "select " . $db_prefix . "info.*, " . $db_prefix . "employees.*, " . $db_prefix . "punchlist.*
+              from " . $db_prefix . "info, " . $db_prefix . "employees, " . $db_prefix . "punchlist
+              where " . $db_prefix . "info.timestamp = " . $db_prefix . "employees.tstamp and " . $db_prefix . "info.fullname = " . $db_prefix . "employees.empfullname
+              and " . $db_prefix . "info.`inout` = " . $db_prefix . "punchlist.punchitems and " . $db_prefix . "employees.office = '" . $display_office . "'
+              and ((" . $db_prefix . "info.timestamp < '" . $a . "') and (" . $db_prefix . "info.timestamp >= '" . $b . "'))
+              and " . $db_prefix . "employees.disabled <> '1' and " . $db_prefix . "employees.empfullname <> 'admin'
               order by `$sortcolumn` $sortdirection";
     $result = mysql_query($query);
-} 
-
-elseif (($display_current_users == "yes") && ($display_office == "all") && ($display_group != "all")) { 
+} elseif (($display_current_users == "yes") && ($display_office == "all") && ($display_group != "all")) {
 
     $current_users_date = strtotime(date($datefmt));
     $calc = 86400;
     $a = $current_users_date + $calc - @$tzo;
     $b = $current_users_date - @$tzo;
 
-    $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
-              from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
-              where ".$db_prefix."info.timestamp = ".$db_prefix."employees.tstamp and ".$db_prefix."info.fullname = ".$db_prefix."employees.empfullname
-              and ".$db_prefix."info.`inout` = ".$db_prefix."punchlist.punchitems and ".$db_prefix."employees.groups = '".$display_group."' 
-              and ((".$db_prefix."info.timestamp < '".$a."') and (".$db_prefix."info.timestamp >= '".$b."'))
-              and ".$db_prefix."employees.disabled <> '1' and ".$db_prefix."employees.empfullname <> 'admin'
+    $query = "select " . $db_prefix . "info.*, " . $db_prefix . "employees.*, " . $db_prefix . "punchlist.*
+              from " . $db_prefix . "info, " . $db_prefix . "employees, " . $db_prefix . "punchlist
+              where " . $db_prefix . "info.timestamp = " . $db_prefix . "employees.tstamp and " . $db_prefix . "info.fullname = " . $db_prefix . "employees.empfullname
+              and " . $db_prefix . "info.`inout` = " . $db_prefix . "punchlist.punchitems and " . $db_prefix . "employees.groups = '" . $display_group . "'
+              and ((" . $db_prefix . "info.timestamp < '" . $a . "') and (" . $db_prefix . "info.timestamp >= '" . $b . "'))
+              and " . $db_prefix . "employees.disabled <> '1' and " . $db_prefix . "employees.empfullname <> 'admin'
               order by `$sortcolumn` $sortdirection";
     $result = mysql_query($query);
-} 
-
-elseif (($display_current_users == "yes") && ($display_office != "all") && ($display_group != "all")) {
+} elseif (($display_current_users == "yes") && ($display_office != "all") && ($display_group != "all")) {
 
     $current_users_date = strtotime(date($datefmt));
     $calc = 86400;
     $a = $current_users_date + $calc - @$tzo;
     $b = $current_users_date - @$tzo;
 
-    $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
-              from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
-              where ".$db_prefix."info.timestamp = ".$db_prefix."employees.tstamp and ".$db_prefix."info.fullname = ".$db_prefix."employees.empfullname
-              and ".$db_prefix."info.`inout` = ".$db_prefix."punchlist.punchitems and ".$db_prefix."employees.office = '".$display_office."' 
-              and ".$db_prefix."employees.groups = '".$display_group."' and ((".$db_prefix."info.timestamp < '".$a."') 
-              and (".$db_prefix."info.timestamp >= '".$b."')) and ".$db_prefix."employees.disabled <> '1'
-              and ".$db_prefix."employees.empfullname <> 'admin'
+    $query = "select " . $db_prefix . "info.*, " . $db_prefix . "employees.*, " . $db_prefix . "punchlist.*
+              from " . $db_prefix . "info, " . $db_prefix . "employees, " . $db_prefix . "punchlist
+              where " . $db_prefix . "info.timestamp = " . $db_prefix . "employees.tstamp and " . $db_prefix . "info.fullname = " . $db_prefix . "employees.empfullname
+              and " . $db_prefix . "info.`inout` = " . $db_prefix . "punchlist.punchitems and " . $db_prefix . "employees.office = '" . $display_office . "'
+              and " . $db_prefix . "employees.groups = '" . $display_group . "' and ((" . $db_prefix . "info.timestamp < '" . $a . "')
+              and (" . $db_prefix . "info.timestamp >= '" . $b . "')) and " . $db_prefix . "employees.disabled <> '1'
+              and " . $db_prefix . "employees.empfullname <> 'admin'
               order by `$sortcolumn` $sortdirection";
     $result = mysql_query($query);
-} 
+} elseif (($display_current_users == "no") && ($display_office == "all") && ($display_group == "all")) {
 
-elseif (($display_current_users == "no") && ($display_office == "all") && ($display_group == "all")) {
-
-    $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
-              from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
-              where ".$db_prefix."info.timestamp = ".$db_prefix."employees.tstamp and ".$db_prefix."info.fullname = ".$db_prefix."employees.empfullname
-              and ".$db_prefix."info.`inout` = ".$db_prefix."punchlist.punchitems and ".$db_prefix."employees.disabled <> '1'
-              and ".$db_prefix."employees.empfullname <> 'admin'
+    $query = "select " . $db_prefix . "info.*, " . $db_prefix . "employees.*, " . $db_prefix . "punchlist.*
+              from " . $db_prefix . "info, " . $db_prefix . "employees, " . $db_prefix . "punchlist
+              where " . $db_prefix . "info.timestamp = " . $db_prefix . "employees.tstamp and " . $db_prefix . "info.fullname = " . $db_prefix . "employees.empfullname
+              and " . $db_prefix . "info.`inout` = " . $db_prefix . "punchlist.punchitems and " . $db_prefix . "employees.disabled <> '1'
+              and " . $db_prefix . "employees.empfullname <> 'admin'
               order by `$sortcolumn` $sortdirection";
     $result = mysql_query($query);
-} 
+} elseif (($display_current_users == "no") && ($display_office != "all") && ($display_group == "all")) {
 
-elseif (($display_current_users == "no") && ($display_office != "all") && ($display_group == "all")) {
-
-    $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
-              from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
-              where ".$db_prefix."info.timestamp = ".$db_prefix."employees.tstamp and ".$db_prefix."info.fullname = ".$db_prefix."employees.empfullname
-              and ".$db_prefix."info.`inout` = ".$db_prefix."punchlist.punchitems and ".$db_prefix."employees.office = '".$display_office."'
-              and ".$db_prefix."employees.disabled <> '1' and ".$db_prefix."employees.empfullname <> 'admin'
+    $query = "select " . $db_prefix . "info.*, " . $db_prefix . "employees.*, " . $db_prefix . "punchlist.*
+              from " . $db_prefix . "info, " . $db_prefix . "employees, " . $db_prefix . "punchlist
+              where " . $db_prefix . "info.timestamp = " . $db_prefix . "employees.tstamp and " . $db_prefix . "info.fullname = " . $db_prefix . "employees.empfullname
+              and " . $db_prefix . "info.`inout` = " . $db_prefix . "punchlist.punchitems and " . $db_prefix . "employees.office = '" . $display_office . "'
+              and " . $db_prefix . "employees.disabled <> '1' and " . $db_prefix . "employees.empfullname <> 'admin'
               order by `$sortcolumn` $sortdirection";
     $result = mysql_query($query);
-} 
+} elseif (($display_current_users == "no") && ($display_office == "all") && ($display_group != "all")) {
 
-elseif (($display_current_users == "no") && ($display_office == "all") && ($display_group != "all")) {
-
-    $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
-              from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
-              where ".$db_prefix."info.timestamp = ".$db_prefix."employees.tstamp and ".$db_prefix."info.fullname = ".$db_prefix."employees.empfullname
-              and ".$db_prefix."info.`inout` = ".$db_prefix."punchlist.punchitems and ".$db_prefix."employees.groups = '".$display_group."'
-              and ".$db_prefix."employees.disabled <> '1' and ".$db_prefix."employees.empfullname <> 'admin'
+    $query = "select " . $db_prefix . "info.*, " . $db_prefix . "employees.*, " . $db_prefix . "punchlist.*
+              from " . $db_prefix . "info, " . $db_prefix . "employees, " . $db_prefix . "punchlist
+              where " . $db_prefix . "info.timestamp = " . $db_prefix . "employees.tstamp and " . $db_prefix . "info.fullname = " . $db_prefix . "employees.empfullname
+              and " . $db_prefix . "info.`inout` = " . $db_prefix . "punchlist.punchitems and " . $db_prefix . "employees.groups = '" . $display_group . "'
+              and " . $db_prefix . "employees.disabled <> '1' and " . $db_prefix . "employees.empfullname <> 'admin'
               order by `$sortcolumn` $sortdirection";
     $result = mysql_query($query);
-} 
+} elseif (($display_current_users == "no") && ($display_office != "all") && ($display_group != "all")) {
 
-elseif (($display_current_users == "no") && ($display_office != "all") && ($display_group != "all")) {
-
-    $query = "select ".$db_prefix."info.*, ".$db_prefix."employees.*, ".$db_prefix."punchlist.*
-              from ".$db_prefix."info, ".$db_prefix."employees, ".$db_prefix."punchlist
-              where ".$db_prefix."info.timestamp = ".$db_prefix."employees.tstamp and ".$db_prefix."info.fullname = ".$db_prefix."employees.empfullname
-              and ".$db_prefix."info.`inout` = ".$db_prefix."punchlist.punchitems and ".$db_prefix."employees.office = '".$display_office."'
-              and ".$db_prefix."employees.groups = '".$display_group."' and ".$db_prefix."employees.disabled <> '1'
-              and ".$db_prefix."employees.empfullname <> 'admin'
+    $query = "select " . $db_prefix . "info.*, " . $db_prefix . "employees.*, " . $db_prefix . "punchlist.*
+              from " . $db_prefix . "info, " . $db_prefix . "employees, " . $db_prefix . "punchlist
+              where " . $db_prefix . "info.timestamp = " . $db_prefix . "employees.tstamp and " . $db_prefix . "info.fullname = " . $db_prefix . "employees.empfullname
+              and " . $db_prefix . "info.`inout` = " . $db_prefix . "punchlist.punchitems and " . $db_prefix . "employees.office = '" . $display_office . "'
+              and " . $db_prefix . "employees.groups = '" . $display_group . "' and " . $db_prefix . "employees.disabled <> '1'
+              and " . $db_prefix . "employees.empfullname <> 'admin'
               order by `$sortcolumn` $sortdirection";
     $result = mysql_query($query);
 }
 
 $time = time();
-$tclock_hour = gmdate('H',$time);
-$tclock_min = gmdate('i',$time);
-$tclock_sec = gmdate('s',$time);
-$tclock_month = gmdate('m',$time);
-$tclock_day = gmdate('d',$time);
-$tclock_year = gmdate('Y',$time);
-$tclock_stamp = mktime ($tclock_hour, $tclock_min, $tclock_sec, $tclock_month, $tclock_day, $tclock_year);
+$tclock_hour = gmdate('H', $time);
+$tclock_min = gmdate('i', $time);
+$tclock_sec = gmdate('s', $time);
+$tclock_month = gmdate('m', $time);
+$tclock_day = gmdate('d', $time);
+$tclock_year = gmdate('Y', $time);
+$tclock_stamp = mktime($tclock_hour, $tclock_min, $tclock_sec, $tclock_month, $tclock_day, $tclock_year);
 
 $tclock_stamp = $tclock_stamp + @$tzo;
 $tclock_time = date($timefmt, $tclock_stamp);
 $tclock_date = date($datefmt, $tclock_stamp);
-$report_name="Current Status Report";
+$report_name = "Current Status Report";
 
 echo "            <table width=100% align=center class=misc_items border=0 cellpadding=3 cellspacing=0>\n";
 

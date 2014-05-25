@@ -2,92 +2,434 @@
  * Punchclock styles
  */
 
-body,td,th { font-family:Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size:11px; }
-body	{ color:#222; background-color:#FFF; margin:0px; padding:0px; }
-a:hover { font-size:inherit; text-decoration:underline; }
-img	{ border:0; }
-.page	{ margin:8px; border:solid #748771 1px; background-color:#FCFCFF; color:#222; }
-.content {max-width: 760px; margin:0px auto;}
-.footer { height:24px; clear:both; }
-.message{
-	color:#090; margin:16px 16px 4px; font-size:13px; padding:6px 6px 6px 30px; border:solid #BBB 1px;
-	background:url(../../images/icons/accept.png) no-repeat 5px 6px;
-	}
-.error	{
-	color:#F00; margin:16px 16px 4px; font-size:13px; padding:6px 6px 6px 30px; border:solid #BBB 1px;
-	background:url(../../images/icons/cancel.png) no-repeat 5px 6px;
-	}
-tr.odd	{ background-color:#EFEFEF; }
-tr.even	{ background-color:#FBFBFB; }
-table.emp_list { margin-top:12px; }
-table.emp_list thead { line-height:28px; background-color:inherit; margin-bottom:12px; }
-table.emp_list thead th { font-size:11px; padding:2px 10px 0px; white-space:nowrap; border-bottom:solid #CCC 1px; }
-table.emp_list thead th a { color:#27408b; }
-table.emp_list tbody { overflow-y:auto; overflow-x:hidden; }	/* scroll the body of the table */
-table.emp_list tbody tr:hover { color:#000; background-color:#FFD; }
-table.emp_list tbody td { font-size:11px; padding:8px 10px; cursor:pointer; white-space:nowrap; overflow:hidden; }
-table.emp_list tbody td a { color:#27408b; text-decoration:none; }
-table.emp_list tbody td a:hover { text-decoration:underline; color: #853d27; }
-.export { max-width:600px; }
-.export h2 { margin:2px 6px; text-align:center;}
-.export h3 { margin:18px 6px 6px; padding:0; }
-.export h4 { margin:6px 6px; padding:0; }
-.export p { margin:3px 6px; padding:0; font-size:11px; }
-.export .select-buttons { margin-top:18px; }
-.export .select-button { margin-right:12px; padding:6px; border:solid inherit 1px; }
-table.export_items { }
-table.export_items thead { line-height:28px; background-color:inherit; margin-bottom:12px; }
-table.export_items thead th { font-size:11px; padding:2px 10px 0px; white-space:nowrap; border-bottom:solid #CCC 1px; cursor:default; }
-table.export_items thead th a { color:#27408b; }
-table.export_items tbody { overflow-y:auto; overflow-x:hidden; }	/* scroll the body of the table */
-table.export_items tbody tr:hover { color:#000; background-color:#FFD; }
-table.export_items tbody td { font-size:11px; padding:8px 10px; cursor:default; white-space:nowrap; overflow:hidden; }
-table.export_items tbody td a { color:#27408b; text-decoration:none; }
-table.export_items tbody td a:hover { text-decoration:underline; color: #853d27; }
-#sorttable_sortfwdind { font-size:15px; font-weight:normal; }
-#sorttable_sortrevind { font-size:15px; font-weight:normal; }
-.options { margin:12px 0px 0px 6px; }
-.options a:link, .options a:active, .options a:visited { text-decoration:none; padding-left:13px; background:url(../images/right.gif) left center no-repeat; }
-.options a.open:link, .options a.open:active, .options a.open:visited { padding-left:13px; background:url(../images/down.gif) left center no-repeat; }
-#options { border:solid #CCC 1px; padding:6px; }
-#timeclock { clear:both; text-align:center; font-size:20px; margin-top:10px; }
-#message { font-size:11px; text-align:center; color:#000; background-color:#FC0; width:27ex; padding:1px; margin:0px auto; z-index:1; visibility:visible; }
-#entry #message { visibility:hidden; }
-#office { float:left; width:33%; font-size:12px; font-weight:normal; margin:0; padding:3px; }
-#entry_form { margin:16px; }
-#employee_entry_form { clear:both; max-width:450px; margin:16px; }
-#password_entry_form { clear:both; margin:16px; }
-#password_change_form { margin:16px; }
-#password_change_form p { margin:3px 16px 3px 32px; }
-#select_offices { float:left; }
-#select_groups { float:right; }
-#printer_friendly { font-size:11px; margin-left:6px; }
-.punch-in, .punch-out { font-size:14px; font-weight:normal; float:left; }
-#entry .punch-in, #entry .punch-out { float:none; }	/* for mobile safari */
-.hours-summary { float:right; margin:10px 12px 0px 0px; }
-.hours-summary th { text-align:right; }
-.hours-summary td { text-align:right; }
-.refresh-link { float:right;margin-right:10px; font-weight:normal; }
-.buttons {float:left;margin-top:30px;margin-left:10px; }
-#nyroModalWrapper .buttons { margin-left:0; }
-.timecard { max-width:600px; }
-.timecard h2 { margin:2px 6px; text-align:center;}
-.timecard h3 { margin:6px 6px; padding:0; }
-.timecard h4 { margin:6px 6px; padding:0; }
-.timecard p { margin:3px 6px; padding:0; font-size:11px; }
-.timecard_list { margin:12px 0px; }
-.timecard_list td { padding:4px 6px; }
-.timecard_list th { padding:4px 6px; border-bottom:solid #CCC 1px; }
-.timecard_list .hrs { border-left:solid #CCC 1px; }
-.timecard_list .ovt { }
-.timecard_list .total { }
-.timecard_list .notes { border-left:solid #CCC 1px; min-width:16ex; }
-.timecard_list .total_row td { border-top:solid #CCC 1px; font-weight:bold; }
-.timecard_list .total_row .hrs { border-left:solid #FFF 1px; border-top:solid #CCC 1px; }
-.timecard_list .total_row .ovt { border-top:solid #CCC 1px; }
-.timecard_list .total_row .total { border-top:solid #CCC 1px; }
-.timecard_list .total_row .notes { border-left:solid #FFF 1px; }
-.nav-buttons { float:right; margin-top:4px; margin-right:4px; }
-.nav-buttons a { margin:0px; padding:0px;}
-.totals { margin-top:9px; }
-.tip { margin-left:12px; color:#999; }
+body, td, th {
+    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+}
+
+body {
+    color: #222;
+    background-color: #FFF;
+    margin: 0px;
+    padding: 0px;
+}
+
+a:hover {
+    font-size: inherit;
+    text-decoration: underline;
+}
+
+img {
+    border: 0;
+}
+
+.page {
+    margin: 8px;
+    border: solid #748771 1px;
+    background-color: #FCFCFF;
+    color: #222;
+}
+
+.content {
+    max-width: 760px;
+    margin: 0px auto;
+}
+
+.footer {
+    height: 24px;
+    clear: both;
+}
+
+.message {
+    color: #090;
+    margin: 16px 16px 4px;
+    font-size: 13px;
+    padding: 6px 6px 6px 30px;
+    border: solid #BBB 1px;
+    background: url(../../images/icons/accept.png) no-repeat 5px 6px;
+}
+
+.error {
+    color: #F00;
+    margin: 16px 16px 4px;
+    font-size: 13px;
+    padding: 6px 6px 6px 30px;
+    border: solid #BBB 1px;
+    background: url(../../images/icons/cancel.png) no-repeat 5px 6px;
+}
+
+tr.odd {
+    background-color: #EFEFEF;
+}
+
+tr.even {
+    background-color: #FBFBFB;
+}
+
+table.emp_list {
+    margin-top: 12px;
+}
+
+table.emp_list thead {
+    line-height: 28px;
+    background-color: inherit;
+    margin-bottom: 12px;
+}
+
+table.emp_list thead th {
+    font-size: 11px;
+    padding: 2px 10px 0px;
+    white-space: nowrap;
+    border-bottom: solid #CCC 1px;
+}
+
+table.emp_list thead th a {
+    color: #27408b;
+}
+
+table.emp_list tbody {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* scroll the body of the table */
+table.emp_list tbody tr:hover {
+    color: #000;
+    background-color: #FFD;
+}
+
+table.emp_list tbody td {
+    font-size: 11px;
+    padding: 8px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+table.emp_list tbody td a {
+    color: #27408b;
+    text-decoration: none;
+}
+
+table.emp_list tbody td a:hover {
+    text-decoration: underline;
+    color: #853d27;
+}
+
+.export {
+    max-width: 600px;
+}
+
+.export h2 {
+    margin: 2px 6px;
+    text-align: center;
+}
+
+.export h3 {
+    margin: 18px 6px 6px;
+    padding: 0;
+}
+
+.export h4 {
+    margin: 6px 6px;
+    padding: 0;
+}
+
+.export p {
+    margin: 3px 6px;
+    padding: 0;
+    font-size: 11px;
+}
+
+.export .select-buttons {
+    margin-top: 18px;
+}
+
+.export .select-button {
+    margin-right: 12px;
+    padding: 6px;
+    border: solid inherit 1px;
+}
+
+table.export_items {
+}
+
+table.export_items thead {
+    line-height: 28px;
+    background-color: inherit;
+    margin-bottom: 12px;
+}
+
+table.export_items thead th {
+    font-size: 11px;
+    padding: 2px 10px 0px;
+    white-space: nowrap;
+    border-bottom: solid #CCC 1px;
+    cursor: default;
+}
+
+table.export_items thead th a {
+    color: #27408b;
+}
+
+table.export_items tbody {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* scroll the body of the table */
+table.export_items tbody tr:hover {
+    color: #000;
+    background-color: #FFD;
+}
+
+table.export_items tbody td {
+    font-size: 11px;
+    padding: 8px 10px;
+    cursor: default;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+table.export_items tbody td a {
+    color: #27408b;
+    text-decoration: none;
+}
+
+table.export_items tbody td a:hover {
+    text-decoration: underline;
+    color: #853d27;
+}
+
+#sorttable_sortfwdind {
+    font-size: 15px;
+    font-weight: normal;
+}
+
+#sorttable_sortrevind {
+    font-size: 15px;
+    font-weight: normal;
+}
+
+.options {
+    margin: 12px 0px 0px 6px;
+}
+
+.options a:link, .options a:active, .options a:visited {
+    text-decoration: none;
+    padding-left: 13px;
+    background: url(../images/right.gif) left center no-repeat;
+}
+
+.options a.open:link, .options a.open:active, .options a.open:visited {
+    padding-left: 13px;
+    background: url(../images/down.gif) left center no-repeat;
+}
+
+#options {
+    border: solid #CCC 1px;
+    padding: 6px;
+}
+
+#timeclock {
+    clear: both;
+    text-align: center;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+#message {
+    font-size: 11px;
+    text-align: center;
+    color: #000;
+    background-color: #FC0;
+    width: 27ex;
+    padding: 1px;
+    margin: 0px auto;
+    z-index: 1;
+    visibility: visible;
+}
+
+#entry #message {
+    visibility: hidden;
+}
+
+#office {
+    float: left;
+    width: 33%;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0;
+    padding: 3px;
+}
+
+#entry_form {
+    margin: 16px;
+}
+
+#employee_entry_form {
+    clear: both;
+    max-width: 450px;
+    margin: 16px;
+}
+
+#password_entry_form {
+    clear: both;
+    margin: 16px;
+}
+
+#password_change_form {
+    margin: 16px;
+}
+
+#password_change_form p {
+    margin: 3px 16px 3px 32px;
+}
+
+#select_offices {
+    float: left;
+}
+
+#select_groups {
+    float: right;
+}
+
+#printer_friendly {
+    font-size: 11px;
+    margin-left: 6px;
+}
+
+.punch-in, .punch-out {
+    font-size: 14px;
+    font-weight: normal;
+    float: left;
+}
+
+#entry .punch-in, #entry .punch-out {
+    float: none;
+}
+
+/* for mobile safari */
+.hours-summary {
+    float: right;
+    margin: 10px 12px 0px 0px;
+}
+
+.hours-summary th {
+    text-align: right;
+}
+
+.hours-summary td {
+    text-align: right;
+}
+
+.refresh-link {
+    float: right;
+    margin-right: 10px;
+    font-weight: normal;
+}
+
+.buttons {
+    float: left;
+    margin-top: 30px;
+    margin-left: 10px;
+}
+
+#nyroModalWrapper .buttons {
+    margin-left: 0;
+}
+
+.timecard {
+    max-width: 600px;
+}
+
+.timecard h2 {
+    margin: 2px 6px;
+    text-align: center;
+}
+
+.timecard h3 {
+    margin: 6px 6px;
+    padding: 0;
+}
+
+.timecard h4 {
+    margin: 6px 6px;
+    padding: 0;
+}
+
+.timecard p {
+    margin: 3px 6px;
+    padding: 0;
+    font-size: 11px;
+}
+
+.timecard_list {
+    margin: 12px 0px;
+}
+
+.timecard_list td {
+    padding: 4px 6px;
+}
+
+.timecard_list th {
+    padding: 4px 6px;
+    border-bottom: solid #CCC 1px;
+}
+
+.timecard_list .hrs {
+    border-left: solid #CCC 1px;
+}
+
+.timecard_list .ovt {
+}
+
+.timecard_list .total {
+}
+
+.timecard_list .notes {
+    border-left: solid #CCC 1px;
+    min-width: 16ex;
+}
+
+.timecard_list .total_row td {
+    border-top: solid #CCC 1px;
+    font-weight: bold;
+}
+
+.timecard_list .total_row .hrs {
+    border-left: solid #FFF 1px;
+    border-top: solid #CCC 1px;
+}
+
+.timecard_list .total_row .ovt {
+    border-top: solid #CCC 1px;
+}
+
+.timecard_list .total_row .total {
+    border-top: solid #CCC 1px;
+}
+
+.timecard_list .total_row .notes {
+    border-left: solid #FFF 1px;
+}
+
+.nav-buttons {
+    float: right;
+    margin-top: 4px;
+    margin-right: 4px;
+}
+
+.nav-buttons a {
+    margin: 0px;
+    padding: 0px;
+}
+
+.totals {
+    margin-top: 9px;
+}
+
+.tip {
+    margin-left: 12px;
+    color: #999;
+}
