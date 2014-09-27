@@ -3,10 +3,6 @@ About
 
 This project is PHP Timeclock v1.04 with the Punchclock v0.8 add-on already installed.
 
-The goal of this project is to completely modernize this project and will include a better front end experience, better security measures and in a perfect world better performance.
-Please check the Wiki!
-
-
 
 Timeclock - What Is It?
 =======================
