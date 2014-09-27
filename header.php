@@ -3,10 +3,7 @@
 include 'functions.php';
 
 ob_start();
-
-?>
-<html>
-<?php
+echo "<html>\n";
 
 // grab the connecting ip address. //
 
@@ -61,35 +58,26 @@ if (($use_client_tz == "yes") && ($use_server_tz == "yes")) {
     echo 'Please reconfigure your config.inc.php file, you cannot have both $use_client_tz AND $use_server_tz set to \'yes\'';
     exit;
 }
-?>
-    <head>
-<?php
 
+echo "<head>\n";
 if ($use_client_tz == "yes") {
     if (!isset($_COOKIE['tzoffset'])) {
         include 'tzoffset.php';
-        ?>
-        <meta http-equiv='refresh' content='0;URL=timeclock.php'>
-        <?php
+        echo "<meta http-equiv='refresh' content='0;URL=timeclock.php'>\n";
     }
 }
-?>
-<link rel='stylesheet' type='text/css' media='screen' href='css/default.css' />
-<link rel='stylesheet' type='text/css' media='print' href='css/print.css' />
-<?php
+
+echo "<link rel='stylesheet' type='text/css' media='screen' href='css/default.css' />\n";
+echo "<link rel='stylesheet' type='text/css' media='print' href='css/print.css' />\n";
 
 // set refresh rate for each page //  
 
 if ($refresh == "none") {
-    ?>
-    </head>
-    <?php
+    echo "</head>\n";
 } else {
-    ?>
-    <meta http-equiv='refresh' content=\"$refresh;URL=timeclock.php">
-    <script language="javascript" src="scripts/pnguin_timeclock.js"></script>
-    </head>
-    <?php
+    echo "<meta http-equiv='refresh' content=\"$refresh;URL=timeclock.php\">\n";
+    echo "<script language=\"javascript\" src=\"scripts/pnguin_timeclock.js\"></script>\n";
+    echo "</head>\n";
 }
 
 setTimeZone();
