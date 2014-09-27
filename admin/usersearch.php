@@ -408,8 +408,7 @@ echo "              <tr class=table_border bgcolor='$row_color'><td class=table_
 echo "                <td class=table_rows width=13%>&nbsp;<a class=footer_links title=\"Edit User: $empfullname\"
                     href=\"useredit.php?username=$empfullname&officename=" . $row["office"] . "\">$empfullname</a></td>\n";
 echo "                <td class=table_rows width=18%>$displayname</td>\n";
-//echo "                <td class=table_rows width=23
-%>".$row["email"]."</td>\n";
+//echo "                <td class=table_rows width=23%>".$row["email"]."</td>\n";
 echo "
 <td class=table_rows width=10%>".$row['office']."</td>\n";
 echo "
