@@ -18,8 +18,8 @@ username and password information!
               --- $db_name is the mysql database you created during the install. */
 
 $db_hostname = "localhost";
-$db_username = "timeclock";
-$db_password = "P4ssw0rd1!";
+$db_username = "root";
+$db_password = "";
 $db_name = "timeclock";
 
 
@@ -84,7 +84,7 @@ $use_passwd = "yes";
 /* If you only want certain users to have the ability to view and run the reports, 
    change $use_reports_password to "yes". Default is "no"; */
 
-$use_reports_password = "no";
+$use_reports_password = "yes";
 
 
 /* Enable the option to log the ip addresses of the connecting computers when users
@@ -205,7 +205,7 @@ $refresh = "300";
 /* This creates a clickable date in the top right of each page. By Default, it links to 
    "This Day in History" on the historychannel.com website. Set it to "none" to ignore this option. */
 
-$date_link = "http://www.historychannel.com/tdih";
+$date_link = "";
 
 
 /* These are alternating row colors for the main page and for reports. */
@@ -285,7 +285,7 @@ $username_dropdown_only = "no";
 /* Choose whether to print displaynames or usernames for each user when reports are run.
    Options for this variable are "user" and "display". Default is "user". */
 
-$user_or_display = "user";
+$user_or_display = "display";
 
 
 /* Choose whether to include in the reports the ip addresses of the systems that connect to 
@@ -299,7 +299,7 @@ $display_ip = "yes";
 /* Reports can be exported to a comma delimited file (.csv). Setting this to "yes" will
    export the reports to .csv files. Default is "no" */
 
-$export_csv = "no";
+$export_csv = "yes";
 
 
 /* --- TIMEZONE INFO --- */
@@ -359,8 +359,8 @@ $weather_units = "c";
 /* --- APP NAME, VERSION NUMBER, ETC. --- */
 
 
-$app_name = "PHP Timeclock";
-$app_version = "1.04";
+$app_name = "PHP Timeclock With Bootstrap";
+$app_version = "1.05";
 
 /* Sets the title in the header. This is what the page will be named by default when you
    make a "favorite" or "bookmark" in your browser. Change as you see fit. */
