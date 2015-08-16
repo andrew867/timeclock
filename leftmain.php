@@ -218,11 +218,25 @@ if ($display_weather == 'yes') {
         $feelslike = $temp;
     }
 }
-
+echo '<section id="main-content">
+          <section class="wrapper">            
+              <!--overview start-->
+			  <div class="row">
+				<div class="col-lg-12">
+					<h3 class="page-header"><i class="fa fa-laptop"></i> Home</h3>
+					<ol class="breadcrumb">
+						<li><i class="fa fa-home"></i><a href="index.php">Home</a></li>				  	
+					</ol>
+				</div>
+			</div>
+              
+           
+											
+					';
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
 echo "    <td class=left_main width=170 align=center scope=col>\n";
-echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n";
+echo "      <table  width=100% border=0 cellpadding=1 cellspacing=0>\n";
 
 // display links in top left of each page //
 
@@ -378,6 +392,7 @@ if ($display_weather == "yes") {
 echo "        <tr><td height=90%></td></tr>\n";
 echo "      </table></td>\n";
 
+
 if ($request == 'POST') {
 
     // signin/signout data passed over from timeclock.php //
@@ -408,23 +423,27 @@ if ($request == 'POST') {
     if ($show_display_name == "yes") {
 
         if (!$displayname && !$inout) {
+          echo'<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">';
             echo "    <td align=center class=right_main scope=col>\n";
             echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
             echo "<br />\n";
             echo "You have not chosen a username or a status. Please try again.\n";
+            echo '</div>';
             include 'footer.php';
             exit;
         }
 
         if (!$displayname) {
+           echo'<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">';
             echo "    <td align=center class=right_main scope=col>\n";
             echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
             echo "<br />\n";
             echo "You have not chosen a username. Please try again.\n";
+             echo '</div>';
             include 'footer.php';
             exit;
         }
@@ -432,23 +451,27 @@ if ($request == 'POST') {
     } elseif ($show_display_name == "no") {
 
         if (!$fullname && !$inout) {
+            echo'<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">';
             echo "    <td align=center class=right_main scope=col>\n";
             echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
             echo "<br />\n";
             echo "You have not chosen a username or a status. Please try again.\n";
+             echo '</div>';
             include 'footer.php';
             exit;
         }
 
         if (!$fullname) {
+            echo'<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">';
             echo "    <td align=center class=right_main scope=col>\n";
             echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
             echo "<br />\n";
             echo "You have not chosen a username. Please try again.\n";
+             echo '</div>';
             include 'footer.php';
             exit;
         }
@@ -456,12 +479,14 @@ if ($request == 'POST') {
     }
 
     if (!$inout) {
+        echo'<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">';
         echo "    <td align=center class=right_main scope=col>\n";
         echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
         echo "        <tr class=right_main_text>\n";
         echo "          <td valign=top>\n";
         echo "<br />\n";
         echo "You have not chosen a status. Please try again.\n";
+            echo '</div>';
         include 'footer.php';
         exit;
     }
@@ -555,12 +580,13 @@ if ($request == 'POST') {
             echo "</head>\n";
 
         } else {
-
+            echo'<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">';
             echo "    <td align=center class=right_main scope=col>\n";
             echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
             echo "<br />\n";
+             
 
             if ($show_display_name == "yes") {
                 $strip_fullname = stripslashes($displayname);
@@ -569,6 +595,7 @@ if ($request == 'POST') {
             }
 
             echo "You have entered the wrong password for $strip_fullname. Please try again.";
+             echo '</div>';
             include 'footer.php';
             exit;
         }
