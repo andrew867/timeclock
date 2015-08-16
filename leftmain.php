@@ -221,7 +221,7 @@ if ($display_weather == 'yes') {
 
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
-echo "    <td class=left_main width=170 align=left scope=col>\n";
+echo "    <td class=left_main width=170 align=center scope=col>\n";
 echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n";
 
 // display links in top left of each page //
@@ -229,10 +229,10 @@ echo "      <table class=hide width=100% border=0 cellpadding=1 cellspacing=0>\n
 if ($links == "none") {
     echo "        <tr></tr>\n";
 } else {
-    echo "        <tr><td class=left_rows height=7 align=left valign=middle></td></tr>\n";
+    echo "        <tr><td class=left_rows height=7 align=center valign=middle></td></tr>\n";
 
     for ($x = 0; $x < count($display_links); $x++) {
-        echo "        <tr><td class=left_rows height=18 align=left valign=middle><a class=admin_headings href='$links[$x]'>$display_links[$x]</a></td>
+        echo "        <tr><td class=left_rows height=18 align=center valign=middle><a class=admin_headings href='$links[$x]'>$display_links[$x]</a></td>
                       </tr>\n";
     }
 
@@ -248,10 +248,10 @@ if ($links == "none") {
     echo "        <tr><td height=20></td></tr>\n";
 }
 
-echo "        <tr><td class=title_underline height=4 align=left valign=middle style='padding-left:10px;'>Please sign in below:</td></tr>\n";
+echo "        <tr><td class=title_underline height=4 align=center valign=middle style='padding-left:10px;'>Please sign in below:</td></tr>\n";
 echo "        <tr><td height=7></td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>Name:</td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
+echo "        <tr><td height=4 align=center valign=middle class=misc_items>Name:</td></tr>\n";
+echo "        <tr><td height=4 align=center valign=middle class=misc_items>\n";
 
 // query to populate dropdown with employee names //
 
@@ -304,14 +304,14 @@ if ($show_display_name == "yes") {
 // determine whether to use encrypted passwords or not //
 
 if ($use_passwd == "yes") {
-    echo "        <tr><td height=4 align=left valign=middle class=misc_items>Password:</td></tr>\n";
-    echo "        <tr><td height=4 align=left valign=middle class=misc_items>";
+    echo "        <tr><td height=4 align=center valign=middle class=misc_items>Password:</td></tr>\n";
+    echo "        <tr><td height=4 align=center valign=middle class=misc_items>";
     echo "<input type='password' name='employee_passwd' maxlength='25' size='17' tabindex=2></td></tr>\n";
     echo "        <tr><td height=7></td></tr>\n";
 }
 
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>In/Out:</td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
+echo "        <tr><td height=4 align=center valign=middle class=misc_items>In/Out:</td></tr>\n";
+echo "        <tr><td height=4 align=center valign=middle class=misc_items>\n";
 
 // query to populate dropdown with punchlist items //
 
@@ -329,50 +329,50 @@ echo "              </select></td></tr>\n";
 mysql_free_result($punchlist_result);
 
 echo "        <tr><td height=7></td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>Notes:</td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items>";
+echo "        <tr><td height=4 align=center valign=middle class=misc_items>Notes:</td></tr>\n";
+echo "        <tr><td height=4 align=center valign=middle class=misc_items>";
 echo "<input type='text' name='left_notes' maxlength='250' size='17' tabindex=4></td></tr>\n";
 
 if (!isset($_COOKIE['remember_me'])) {
     echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-                  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Remember&nbsp;Me?</td><td width=90% align=left 
+                  <tr><td nowrap height=4 align=center valign=middle class=misc_items width=10%>Remember&nbsp;Me?</td><td width=90% align=center 
                     class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='remember_me' value='1'></td></tr>
                     </table></td><tr>\n";
 } elseif (isset($_COOKIE['remember_me'])) {
     echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-                  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Reset&nbsp;Cookie?</td><td width=90% align=left 
+                  <tr><td nowrap height=4 align=center valign=middle class=misc_items width=10%>Reset&nbsp;Cookie?</td><td width=90% align=center 
                     class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='reset_cookie' value='1'></td></tr>
                     </table></td><tr>\n";
 }
 
 echo "        <tr><td height=7></td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items><input type='submit' name='submit_button' value='Submit' align='center' 
+echo "        <tr><td height=4 align=center valign=middle class=misc_items><input type='submit' name='submit_button' value='Submit' align='center' 
                 tabindex=6></td></tr></form>\n";
 
 if ($display_weather == "yes") {
-    echo "        <tr><td height=25 align=left valign=bottom class=misc_items><font color='00589C'><b><u>Weather Conditions:</u></b></font></td></tr>\n";
+    echo "        <tr><td height=25 align=center valign=bottom class=misc_items><font color='00589C'><b><u>Weather Conditions:</u></b></font></td></tr>\n";
     echo "        <tr><td height=7></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items><b>$city</b></td></tr>\n";
+    echo "        <tr><td align=center valign=middle class=misc_items><b>$city</b></td></tr>\n";
     echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Currently: $temp&#176;</td></tr>\n";
+    echo "        <tr><td align=center valign=middle class=misc_items>Currently: $temp&#176;</td></tr>\n";
     echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Feels Like: $feelslike&#176;</td></tr>\n";
+    echo "        <tr><td align=center valign=middle class=misc_items>Feels Like: $feelslike&#176;</td></tr>\n";
     echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Skies: $cloud_cover</td></tr>\n";
+    echo "        <tr><td align=center valign=middle class=misc_items>Skies: $cloud_cover</td></tr>\n";
     echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Wind: $wind_dir $wind$mph</td></tr>\n";
+    echo "        <tr><td align=center valign=middle class=misc_items>Wind: $wind_dir $wind$mph</td></tr>\n";
     echo "        <tr><td height=4></td></tr>\n";
 
     if ($humidity == 'None') {
-        echo "        <tr><td align=left valign=middle class=misc_items>Humidity: $humidity</td></tr>\n";
+        echo "        <tr><td align=center valign=middle class=misc_items>Humidity: $humidity</td></tr>\n";
     } else {
-        echo "        <tr><td align=left valign=middle class=misc_items>Humidity: $humidity%</td></tr>\n";
+        echo "        <tr><td align=center valign=middle class=misc_items>Humidity: $humidity%</td></tr>\n";
     }
 
     echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items>Visibility: $visibility</td></tr>\n";
+    echo "        <tr><td align=center valign=middle class=misc_items>Visibility: $visibility</td></tr>\n";
     echo "        <tr><td height=4></td></tr>\n";
-    echo "        <tr><td align=left valign=middle class=misc_items><font color='FF0000'>Last Updated: $time</font></td></tr>\n";
+    echo "        <tr><td align=center valign=middle class=misc_items><font color='FF0000'>Last Updated: $time</font></td></tr>\n";
 }
 
 echo "        <tr><td height=90%></td></tr>\n";
@@ -408,7 +408,7 @@ if ($request == 'POST') {
     if ($show_display_name == "yes") {
 
         if (!$displayname && !$inout) {
-            echo "    <td align=left class=right_main scope=col>\n";
+            echo "    <td align=center class=right_main scope=col>\n";
             echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
@@ -419,7 +419,7 @@ if ($request == 'POST') {
         }
 
         if (!$displayname) {
-            echo "    <td align=left class=right_main scope=col>\n";
+            echo "    <td align=center class=right_main scope=col>\n";
             echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
@@ -432,7 +432,7 @@ if ($request == 'POST') {
     } elseif ($show_display_name == "no") {
 
         if (!$fullname && !$inout) {
-            echo "    <td align=left class=right_main scope=col>\n";
+            echo "    <td align=center class=right_main scope=col>\n";
             echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
@@ -443,7 +443,7 @@ if ($request == 'POST') {
         }
 
         if (!$fullname) {
-            echo "    <td align=left class=right_main scope=col>\n";
+            echo "    <td align=center class=right_main scope=col>\n";
             echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
@@ -456,7 +456,7 @@ if ($request == 'POST') {
     }
 
     if (!$inout) {
-        echo "    <td align=left class=right_main scope=col>\n";
+        echo "    <td align=center class=right_main scope=col>\n";
         echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
         echo "        <tr class=right_main_text>\n";
         echo "          <td valign=top>\n";
@@ -556,7 +556,7 @@ if ($request == 'POST') {
 
         } else {
 
-            echo "    <td align=left class=right_main scope=col>\n";
+            echo "    <td align=center class=right_main scope=col>\n";
             echo "      <table width=100% height=100% border=0 cellpadding=10 cellspacing=1>\n";
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
