@@ -12,7 +12,7 @@ if ($email == "none") {
     echo "<a class=footer_links href='http://php.net'>&nbsp;PHP</a>&nbsp;&#8226;&nbsp;<a class=footer_links href='mailto:$email'>$email</a>";
 }
 
-echo "&nbsp;&#8226;<a class=footer_links href='http://timeclock.sourceforge.net'>&nbsp;$app_name&nbsp;$app_version</a></td></tr>\n";
+echo "&nbsp;&#8226;<a class=footer_links href='http://github.com/kayoti/timeclock'>&nbsp;$app_name&nbsp;$app_version</a></td></tr>\n";
 echo "      </table>\n";
 echo "    </td>\n";
 echo "  </tr>\n";
