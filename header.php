@@ -66,8 +66,21 @@ if ($use_client_tz == "yes") {
         echo "<meta http-equiv='refresh' content='0;URL=timeclock.php'>\n";
     }
 }
+
 ?>
- <meta charset="utf-8">
+ 
+    
+<?php
+
+
+// set refresh rate for each page //  
+
+if ($refresh == "none") {
+    echo "</head>\n";
+} else {
+    echo "<meta http-equiv='refresh' content=\"$refresh;URL=timeclock.php\">\n";
+    ?>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="PHP TimeClock, Admin">
     <meta name="author" content="Wael Ali">
@@ -90,7 +103,8 @@ if ($use_client_tz == "yes") {
 	<link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
     <!-- Custom styles -->
 	
-	
+<link rel='stylesheet' type='text/css' media='screen' href='css/default.css' />
+<link rel='stylesheet' type='text/css' media='print' href='css/print.css' />
     <link href="css/style.css" rel="stylesheet">
     <link href="css/style-responsive.css" rel="stylesheet" />
 	
@@ -101,17 +115,7 @@ if ($use_client_tz == "yes") {
       <script src="js/respond.min.js"></script>
       <script src="js/lte-ie7.js"></script>
     <![endif]-->
-    
-<?php
-echo "<link rel='stylesheet' type='text/css' media='screen' href='css/default.css' />\n";
-echo "<link rel='stylesheet' type='text/css' media='print' href='css/print.css' />\n";
-
-// set refresh rate for each page //  
-
-if ($refresh == "none") {
-    echo "</head>\n";
-} else {
-    echo "<meta http-equiv='refresh' content=\"$refresh;URL=timeclock.php\">\n";
+    <?php
     echo "<script language=\"javascript\" src=\"scripts/pnguin_timeclock.js\"></script>\n";
     echo "</head>\n";
 }
