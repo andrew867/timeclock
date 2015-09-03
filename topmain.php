@@ -29,7 +29,13 @@
                             
                            
                             <li>
-                                <a href="login.html"><i class="icon_key_alt"></i> Log Out</a>
+                              <?php if ((isset($_SESSION['valid_user'])) || (isset($_SESSION['valid_reports_user'])) || (isset($_SESSION['time_admin_valid_user']))) {
+                               echo' <a href="logout.php"><i class="icon_key_alt"></i> Log Out</a>';
+                              }
+                              else{
+                                 echo' <a href="login.php"><i class="icon_key_alt"></i> Login</a>';
+                              }
+                              ?>
                             </li>
                             
                         </ul>
@@ -132,11 +138,11 @@ echo "    <td align=right valign=middle width=23><img src='images/icons/time.png
 echo "    <td align=right valign=middle width=10><a href='punchclock/menu.php' style='color:#000000;font-family:Tahoma;font-size:10pt;
         text-decoration:none;'>Punchclock&nbsp;&nbsp;</a></td>\n"; */
 
-if ((isset($_SESSION['valid_user'])) || (isset($_SESSION['valid_reports_user'])) || (isset($_SESSION['time_admin_valid_user']))) {
+
    /*  echo "    <td align=right valign=middle width=20><img src='images/icons/arrow_rotate_clockwise.png' border='0'>&nbsp;</td>\n";
     echo "    <td align=right valign=middle width=10><a href='logout.php' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>
             Logout&nbsp;&nbsp;</a></td>\n"; */
-}
+
 
 //echo "</tr></table>\n";
 
