@@ -1573,14 +1573,14 @@ if ($request == 'GET') {
                 $evil_allowed_networks_length = "1";
                 $evil_post = "1";
             } elseif ((!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$" . '/i', $post_allowed_networks[$x], $net_regs)) &&
-                      (!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/([0-9]?[0-9]?[0-9])$" . '/i', $post_allowed_networks[$x], $net_regs)) &&
+                      (!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\/([0-9]?[0-9]?[0-9])$" . '/i', $post_allowed_networks[$x], $net_regs)) &&
                       (!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.\[([0-9]?[0-9]?[0-9])\-([0-9]?[0-9]?[0-9])\]$" . '/i', $post_allowed_networks[$x], $net_regs)) &&
                       (!empty($post_allowed_networks[$x]))
             ) {
                 $evil_allowed_networks = "1";
                 $evil_post = "1";
             } elseif ((preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$" . '/i', $post_allowed_networks[$x], $net_regs)) ||
-                      (preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/([0-9]?[0-9]?[0-9])$" . '/i', $post_allowed_networks[$x], $net_regs)) ||
+                      (preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\/([0-9]?[0-9]?[0-9])$" . '/i', $post_allowed_networks[$x], $net_regs)) ||
                       (preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.\[([0-9]?[0-9]?[0-9])\-([0-9]?[0-9]?[0-9])\]$" . '/i', $post_allowed_networks[$x], $net_regs)) ||
                       (!empty($post_allowed_networks[$x]))
             ) {
