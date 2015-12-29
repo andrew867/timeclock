@@ -317,10 +317,15 @@ $use_client_tz = "no";
 /* To display the punch-in/out times in the timezone of the web server, leave this option set
    to "yes". If using PHP 5.1+ then leave this as-is, to change the time zone please use
    date.timezone in your php.ini. Leaving date.timezone unset may cause PHP to choose the 
-   wrong timezone. Setting this option to "yes" will display the punch-in/out times according 
-   to the timezone through date("Z"). The default setting is "no". */
+   wrong timezone (see below). Setting this option to "yes" will display the punch-in/out
+   times according to the timezone through date("Z"). The default setting is "no". */
 
 $use_server_tz = "no";
+
+
+/* If you are using PHP 5.1+ and do not have access to chance your php.ini config file then
+   uncomment the following line and change it to the correct time zone. */
+//date_default_timezone_set("America/St_Johns");
 
 
 /* --- WEATHER INFO ---  */
