@@ -232,7 +232,7 @@ if ($links == "none") {
     echo "        <tr><td class=left_rows height=7 align=left valign=middle></td></tr>\n";
 
     for ($x = 0; $x < count($display_links); $x++) {
-        echo "        <tr><td class=left_rows height=18 align=left valign=middle><a class=admin_headings href='$links[$x]'>$display_links[$x]</a></td>
+        echo "        <tr><td class=left_rows height=18 align=left valign=middle><a class=admin_headings href='$links[$x]' target='_new'>$display_links[$x]</a></td>
                       </tr>\n";
     }
 
