@@ -190,7 +190,9 @@ $display_group_name = "no";
 
 
 /* A logo or graphic, this is displayed in the top left of each page.
-   Set it to "none" to ignore this option. */
+   Set it to "none" to ignore this option. 
+   This can either be a relative path (from the root directory) or URL.
+*/
 
 $logo = "images/logos/phptimeclock.png";
 
