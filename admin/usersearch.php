@@ -189,7 +189,7 @@ if (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $post_username)) {
         $evil_input = "1";
     }
 }
-if (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) {
+if (!preg_match('/^([[:alnum:]]|\s|\-|\'|\,)+$/i', $display_name)) {
     if ($display_name == "") {
     } else {
         echo "            <br />\n";
@@ -201,7 +201,7 @@ if (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) {
         $evil_input = "1";
     }
 }
-if (!preg_match('/' . "^([[:alnum:]]|_|.|-|@)+$", $email_addy)) {
+if (!preg_match('/^([[:alnum:]]|_|.|-|@)+$/', $email_addy)) {
     if ($email_addy == "") {
     } else {
         echo "            <br />\n";
