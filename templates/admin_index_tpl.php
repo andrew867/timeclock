@@ -280,6 +280,13 @@ echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% alig
                   </td></tr>\n";
 $row_count++;
 $row_color = ($row_count % 2) ? $color2 : $color1;
+echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>weather_units:</td>
+                  <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>".($weather_units == "c" ? "Celsius" : "Fahrenheit")."</td>
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Display weather in US or metric measurements. Options are Fahrenheit or
+                  Celsius. Default is Celsius\".
+                  </td></tr>\n";                                                   
+$row_count++;
+$row_color = ($row_count % 2) ? $color2 : $color1;
 echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>metar:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$metar</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the ICAO (International 
