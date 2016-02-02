@@ -153,7 +153,11 @@ if ($request == 'GET') {
     }
 
     // begin double-checking of some of the settings in config.inc.php //
-
+    
+    if (!in_array(@$weather_units, array('c','f'))){
+    	$weather_units = 'c';
+    }        
+    
     if ($refresh != "none") {
         $tmp_refresh = intval($refresh);
         if (!empty($tmp_refresh)) {
@@ -1042,6 +1046,17 @@ if ($request == 'GET') {
                  </td></tr>\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
+    echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>weather_units:</td>\n";    
+    echo "                  <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>";
+    echo	"							<select name=\"weather_units\">\n";
+    echo "						 		<option value=\"c\" " . ($weather_units == "c" ? "selected" : "") . ">Celsius</option>\n";
+    echo "						 		<option value=\"f\" " . ($weather_units == "f" ? "selected" : "") . ">Fahrenheit</option>\n";    
+    echo "							</select>";    
+    echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Display weather in US or metric measurements.
+    Options are Fahrenheit or Celsius. Default is Celsius\".
+             		</td></tr>\n";
+    $row_count++;
+    $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>metar:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"4\"
                       name=\"metar\" value=\"$metar\" /></td>
@@ -1260,6 +1275,8 @@ if ($request == 'GET') {
     $post_group_name = $_POST['group_name'];
     $post_display_current_users = $_POST['display_current_users'];
     $post_display_weather = $_POST['display_weather'];
+    $post_weather_units = $_POST['weather_units'];    
+    
     $post_show_display_name = $_POST['show_display_name'];
     $post_display_office_name = $_POST['display_office_name'];
     $post_display_group_name = $_POST['display_group_name'];
@@ -1364,6 +1381,7 @@ if ($request == 'GET') {
         echo "            </table>\n";
         $evil_post = "1";
     } elseif (($post_restrict_ips != '0') && ($post_restrict_ips != '1')) {
+        $evil_post = "1";
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td>
                   <td class=table_rows_red height=25><b>restrict_ips</b> does not equal \"yes\" or \"no\".</td></tr>\n";
@@ -1500,6 +1518,12 @@ if ($request == 'GET') {
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td>
                   <td class=table_rows_red height=25><b>display_weather</b> does not equal \"yes\" or \"no\".</td></tr>\n";
+        echo "            </table>\n";
+        $evil_post = "1";
+    } elseif (!in_array($post_weather_units, array('c','f'))){
+        echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
+        echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td>
+                  <td class=table_rows_red height=25><b>weather_units</b> does not equal \"Celsius\" or \"Fahrenheit\".</td></tr>\n";
         echo "            </table>\n";
         $evil_post = "1";
     } elseif ((isset($post_metar)) && (!preg_match('/' . "^([a-zA-Z]{4})+$" . '/i', $post_metar))) {
@@ -2372,6 +2396,17 @@ if ($request == 'GET') {
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>To display local weather
                       info on the left side of the application just below the submit button, set this to \"yes\". Default is \"<b>no</b>\".
                  </td></tr>\n";
+    	  $row_count++;
+    	  $row_color = ($row_count % 2) ? $color2 : $color1;
+   	  echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>weather_units:</td>\n";    
+   	  echo "                  <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>";
+    	  echo	"							<select name=\"weather_units\">\n";
+   	  echo "						 		<option value=\"c\" " . ($weather_units == "c" ? "selected" : "") . ">Celsius</option>\n";
+    	  echo "						 		<option value=\"f\" " . ($weather_units == "f" ? "selected" : "") . ">Fahrenheit</option>\n";    
+    	  echo "							</select>";    
+   	  echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Display weather in US or metric measurements.
+    Options are Fahrenheit or Celsius. Default is Celsius\".
+             		</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>metar:</td>
@@ -3104,6 +3139,10 @@ $use_server_tz = "' . $post_use_server_tz . '";
    If you would like to include this feature, set $display_weather to "yes". Default is "no". */
 
 $display_weather = "' . $post_display_weather . '";
+
+/* Display weather in US or metric measurements. Options are "f" or "c". Default is "c" */
+
+$weather_units = "' . $post_weather_units . '";
 
 
 /* ICAO (International Civil Aviation Organization) for your local airport. This is the
