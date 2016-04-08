@@ -14,6 +14,7 @@ if ($use_reports_password == "yes") {
         echo "<title>$title</title>\n";
         include '../admin/header.php';
         include 'topmain.php';
+        include '../sidenav.php';
 
         echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
         echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Reports</td></tr>\n";
@@ -26,7 +27,10 @@ if ($use_reports_password == "yes") {
         exit;
     }
 }
-
+//href='timerpt.php'>Daily Time Report
+//href='total_hours.php'>Hours Worked Report
+//ref='total_hours.php'>Hours Worked Report
+//href='audit.php'>Audit Log
 include '../admin/header.php';
 
 if ($use_reports_password == "yes") {
@@ -34,16 +38,40 @@ if ($use_reports_password == "yes") {
 } else {
     include 'topmain.php';
 }
-echo "<title>$title - Reports</title>\n";
-
-echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
-echo "  <tr class=right_main_text height=40><td align=center class=title_underline style='color:#853d27;'>Run Reports</td></tr>\n";
-echo "  <tr class=right_main_text height=25>\n";
-echo "    <td align=center valign=top>&#8226;&nbsp;<a class=admin_headings href='timerpt.php'>Daily Time Report</a>&nbsp;&#8226;</td></tr>\n";
-echo "  <tr class=right_main_text height=25>\n";
-echo "    <td align=center valign=top>&#8226;&nbsp;<a class=admin_headings href='total_hours.php'>Hours Worked Report</a>&nbsp;&#8226;</td></tr>\n";
-echo "  <tr class=right_main_text height=92%>\n";
-echo "    <td align=center valign=top>&#8226;&nbsp;<a class=admin_headings href='audit.php'>Audit Log</a>&nbsp;&#8226;</td></tr>\n";
-include '../footer.php';
 ?>
+<section id="main-content">
+    <section class="wrapper">
+<div class="row">
+<a href="timerpt.php" class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+  <div class="info-box blue-bg">
+      <i class="fa fa-list-alt"></i>
+      <div class="count">Daily Time</div>
+      <div class="title">Report</div>
+  </div><!--/.info-box-->
+</a><!--/.col-->
 
+<a href="total_hours.php" class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+  <div class="info-box brown-bg">
+      <i class="fa fa-list-alt"></i>
+      <div class="count">Hours Worked</div>
+      <div class="title">Report</div>
+  </div><!--/.info-box-->
+</a><!--/.col-->
+
+<a href="audit.php" class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+  <div class="info-box dark-bg">
+      <i class="fa fa-list-alt"></i>
+      <div class="count">Audit</div>
+      <div class="title">Log</div>
+  </div><!--/.info-box-->
+</a><!--/.col-->
+
+
+
+</div><!--/.row-->
+</section>
+</section>
+</body>
+<?php
+//include 'footer.php';
+?>

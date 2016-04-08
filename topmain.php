@@ -1,20 +1,20 @@
-   
+
       <header class="header dark-bg">
             <div class="toggle-nav">
                 <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
             </div>
 
             <!--logo start-->
-            <a href="index.html" class="logo">PHP<span class="lite"> TimeClock</span></a>
+            <a href="index.php" class="logo">PHP<span class="lite"> TimeClock</span></a>
             <!--logo end-->
 
-         
 
-            <div class="top-nav notification-row">                
+
+            <div class="top-nav notification-row">
                 <!-- notificatoin dropdown start-->
                 <ul class="nav pull-right top-menu">
-                    
-                  
+
+
                     <!-- user login dropdown start-->
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
@@ -26,8 +26,8 @@
                         </a>
                         <ul class="dropdown-menu extended logout">
                             <div class="log-arrow-up"></div>
-                            
-                           
+
+
                             <li>
                               <?php if ((isset($_SESSION['valid_user'])) || (isset($_SESSION['valid_reports_user'])) || (isset($_SESSION['time_admin_valid_user']))) {
                                echo' <a href="logout.php"><i class="icon_key_alt"></i> Log Out</a>';
@@ -37,14 +37,14 @@
                               }
                               ?>
                             </li>
-                            
+
                         </ul>
                     </li>
                     <!-- user login dropdown end -->
                 </ul>
                 <!-- notificatoin dropdown end-->
             </div>
-      </header>      
+      </header>
       <!--header end-->
 
 
