@@ -29,10 +29,10 @@
 
                     <li>
                       <?php if ((isset($_SESSION['valid_user'])) || (isset($_SESSION['valid_reports_user'])) || (isset($_SESSION['time_admin_valid_user']))) {
-                       echo' <a href="logout.php"><i class="icon_key_alt"></i> Log Out</a>';
+                       echo' <a href="../logout.php"><i class="icon_key_alt"></i> Log Out</a>';
                       }
                       else{
-                         echo' <a href="login.php"><i class="icon_key_alt"></i> Login</a>';
+                         echo' <a href="../login.php"><i class="icon_key_alt"></i> Login</a>';
                       }
                       ?>
                     </li>
