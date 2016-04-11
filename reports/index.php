@@ -6,15 +6,15 @@ $self = $_SERVER['PHP_SELF'];
 $request = $_SERVER['REQUEST_METHOD'];
 
 include '../config.inc.php';
-
+include '../admin/header.php';
 if ($use_reports_password == "yes") {
 
     if (!isset($_SESSION['valid_reports_user'])) {
 
         echo "<title>$title</title>\n";
-        include '../admin/header.php';
+        
         include 'topmain.php';
-        include '../sidenav.php';
+
 
         echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
         echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Reports</td></tr>\n";
@@ -27,14 +27,11 @@ if ($use_reports_password == "yes") {
         exit;
     }
 }
-//href='timerpt.php'>Daily Time Report
-//href='total_hours.php'>Hours Worked Report
-//ref='total_hours.php'>Hours Worked Report
-//href='audit.php'>Audit Log
-include '../admin/header.php';
+
+
 
 if ($use_reports_password == "yes") {
-    include 'topmain.php';
+    include '../admin/topmain.php';
 } else {
     include 'topmain.php';
 }
@@ -73,5 +70,5 @@ if ($use_reports_password == "yes") {
 </section>
 </body>
 <?php
-//include 'footer.php';
+include 'footer.php';
 ?>

@@ -88,6 +88,6 @@ if ($date_link == "none") {
         text-decoration:none;'>";
 }
 
-include_once ('sidenav.php');
+include 'sidenav.php';
 
 ?>

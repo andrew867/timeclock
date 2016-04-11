@@ -16,7 +16,7 @@ if ($use_reports_password == "yes") {
         include '../admin/header.php';
         include '../admin/topmain.php';
 
-        echo "<table width=100% border=0 cellpadding=7 cellspacing=1>\n";
+        echo "<table  width=100% border=0 cellpadding=7 cellspacing=1>\n";
         echo "  <tr class=right_main_text><td height=10 align=center valign=top scope=row class=title_underline>PHP Timeclock Reports</td></tr>\n";
         echo "  <tr class=right_main_text>\n";
         echo "    <td align=center valign=top scope=row>\n";
@@ -53,7 +53,7 @@ if ($request == 'GET') {
     echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/report.png' />&nbsp;&nbsp;&nbsp;Daily
                     Time Report</th></tr>\n";
     echo "              <tr><td height=15></td></tr>\n";
-    echo "              <input type='hidden' name='date_format' value='$js_datefmt'>\n";
+    echo "              <input class='form-control' type='hidden' name='date_format' value='$js_datefmt'>\n";
     if ($username_dropdown_only == "yes") {
 
         $query = "select * from " . $db_prefix . "employees order by empfullname asc";
@@ -61,7 +61,7 @@ if ($request == 'GET') {
 
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td colspan=2 align=left width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                  <select name='user_name'>\n";
+                  <select class='form-control' name='user_name'>\n";
         echo "                    <option value ='All'>All</option>\n";
 
         while ($row = mysql_fetch_array($result)) {
@@ -74,25 +74,23 @@ if ($request == 'GET') {
     } else {
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Office:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                      <select name='office_name' onchange='group_names();'>\n";
+                      <select class='form-control' name='office_name' onchange='group_names();'>\n";
         echo "                      </select></td></tr>\n";
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Group:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                      <select name='group_name' onchange='user_names();'>\n";
+                      <select class='form-control' name='group_name' onchange='user_names();'>\n";
         echo "                      </select></td></tr>\n";
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Username:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                      <select name='user_name'>\n";
+                      <select class='form-control' name='user_name'>\n";
         echo "                      </select></td></tr>\n";
     }
-    echo "              <tr><td class=table_rows style='padding-left:32px;' width=20% nowrap>From Date: ($tmp_datefmt)</td><td
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
-                      <input type='text' size='10' maxlength='10' name='from_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
+    echo "              <tr><td class=table_rows style='padding-left:32px;' width=20% nowrap>From Date: ($tmp_datefmt)</td><td style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
+                      <input class='form-control' type='text' size='10' maxlength='10' name='from_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
                       <a href=\"#\" onclick=\"form.from_date.value='';cal.select(document.forms['form'].from_date,'from_date_anchor','$js_datefmt');
                       return false;\" name=\"from_date_anchor\" id=\"from_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
-    echo "              <tr><td class=table_rows style='padding-left:32px;' width=20% nowrap>To Date: ($tmp_datefmt)</td><td
-                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
-                      <input type='text' size='10' maxlength='10' name='to_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
+    echo "              <tr><td class=table_rows style='padding-left:32px;' width=20% nowrap>To Date: ($tmp_datefmt)</td><td style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
+                      <input class='form-control' type='text' size='10' maxlength='10' name='to_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
                       <a href=\"#\" onclick=\"form.to_date.value='';cal.select(document.forms['form'].to_date,'to_date_anchor','$js_datefmt');
                       return false;\" name=\"to_date_anchor\" id=\"to_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
     echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
@@ -103,30 +101,28 @@ if ($request == 'GET') {
     echo "              <tr><td class=table_rows height=25 valign=bottom>1.&nbsp;&nbsp;&nbsp;Export to CSV? (link to CSV file will be in the top right of
                       the next page)</td></tr>\n";
     if (strtolower($export_csv) == "yes") {
-        echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='csv' value='1' checked>&nbsp;Yes
-                      <input type='radio' name='csv' value='0'>&nbsp;No</td></tr>\n";
+        echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input class='form-control' type='radio' name='csv' value='1' checked>&nbsp;Yes
+                      <input class='form-control' type='radio' name='csv' value='0'>&nbsp;No</td></tr>\n";
     } else {
-        echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='csv' value='1'>&nbsp;Yes
-                      <input type='radio' name='csv' value='0' checked>&nbsp;No</td></tr>\n";
+        echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input class='form-control' type='radio' name='csv' value='1'>&nbsp;Yes
+                      <input class='form-control' type='radio' name='csv' value='0' checked>&nbsp;No</td></tr>\n";
     }
     if (strtolower($ip_logging) == "yes") {
         echo "              <tr><td class=table_rows height=25 valign=bottom>2.&nbsp;&nbsp;&nbsp;Display connecting ip address information?
                       </td></tr>\n";
         if ($display_ip == "yes") {
-            echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_display_ip' value='1'
-                      checked>&nbsp;Yes<input type='radio' name='tmp_display_ip' value='0'>&nbsp;No</td></tr>\n";
+            echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input class='form-control' type='radio' name='tmp_display_ip' value='1'
+                      checked>&nbsp;Yes<input class='form-control' type='radio' name='tmp_display_ip' value='0'>&nbsp;No</td></tr>\n";
         } else {
-            echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_display_ip' value='1' >&nbsp;Yes
-                      <input type='radio' name='tmp_display_ip' value='0' checked>&nbsp;No</td></tr>\n";
+            echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input class='form-control' type='radio' name='tmp_display_ip' value='1' >&nbsp;Yes
+                      <input class='form-control' type='radio' name='tmp_display_ip' value='0' checked>&nbsp;No</td></tr>\n";
         }
     }
     echo "              <tr><td height=10></td></tr>\n";
     echo "            </table>\n";
     echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-    echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle'
-                      src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png'
-                      border='0'></td></tr></table></form></td></tr>\n";
-    include '../footer.php';
+    echo "              <tr><td width=30><input class='btn btn-success'  name='submit' value='Edit Time' align='middle' src='../images/buttons/next_button.png'></td><td><a href='index.php'><div class='btn  btn-primary'>Cancel</div></td></tr></table></form></td></tr>\n";
+    include 'footer.php';
     exit;
 
 } else {
@@ -421,7 +417,7 @@ if ($request == 'GET') {
         echo "                <th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/report.png' />&nbsp;&nbsp;&nbsp;Daily
                     Time Report</th></tr>\n";
         echo "              <tr><td height=15></td></tr>\n";
-        echo "              <input type='hidden' name='date_format' value='$js_datefmt'>\n";
+        echo "              <input class='form-control' type='hidden' name='date_format' value='$js_datefmt'>\n";
         if ($username_dropdown_only == "yes") {
 
             $query = "select * from " . $db_prefix . "employees order by empfullname asc";
@@ -429,7 +425,7 @@ if ($request == 'GET') {
 
             echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td colspan=2 align=left width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                  <select name='user_name'>\n";
+                  <select class='form-control' name='user_name'>\n";
             echo "                    <option value ='All'>All</option>\n";
 
             while ($row = mysql_fetch_array($result)) {
@@ -443,27 +439,27 @@ if ($request == 'GET') {
 
             echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Office:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                      <select name='office_name' onchange='group_names();'>\n";
+                      <select class='form-control' name='office_name' onchange='group_names();'>\n";
             echo "                      </select></td></tr>\n";
             echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Group:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                      <select name='group_name' onfocus='group_names();'>
+                      <select class='form-control' name='group_name' onfocus='group_names();'>
                           <option selected>$group_name</option>\n";
             echo "                      </select></td></tr>\n";
             echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Choose Username:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
-                      <select name='user_name' onfocus='user_names();'>
+                      <select class='form-control' name='user_name' onfocus='user_names();'>
                           <option selected>$fullname</option>\n";
             echo "                      </select></td></tr>\n";
         }
         echo "              <tr><td class=table_rows style='padding-left:32px;' width=20% nowrap>From Date: ($tmp_datefmt)</td><td
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
-                      <input type='text' size='10' maxlength='10' name='from_date' value='$from_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
+                      <input class='form-control' type='text' size='10' maxlength='10' name='from_date' value='$from_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
                       <a href=\"#\" onclick=\"form.from_date.value='';cal.select(document.forms['form'].from_date,'from_date_anchor','$js_datefmt');
                       return false;\" name=\"from_date_anchor\" id=\"from_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
         echo "              <tr><td class=table_rows style='padding-left:32px;' width=20% nowrap>To Date: ($tmp_datefmt)</td><td
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;' width=80% >
-                      <input type='text' size='10' maxlength='10' name='to_date' value='$to_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
+                      <input class='form-control' type='text' size='10' maxlength='10' name='to_date' value='$to_date' style='color:#27408b'>&nbsp;*&nbsp;&nbsp;
                       <a href=\"#\" onclick=\"form.to_date.value='';cal.select(document.forms['form'].to_date,'to_date_anchor','$js_datefmt');
                       return false;\" name=\"to_date_anchor\" id=\"to_date_anchor\" style='font-size:11px;color:#27408b;'>Pick Date</a></td><tr>\n";
         echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
@@ -474,30 +470,28 @@ if ($request == 'GET') {
         echo "              <tr><td class=table_rows height=25 valign=bottom>1.&nbsp;&nbsp;&nbsp;Export to CSV? (link to CSV file will be in the top right of
                       the next page)</td></tr>\n";
         if ($tmp_csv == "1") {
-            echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='csv' value='1'
-                      checked>&nbsp;Yes<input type='radio' name='csv' value='0'>&nbsp;No</td></tr>\n";
+            echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input class='form-control' type='radio' name='csv' value='1'
+                      checked>&nbsp;Yes<input class='form-control' type='radio' name='csv' value='0'>&nbsp;No</td></tr>\n";
         } else {
-            echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='csv' value='1' >&nbsp;Yes
-                      <input type='radio' name='csv' value='0' checked>&nbsp;No</td></tr>\n";
+            echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input class='form-control' type='radio' name='csv' value='1' >&nbsp;Yes
+                      <input class='form-control' type='radio' name='csv' value='0' checked>&nbsp;No</td></tr>\n";
         }
         if ($display_ip == "yes") {
             echo "              <tr><td class=table_rows height=25 valign=bottom>2.&nbsp;&nbsp;&nbsp;Display connecting ip address information?
                       </td></tr>\n";
             if ($tmp_display_ip == "1") {
-                echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_display_ip' value='1'
-                      checked>&nbsp;Yes<input type='radio' name='tmp_display_ip' value='0'>&nbsp;No</td></tr>\n";
+                echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input class='form-control' type='radio' name='tmp_display_ip' value='1'
+                      checked>&nbsp;Yes<input class='form-control' type='radio' name='tmp_display_ip' value='0'>&nbsp;No</td></tr>\n";
             } else {
-                echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_display_ip' value='1' >&nbsp;Yes
-                      <input type='radio' name='tmp_display_ip' value='0' checked>&nbsp;No</td></tr>\n";
+                echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input class='form-control' type='radio' name='tmp_display_ip' value='1' >&nbsp;Yes
+                      <input class='form-control' type='radio' name='tmp_display_ip' value='0' checked>&nbsp;No</td></tr>\n";
             }
         }
         echo "              <tr><td height=10></td></tr>\n";
         echo "            </table>\n";
         echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
-        echo "              <tr><td width=30><input type='image' name='submit' value='Edit Time' align='middle'
-                      src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png'
-                      border='0'></td></tr></table></form></td></tr>\n";
-        include '../footer.php';
+        echo "              <tr><td width=30><input class='btn btn-success'  name='submit' value='Edit Time' align='middle'></td><td><a href='index.php' class='btn  btn-primary'><border='0'></td></tr></table></form></td></tr>\n";
+        include 'footer.php';
         exit;
     }
 
@@ -557,7 +551,7 @@ if ($request == 'GET') {
     echo "               <tr><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'>Date Range: $from_date - $to_date</td></tr>\n";
     if (!empty($tmp_csv)) {
         echo "               <tr class=notprint><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'><a style='color:#27408b;font-size:9px;
-                         text-decoration:underline;' 
+                         text-decoration:underline;'
                          href=\"get_csv.php?rpt=timerpt&display_ip=$tmp_display_ip&csv=$tmp_csv&office=$office_name&group=$group_name&fullname=$fullname&from=$from_timestamp&to=$to_timestamp&tzo=$tzo\">Download CSV File</a></td></tr>\n";
     }
     echo "            </table>\n";
@@ -766,5 +760,6 @@ if ($request == 'GET') {
         }
     }
 }
+include 'footer.php';
 exit;
 ?>

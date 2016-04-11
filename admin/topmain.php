@@ -1,7 +1,53 @@
+<header class="header dark-bg">
+    <div class="toggle-nav">
+        <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
+    </div>
+
+    <!--logo start-->
+    <a href="index.php" class="logo">PHP<span class="lite"> TimeClock</span></a>
+    <!--logo end-->
+
+
+
+    <div class="top-nav notification-row">
+        <!-- notificatoin dropdown start-->
+        <ul class="nav pull-right top-menu">
+
+
+            <!-- user login dropdown start-->
+            <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <span class="profile-ava">
+                        <img alt="" src="../img/avatar1_small.jpg">
+                    </span>
+                    <span class="username">USER</span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu extended logout">
+                    <div class="log-arrow-up"></div>
+
+
+                    <li>
+                      <?php if ((isset($_SESSION['valid_user'])) || (isset($_SESSION['valid_reports_user'])) || (isset($_SESSION['time_admin_valid_user']))) {
+                       echo' <a href="../logout.php"><i class="icon_key_alt"></i> Log Out</a>';
+                      }
+                      else{
+                         echo' <a href="../login.php"><i class="icon_key_alt"></i> Login</a>';
+                      }
+                      ?>
+                    </li>
+
+                </ul>
+            </li>
+            <!-- user login dropdown end -->
+        </ul>
+        <!-- notificatoin dropdown end-->
+    </div>
+</header>
+<!--header end-->
 <?php
 
-echo "<table class=header width=100% border=0 cellpadding=0 cellspacing=1>\n";
-echo "  <tr>";
+
 
 // display the logo in top left of each page. This will be $logo you setup in config.inc.php. //
 // It will also link you back to your index page. //
@@ -42,56 +88,6 @@ if ($date_link == "none") {
         text-decoration:none;'>";
 }
 
-// display today's date in top right of each page. This will link to $date_link you setup in config.inc.php. //
+include_once ('sidenav.php');
 
-$todaydate = date('F j, Y');
-echo "$todaydate&nbsp;&nbsp;</a></td></tr>\n";
-echo "</table>\n";
-
-// display the topbar //
-
-echo "<table class=topmain_row_color width=100% border=0 cellpadding=0 cellspacing=0>\n";
-echo "  <tr>\n";
-
-if (isset($_SESSION['valid_user'])) {
-    $logged_in_user = $_SESSION['valid_user'];
-    echo "    <td align=left valign=middle width=10 style='padding-left:12px;'><img src='../images/icons/user_orange.png' border='0'></td>\n";
-    echo "    <td align=left valign=middle style='color:#000000;font-family:Tahoma;font-size:10pt;padding-left:8px;'>logged in as: $logged_in_user</td>\n";
-} else if (isset($_SESSION['time_admin_valid_user'])) {
-    $logged_in_user = $_SESSION['time_admin_valid_user'];
-    echo "    <td align=left valign=middle width=10 style='padding-left:12px;'><img src='../images/icons/user_red.png' border='0'></td>\n";
-    echo "    <td align=left valign=middle style='color:#000000;font-family:Tahoma;font-size:10pt;padding-left:8px;'>logged in as: $logged_in_user</td>\n";
-} elseif (isset($_SESSION['valid_reports_user'])) {
-    $logged_in_user = $_SESSION['valid_reports_user'];
-    echo "    <td align=left valign=middle width=10 style='padding-left:12px;'><img src='../images/icons/user_suit.png' border='0'></td>\n";
-    echo "    <td align=left valign=middle style='color:#000000;font-family:Tahoma;font-size:10pt;padding-left:8px;'>logged in as: $logged_in_user</td>\n";
-}
-echo "    <td align=right valign=middle><img src='../images/icons/house.png' border='0'>&nbsp;&nbsp;</td>\n";
-echo "    <td align=right valign=middle width=10><a href='../index.php' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>
-        Home&nbsp;&nbsp;</a></td>\n";
-echo "    <td align=right valign=middle width=23><img src='../images/icons/bricks.png' border='0'>&nbsp;&nbsp;</td>\n";
-echo "    <td align=right valign=middle width=10><a href='../login.php' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>
-        Administration&nbsp;&nbsp;</a></td>\n";
-echo "    <td align=right valign=middle width=23><img src='../images/icons/report.png' border='0'>&nbsp;&nbsp;</td>\n";
-
-if ($use_reports_password == "yes") {
-
-    echo "    <td align=right valign=middle width=10><a href='../login_reports.php' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>
-        Reports&nbsp;&nbsp;</a></td>\n";
-
-} elseif ($use_reports_password == "no") {
-    echo "    <td align=right valign=middle width=10><a href='../reports/index.php' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>
-        Reports&nbsp;&nbsp;</a></td>\n";
-}
-
-echo "    <td align=right valign=middle width=23><img src='../images/icons/time.png' border='0'>&nbsp;&nbsp;</td>\n";
-echo "    <td align=right valign=middle width=10><a href='../punchclock/menu.php' style='color:#000000;font-family:Tahoma;font-size:10pt;
-        text-decoration:none;'>Punchclock&nbsp;&nbsp;</a></td>\n";
-
-if ((isset($_SESSION['valid_user'])) || (isset($_SESSION['time_admin_valid_user'])) || (isset($_SESSION['valid_reports_user']))) {
-    echo "    <td align=right valign=middle width=20><img src='../images/icons/arrow_rotate_clockwise.png' border='0'>&nbsp;</td>\n";
-    echo "    <td align=right valign=middle width=10><a href='../logout.php' style='color:#000000;font-family:Tahoma;font-size:10pt;text-decoration:none;'>
-        Logout&nbsp;&nbsp;</a></td></tr>\n";
-}
-echo "</table>\n";
 ?>
