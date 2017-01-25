@@ -19,7 +19,7 @@ username and password information!
 
 $db_hostname = "localhost";
 $db_username = "timeclock";
-$db_password = "P4ssw0rd1!";
+$db_password = "clocktime";
 $db_name = "timeclock";
 
 
@@ -190,9 +190,7 @@ $display_group_name = "no";
 
 
 /* A logo or graphic, this is displayed in the top left of each page.
-   Set it to "none" to ignore this option. 
-   This can either be a relative path (from the root directory) or URL.
-*/
+   Set it to "none" to ignore this option. */
 
 $logo = "images/logos/phptimeclock.png";
 
@@ -317,17 +315,10 @@ $use_client_tz = "no";
 
 
 /* To display the punch-in/out times in the timezone of the web server, leave this option set
-   to "yes". If using PHP 5.1+ then leave this as-is, to change the time zone please use
-   date.timezone in your php.ini. Leaving date.timezone unset may cause PHP to choose the 
-   wrong timezone (see below). Setting this option to "yes" will display the punch-in/out
-   times according to the timezone through date("Z"). The default setting is "no". */
+   to "yes". Setting this option to "no" AND setting the above $use_client_tz option to "no",
+   will display the punch-in/out times in GMT. Default is "yes". */
 
 $use_server_tz = "no";
-
-
-/* If you are using PHP 5.1+ and do not have access to chance your php.ini config file then
-   uncomment the following line and change it to the correct time zone. */
-//date_default_timezone_set("America/St_Johns");
 
 
 /* --- WEATHER INFO ---  */
@@ -338,7 +329,46 @@ $use_server_tz = "no";
 
 $display_weather = "yes";
 
+/* Display weather in US or metric measurements. Options are "f" or "c". Default is "c" */
 
+$weather_units = "c";
+
+
+/* set this list to your local weather station location
+   the entry format (all fields are required) is  
+   
+   'Metar(ICAO) | Name of station | dist-mi | dist-km | direction |'
+   
+   Note that the trailing | is required. 
+   You may have two in the array, which will show weather conditions 
+   for two different stations, in which case you enter  
+   array('a|b|c|d|e|','F|G|H|I|J|')   
+   You can find a list of valid ICAO codes at:
+   https://pilotweb.nas.faa.gov/qryhtml/icao/            */
+   
+$WxList = array();
+$WxList = array('KTOP|Topeka, Kansas|4|7|NE|');
+
+/*  NOTE: this *MUST* be set correctly to
+    translate UTC times to your LOCAL time for the weather displays.
+    The list of valid timezone names can be found at 
+    
+    http://us.php.net/manual/en/timezones.php 
+    
+    pick the one that is closest to your location 
+    
+    $WxTimeZone = 'America/Los_Angeles';
+    or
+    $WxTimeZone = 'Europe/Brussels';
+    
+    */
+
+$WxTimeZone = 'America/Chicago'; 
+
+/*  *************************************************************************
+    the next two config values are depricated, don't bother to update them. 
+    *************************************************************************  */
+    
 /* ICAO (International Civil Aviation Organization) for your local airport. This is the
    unique four letter international ID for the airport. METAR reports are created at
    roughly 4500 airports from around the world, so you probably live near one of them.
@@ -348,19 +378,13 @@ $display_weather = "yes";
    $display_weather is set to "no", this option is ignored. If $display_weather is set to
    "yes", you MUST provide an ICAO here. */
 
-$metar = "CYYT";
-
+$metar = "KTOP";
 
 /* This is the city and country (or can be city and state) of the airport for
    the ICAO used above. The max length for this field is 100 characters.
    If $display_weather is set to "no", this option is ignored. */
 
-$city = "St. Johns, NL, Canada";
-
-
-/* Display weather in US or metric measurements. Options are "f" or "c". Default is "c" */
-
-$weather_units = "c";
+$city = "Topeka, KS";
 
 
 /* --- APP NAME, VERSION NUMBER, ETC. --- */
@@ -376,6 +400,7 @@ $title = "$app_name $app_version";
 
 
 /* --- DO NOT CHANGE ANYTHING BELOW THIS LINE!!! --- */
+
 
 $dbversion = "1.4";
 ?>
