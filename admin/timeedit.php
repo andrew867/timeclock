@@ -442,6 +442,12 @@ if ($request == 'GET') {
                     // end post validation //
 
                     if ($timefmt_24hr == '0') {
+                        
+                        // 12 Hour with or without leading zeros with upper or lower case AM or PM //
+                        // Regex was /^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$/i                  //
+                        // Now       /^([0-1]?[0-9])+:+([0-5]+[0-9])+([a|p]+m)$/i                  //
+                        // First digit of hours in 12 hour format can not be > 1.                  //
+                        // First digit of minutes can not be > 5 any time.                         //
 
                         if ((!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $edit_time_textbox[$x], $time_regs)) && (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+( [a|p]+m)$" . '/i', $edit_time_textbox[$x], $time_regs))) {
                             $evil_time = '1';
@@ -458,7 +464,15 @@ if ($request == 'GET') {
                             }
                         }
                     } elseif ($timefmt_24hr == '1') {
-                        if (!preg_match('/' . "^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$" . '/i', $edit_time_textbox[$x], $time_regs)) {
+                        
+                        // 24 Hour with or without leading zeros with upper or lower case AM or PM //
+                        // Regex was /^([0-9]?[0-9])+:+([0-9]+[0-9])+([a|p]+m)$/i                  //
+                        // Now       /^([0-2]?[0-9])+:+([0-5]+[0-9])+$/                            //
+                        //    First digit of hours in 24 hour format can not be > 2.               //
+                        //    First digit of minutes can not be > 5 any time.                      //
+                        //    No am/pm in 24 hour format.  No need for case indifferent /i.        //
+                        
+                        if (!preg_match('/' . "^([0-2]?[0-9])+:+([0-5]+[0-9])+$" . '/', $edit_time_textbox[$x], $time_regs)) {
                             $evil_time = '1';
 
                         } else {
