@@ -161,7 +161,7 @@ End_Of_HTML;
 
     // Print timecard.
     $tc = new Timecard($empfullname, $begin_local_timestamp, $end_local_timestamp);
-    list($row_count, $total_hours, $overtime_hours, $today_hours) = $tc->walk(print_header, print_row, print_footer);
+    list($row_count, $total_hours, $overtime_hours, $today_hours) = $tc->walk('print_header', 'print_row', 'print_footer');
     if ($row_count <= 0)
         print error_msg("No records were found.");
 

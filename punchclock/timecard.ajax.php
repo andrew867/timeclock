@@ -39,9 +39,9 @@ if (isset($_REQUEST['next']))
     $local_timestamp_in_week += $one_week;
 
 // Connect to db.
-$db = mysql_connect($db_hostname, $db_username, $db_password)
+$db = ($GLOBALS["___mysqli_ston"] = mysqli_connect($db_hostname,  $db_username,  $db_password))
 or die("Could not connect to the database.");
-mysql_select_db($db_name);
+mysqli_select_db($GLOBALS["___mysqli_ston"], $db_name);
 
 $u_empfullname = rawurlencode($empfullname);
 
