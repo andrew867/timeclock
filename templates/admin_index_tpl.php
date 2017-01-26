@@ -6,7 +6,7 @@ echo "              <tr><td colspan=3 class=table_rows width=10% align=left styl
 echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td>
                   <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td>
                   <td class=table_rows width=80% align=left style='padding-left:10px;color:#27408b;'><b><u>DESCRIPTION</u></b></td></tr>\n";
-echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>MySql DB Settings</th></tr>\n";
+echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>mysql DB Settings</th></tr>\n";
 echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_hostname:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_hostname</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your 
@@ -289,13 +289,13 @@ $row_count++;
 $row_color = ($row_count % 2) ? $color2 : $color1;
 echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>metar:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$metar</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the ICAO (International 
-                      Civil Aviation Organization) for your local airport. This is the unique four letter international ID for the airport. METAR 
-                      reports are created at roughly 4500 airports from around the world, so you probably live near one of them. The airports make a 
-                      report once or twice an hour, and these reports are stored at the National Weather Service and are publically available via HTTP 
-                      or FTP. Visit <a href='https://pilotweb.nas.faa.gov/qryhtml/icao/' class=admin_headings style='text-decoration:underline;'> 
-                      https://pilotweb.nas.faa.gov/qryhtml/icao/</a> to find a corresponding ICAO near you. If 'display_weather' is set 
-                      to \"no\", this option is ignored. If 'display_weather' is set to \"yes\", you MUST provide an ICAO here.
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>If 'display_weather' is set 
+                      to \"no\", this option is ignored. If 'display_weather' is set to \"yes\", you have to set an WxList in config.inc.php. <br>
+                      <b>The ICAO (International Civil Aviation Organization) for your weather location is defined in config.inc.php, not here.</b><br>  
+                      You can configure the weather display to use reports created at any of roughly 4500 airports from around the world, 
+                      so you probably live near one of them. The reports are stored at the National Weather Service and are publically available via HTTP 
+                      or FTP. <br><br>Visit <a href='https://pilotweb.nas.faa.gov/qryhtml/icao/' class=admin_headings style='text-decoration:underline;'> 
+                      https://pilotweb.nas.faa.gov/qryhtml/icao/</a> to find a corresponding ICAO near you. 
                   </td></tr>\n";
 $row_count++;
 $row_color = ($row_count % 2) ? $color2 : $color1;
