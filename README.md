@@ -3,6 +3,9 @@ About
 
 This project is PHP Timeclock v1.04 with the Punchclock v0.8 add-on already installed.
 
+This Fork
+=========
+
 I replaced the phpweather in the left hand sidebar with the saratoga-weather display, which works, and just looks nicer. See http://saratoga-weather.org/metars.php for examples, the original code can be downloaded from http://saratoga-weather.org/scripts-metar.php#metar.   
 
 Added two variables in config.inc.php to support that. 
@@ -53,17 +56,16 @@ Copyright (C) 2006 Ken Papizan <pappyzan_at_users.sourceforge.net>
 
 REQUIREMENTS:
 
- -  at least PHP 4.1.x, with mysql support
+ -  at least PHP 5.3.x, with mysqli support
  -  MySQL
  -  Webserver
 
 TESTED:
 
- -  PHP 4.34, 5.1.2 with mysql support
- -  MySQL 3.23.49, 4.0.17, 5.0.18
- -  Apache 1.3.22, 1.3.29, 2.2.0
- -  Firefox 1.0 - 1.5.0.4, Firefox 1.0 Preview Release, IE 6.0 SP1, IE 6.0 SP2 for XP, IE 7.0 beta 2
-
+ -  PHP 5.6.19 with mysqli support
+ -  MySQL 5.7.22
+ -  Apache 2.4.18
+ 
 Any version of mysql or webserver software that supports php, whether it's an earlier 
 version than what's tested or later, will probably work fine.
 
