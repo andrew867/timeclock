@@ -3,6 +3,20 @@ About
 
 This project is PHP Timeclock v1.04 with the Punchclock v0.8 add-on already installed.
 
+I replaced the phpweather in the left hand sidebar with the saratoga-weather display, which works, and just looks nicer. See http://saratoga-weather.org/metars.php for examples, the original code can be downloaded from http://saratoga-weather.org/scripts-metar.php#metar.   
+
+Added two variables in config.inc.php to support that. 
+
+All calls to the various mysql_* functions have been replaced with calls to mysqli functions where they are compatible, or re-written where nessesary. 
+
+The various problems with un-initialized variables have been fixed. 
+
+All calls to ereg() have been replaced with calls to preg_match and the regular expressions edited as needed. 
+
+Function calls in the lib.timeclock.php which were passing functions as parameters were not quoting the function names being passed, resulting in "Undefined constant" errors.  All of those have been fixed. 
+
+As of 25 January 2017, the system now works in PHP 5.6 and mysql 5.7. 
+
 
 Timeclock - What Is It?
 =======================
