@@ -43,10 +43,6 @@ if ($request == 'GET') {
     $get_user = $_GET['username'];
     @$get_office = $_GET['officename'];
 
-    if (get_magic_quotes_gpc()) {
-        $get_user = stripslashes($get_user);
-    }
-
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
     echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -97,20 +93,15 @@ if ($request == 'GET') {
     echo "        <tr class=right_main_text>\n";
     echo "          <td valign=top>\n";
 
-    $get_user = addslashes($get_user);
-
     $row_count = 0;
-
-    $query = "select * from " . $db_prefix . "employees where empfullname = '" . $get_user . "' order by empfullname";
-    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+    $result = tc_select("*", "employees", "empfullname = ?", $get_user);
 
     while ($row = mysqli_fetch_array($result)) {
-
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
 
-        $username = stripslashes("" . $row['empfullname'] . "");
-        $displayname = stripslashes("" . $row['displayname'] . "");
+        $username = "" . $row['empfullname'] . "";
+        $displayname = "" . $row['displayname'] . "";
         $user_email = "" . $row['email'] . "";
         $groups_tmp = "" . $row['groups'] . "";
         $office = "" . $row['office'] . "";
@@ -124,8 +115,7 @@ if ($request == 'GET') {
     // make sure you cannot edit the admin perms for the last admin user in the system!! //
 
     if (!empty($admin)) {
-        $admin_count = mysqli_query($GLOBALS["___mysqli_ston"], "select empfullname from " . $db_prefix . "employees where admin = '1'");
-        @$admin_count_rows = mysqli_num_rows($admin_count);
+        @$admin_count_rows = mysqli_num_rows(tc_select("empfullname", "employees", "admin = '1'"));
         if (@$admin_count_rows == "1") {
             $evil = "1";
         }
@@ -223,7 +213,7 @@ if ($request == 'GET') {
     echo "              <tr><td height=40>&nbsp;</td></tr>\n";
     echo "                  <input type='hidden' name='get_office' value='$get_office'>\n";
     echo "              <tr><td width=30><input type='image' name='submit' value='Edit User' align='middle'
-                      src='../images/buttons/next_button.png'></td><td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png' 
+                      src='../images/buttons/next_button.png'></td><td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png'
                       border='0'></td></tr></table></form></td></tr>\n";
     include '../footer.php';
     exit;
@@ -232,8 +222,8 @@ if ($request == 'GET') {
     include 'header_post.php';
     include 'topmain.php';
 
-    $post_username = stripslashes($_POST['post_username']);
-    $display_name = stripslashes($_POST['display_name']);
+    $post_username = $_POST['post_username'];
+    $display_name = $_POST['display_name'];
     $email_addy = $_POST['email_addy'];
     $office_name = $_POST['office_name'];
     @$get_office = $_POST['get_office'];
@@ -254,22 +244,18 @@ if ($request == 'GET') {
     if (isset($evil)) {
         $admin_perms = "1";
     }
-    $post_username = addslashes($post_username);
 
     if (!empty($post_username)) {
-        $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "'";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-        while ($row = mysqli_fetch_array($result)) {
-            $tmp_username = "" . $row['empfullname'] . "";
-        }
+        $tmp_username = tc_select_value("empfullname", "employees", "empfullname = ?", $post_username);
         if (!isset($tmp_username)) {
-            echo "$tmp_username, $post_username. Something is fishy here.\n";
+            echo htmlspecialchars("$tmp_username, $post_username. Something is fishy here.\n");
             exit;
         }
     }
+    else {
+        $tmp_username = "";
+    }
 
-    $post_username = stripslashes($post_username);
-    $tmp_post_username = stripslashes($post_username);
     $string = strstr($display_name, "\"");
     if ((!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) || (empty($display_name)) || (empty($email_addy)) || (empty($office_name)) || (empty($group_name)) ||
         (!preg_match('/' . "^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$" . '/i', $email_addy)) || (($admin_perms != '1') && (!empty($admin_perms))) ||
@@ -286,12 +272,12 @@ if ($request == 'GET') {
         echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/user.png' alt='User Summary' />&nbsp;&nbsp;
                 <a class=admin_headings href='useradmin.php'>User Summary</a></td></tr>\n";
         echo "        <tr><td class=current_left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Edit User' />
-                &nbsp;&nbsp;<a class=admin_headings href=\"useredit.php?username=$tmp_post_username&officename=$get_office\">Edit User</a></td></tr>\n";
+                &nbsp;&nbsp;<a class=admin_headings href=\"useredit.php?username=$tmp_username&officename=$get_office\">Edit User</a></td></tr>\n";
         echo "        <tr><td class=left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Change Password' />
-                &nbsp;&nbsp;<a class=admin_headings href=\"chngpasswd.php?username=$tmp_post_username&officename=$get_office\">Change Password</a></td>
+                &nbsp;&nbsp;<a class=admin_headings href=\"chngpasswd.php?username=$tmp_username&officename=$get_office\">Change Password</a></td>
                 </tr>\n";
         echo "        <tr><td class=left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Delete User' />
-                &nbsp;&nbsp;<a class=admin_headings href=\"userdelete.php?username=$tmp_post_username&officename=$get_office\">Delete User</a></td></tr>\n";
+                &nbsp;&nbsp;<a class=admin_headings href=\"userdelete.php?username=$tmp_username&officename=$get_office\">Delete User</a></td></tr>\n";
         echo "        <tr><td class=left_rows_border_top height=18 align=left valign=middle><img src='../images/icons/user_add.png' alt='Create New User' />
                 &nbsp;&nbsp;<a class=admin_headings href='usercreate.php'>Create New User</a></td></tr>\n";
         echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/magnifier.png' alt='User Search' />&nbsp;&nbsp;
@@ -399,37 +385,21 @@ if ($request == 'GET') {
             echo "            </table>\n";
         }
 
-        if (!empty($office_name)) {
-            $query = "select * from " . $db_prefix . "offices where officename = '" . $office_name . "'";
-            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-            while ($row = mysqli_fetch_array($result)) {
-                $tmp_officename = "" . $row['officename'] . "";
-            }
-            ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
-            if (!isset($tmp_officename)) {
-                echo "Office is not defined.\n";
-                exit;
-            }
+        if (!empty($office_name)
+            and is_null(tc_select_value("officename", "offices", "officename = ?", $office_name))
+        ) {
+            echo "Office is not defined.\n";
+            exit;
         }
 
-        if (!empty($group_name)) {
-            $query = "select * from " . $db_prefix . "groups where groupname = '" . $group_name . "'";
-            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-            while ($row = mysqli_fetch_array($result)) {
-                $tmp_groupname = "" . $row['groupname'] . "";
-            }
-            ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
-            if (!isset($tmp_officename)) {
-                echo "Group is not defined.\n";
-                exit;
-            }
+        if (!empty($group_name)
+            and is_null(tc_select_value("groupname", "groups", "groupname = ?", $group_name))
+        ) {
+            echo "Group is not defined.\n";
+            exit;
         }
 
         // end post validation //
-
-        if (!empty($string)) {
-            $display_name = stripslashes($display_name);
-        }
 
         echo "            <br />\n";
         echo "            <form name='form' action='$self' method='post'>\n";
@@ -439,8 +409,8 @@ if ($request == 'GET') {
         echo "              </tr>\n";
         echo "              <tr><td height=15></td></tr>\n";
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td align=left class=table_rows
-                      colspan=2 width=80% style='padding-left:20px;'><input type='hidden' name='post_username'  
-                      value=\"$post_username\">$tmp_post_username</td></tr>\n";
+                      colspan=2 width=80% style='padding-left:20px;'><input type='hidden' name='post_username'
+                      value=\"$post_username\">$tmp_username</td></tr>\n";
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Display Name:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
                       <input type='text' size='25' maxlength='50' name='display_name' value=\"$display_name\">&nbsp;*</td></tr>\n";
@@ -501,24 +471,22 @@ if ($request == 'GET') {
         echo "              <tr><td height=40>&nbsp;</td></tr>\n";
         echo "                  <input type='hidden' name='get_office' value='$get_office'>\n";
         echo "              <tr><td width=30><input type='image' name='submit' value='Edit User' align='middle'
-                      src='../images/buttons/next_button.png'></td><td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png' 
+                      src='../images/buttons/next_button.png'></td><td><a href='useradmin.php'><img src='../images/buttons/cancel_button.png'
                       border='0'></td></tr></table></form></td></tr>\n";
         include '../footer.php';
-        $post_username = stripslashes($post_username);
-        $display_name = stripslashes($display_name);
         exit;
     }
 
-    $post_username = stripslashes($post_username);
-    $display_name = stripslashes($display_name);
-    $post_username = addslashes($post_username);
-    $display_name = addslashes($display_name);
-
-    $query3 = "update " . $db_prefix . "employees set displayname = ('" . $display_name . "'), email = ('" . $email_addy . "'), groups = ('" . $group_name . "'),
-	   office = ('" . $office_name . "'), admin = ('" . $admin_perms . "'), reports = ('" . $reports_perms . "'), time_admin = ('" . $time_admin_perms . "'),
-           disabled = ('" . $post_disabled . "')
-           where empfullname = ('" . $post_username . "')";
-    $result3 = mysqli_query($GLOBALS["___mysqli_ston"], $query3);
+    tc_update_strings("employees", array(
+        'displayname' => $display_name,
+        'email'       => $email_addy,
+        'groups'      => $group_name,
+        'office'      => $office_name,
+        'admin'       => $admin_perms,
+        'reports'     => $reports_perms,
+        'time_admin'  => $time_admin_perms,
+        'disabled'    => $post_disabled
+    ), "empfullname = ?", $post_username);
 
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
@@ -529,12 +497,12 @@ if ($request == 'GET') {
     echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/user.png' alt='User Summary' />&nbsp;&nbsp;
                 <a class=admin_headings href='useradmin.php'>User Summary</a></td></tr>\n";
     echo "        <tr><td class=current_left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Edit User' />
-                &nbsp;&nbsp;<a class=admin_headings href=\"useredit.php?username=$tmp_post_username&officename=$office_name\">Edit User</a></td></tr>\n";
+                &nbsp;&nbsp;<a class=admin_headings href=\"useredit.php?username=$tmp_username&officename=$office_name\">Edit User</a></td></tr>\n";
     echo "        <tr><td class=left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Change Password' />
-                &nbsp;&nbsp;<a class=admin_headings href=\"chngpasswd.php?username=$tmp_post_username&officename=$office_name\">Change Password</a></td>
+                &nbsp;&nbsp;<a class=admin_headings href=\"chngpasswd.php?username=$tmp_username&officename=$office_name\">Change Password</a></td>
                 </tr>\n";
     echo "        <tr><td class=left_rows_indent height=18 align=left valign=middle><img src='../images/icons/arrow_right.png' alt='Delete User' />
-                &nbsp;&nbsp;<a class=admin_headings href=\"userdelete.php?username=$tmp_post_username&officename=$office_name\">Delete User</a></td></tr>\n";
+                &nbsp;&nbsp;<a class=admin_headings href=\"userdelete.php?username=$tmp_username&officename=$office_name\">Delete User</a></td></tr>\n";
     echo "        <tr><td class=left_rows_border_top height=18 align=left valign=middle><img src='../images/icons/user_add.png' alt='Create New User' />
                 &nbsp;&nbsp;<a class=admin_headings href='usercreate.php'>Create New User</a></td></tr>\n";
     echo "        <tr><td class=left_rows height=18 align=left valign=middle><img src='../images/icons/magnifier.png' alt='User Search' />&nbsp;&nbsp;
@@ -583,15 +551,15 @@ if ($request == 'GET') {
     echo "              </tr>\n";
     echo "              <tr><td height=15></td></tr>\n";
 
-    $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-	  where empfullname = '" . $post_username . "'
-          order by empfullname";
-    $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
-
+    $result4 = tc_select(
+        "empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled",
+        "employees",
+        "empfullname = ? ORDER BY empfullname",
+        $post_username
+    );
     while ($row = mysqli_fetch_array($result4)) {
-
-        $username = stripslashes("" . $row['empfullname'] . "");
-        $displayname = stripslashes("" . $row['displayname'] . "");
+        $username = "" . $row['empfullname'] . "";
+        $displayname = "" . $row['displayname'] . "";
         $user_email = "" . $row['email'] . "";
         $office = "" . $row['office'] . "";
         $groups = "" . $row['groups'] . "";
@@ -639,7 +607,7 @@ if ($request == 'GET') {
         $disabled = "No";
     }
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>User Account Disabled?</td><td align=left
-class=table_rows 
+class=table_rows
                       colspan=2 width=80% style='padding-left:20px;'>$disabled</td></tr>\n";
     echo "              <tr><td height=15></td></tr>\n";
     echo "            </table>\n";

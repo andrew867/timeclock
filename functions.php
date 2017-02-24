@@ -1,5 +1,118 @@
 <?php
 
+function _tc_bind_param($stmt, $params, $types) {
+    if (is_null($params)) {
+        $params = array();
+    }
+
+    if (!is_array($params)) {
+        $params = array($params);
+    }
+
+    if (empty($params)) { return; }
+
+    if (is_null($types)) {
+        $types = str_repeat("s", count($params));
+    }
+
+    $refs = array();
+    foreach ($params as $key => $value) {
+        $refs[$key] = &$params[$key];
+    }
+    array_unshift($refs, $types);
+    return call_user_func_array(array($stmt, 'bind_param'), @$refs);
+}
+
+function tc_execute($query, $params = array(), $types = null) {
+    if (!($stmt = $GLOBALS["___mysqli_ston"]->prepare($query))) {
+        error_log("Failed to prepare $query: " . mysqli_error($GLOBALS["___mysqli_ston"]));
+        return false;
+    }
+    _tc_bind_param($stmt, $params, $types);
+    if (!$stmt->execute()) {
+        error_log("Failed to execute: " . $stmt->error);
+        return false;
+    }
+    return $stmt->close();
+}
+
+function tc_query($query, $params = array(), $types = null) {
+    if (!($stmt = $GLOBALS["___mysqli_ston"]->prepare($query))) {
+        error_log("Failed to prepare $query: " . mysqli_error($GLOBALS["___mysqli_ston"]));
+        return false;
+    }
+    _tc_bind_param($stmt, $params, $types);
+    if (!$stmt->execute()) {
+        error_log("Failed to execute: " . $stmt->error);
+        return false;
+    }
+    return $stmt->get_result();
+}
+
+function tc_select($what, $from, $where = '1=1', $params = array(), $types = null) {
+    global $db_prefix;
+    return tc_query("SELECT $what FROM ${db_prefix}$from WHERE $where", $params, $types);
+}
+
+function tc_select_value($what, $from, $where = '1=1', $params = array(), $types = null) {
+    global $db_prefix;
+    $result = tc_query("SELECT $what FROM ${db_prefix}$from WHERE $where", $params, $types);
+    $value = null;
+    while ($row = mysqli_fetch_array($result)) {
+        $value = $row[0];
+    }
+    return $value;
+}
+
+function tc_delete($from, $where, $params = array(), $types = null) {
+    global $db_prefix;
+    return tc_query("DELETE FROM ${db_prefix}$from WHERE $where", $params, $types);
+}
+
+function tc_insert_strings($db, $keyvals) {
+    global $db_prefix;
+    $keys = '';
+    $places = '';
+    $types = '';
+    $values = array();
+    foreach ($keyvals as $key => $value) {
+        if (!empty($keys)) {
+            $keys .= ",";
+            $places .= ",";
+        }
+        $keys .= "`$key`";
+        $places .= "?";
+        $types .= "s";
+        $values[] = "$value";
+    }
+    tc_execute("INSERT INTO ${db_prefix}$db ($keys) VALUES ($places)", $values, $types);
+    return mysqli_insert_id($GLOBALS["___mysqli_ston"]);
+}
+
+function tc_update_strings($db, $keyvals, $where = '1=1', $bind = array(), $types = null) {
+    global $db_prefix;
+    $places = '';
+    $set_types = '';
+    $values = array();
+    foreach ($keyvals as $key => $value) {
+        if (!empty($places)) {
+            $places .= ",";
+        }
+        $places .= "`$key` = ?";
+        $set_types .= "s";
+        $values[] = "$value";
+    }
+    if (!is_array($bind)) {
+        $bind = array($bind);
+    }
+    if (!is_null($types)) {
+        $types = $set_types . $types;
+    }
+    tc_execute("UPDATE ${db_prefix}$db SET $places WHERE $where", array_merge($values, $bind), $types);
+}
+
+
+
 function secsToHours($secs, $round_time) {
 
     /* The logic for this function was written by Adam Woodbeck, who initially wrote it to round to the

@@ -40,11 +40,9 @@ if ($request == 'GET') {
 
     $get_status = $_GET['statusname'];
 
-    $query = "select * from " . $db_prefix . "punchlist where punchitems = '" . $get_status . "'";
-    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+    $result = tc_select("*", "punchlist", "punchitems = ?", $get_status);
 
     while ($row = mysqli_fetch_array($result)) {
-
         $punchitem = "" . $row['punchitems'] . "";
         $color = "" . $row['color'] . "";
         $in_or_out = "" . $row['in_or_out'] . "";
@@ -147,12 +145,7 @@ if ($request == 'GET') {
     // begin post validation //
 
     if (!empty($get_status)) {
-        $query = "select * from " . $db_prefix . "punchlist where punchitems = '" . $get_status . "'";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-        while ($row = mysqli_fetch_array($result)) {
-            $getstatus = "" . $row['punchitems'] . "";
-        }
-        ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
+        $getstatus = tc_select_value("punchitems", "punchlist", "punchitems = ?", $get_status);
         if (!isset($getstatus)) {
             echo "Status is not defined.\n";
             exit;
@@ -163,12 +156,7 @@ if ($request == 'GET') {
         exit;
     }
 
-    if (get_magic_quotes_gpc()) {
-        $post_statusname = stripslashes($post_statusname);
-    }
-    $post_statusname = addslashes($post_statusname);
-
-    $string = strstr($post_statusname, "\'");
+    $string  = strstr($post_statusname, "'");
     $string2 = strstr($post_statusname, "\"");
 
     if ((empty($post_statusname)) || (empty($post_color)) || (!preg_match('/' . "^([[:alnum:]]| |-|_|.)+$" . '/i', $post_statusname)) ||
@@ -260,13 +248,6 @@ if ($request == 'GET') {
             echo "            </table>\n";
         }
 
-        if (!empty($string)) {
-            $post_statusname = stripslashes($post_statusname);
-        }
-        if (!empty($string2)) {
-            $post_statusname = stripslashes($post_statusname);
-        }
-
         echo "            <br />\n";
         echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
         echo "            <form name='form' action='$self' method='post'>\n";
@@ -295,13 +276,6 @@ if ($request == 'GET') {
             exit;
         }
 
-        if (!empty($string)) {
-            $post_statusname = stripslashes($post_statusname);
-        }
-        if (!empty($string2)) {
-            $post_statusname = stripslashes($post_statusname);
-        }
-
         echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
         echo "            </table>\n";
         echo "            <script language=\"javascript\">cp.writeDiv()</script>\n";
@@ -317,12 +291,21 @@ if ($request == 'GET') {
 
     } else {
 
-        $query = "update " . $db_prefix . "punchlist set punchitems = ('" . $post_statusname . "'), color = ('" . $post_color . "'), in_or_out = ('" . $create_status . "')
-          where punchitems  = ('" . $get_status . "')";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        tc_update_strings(
+            "punchlist",
+            array(
+                "punchitems" => $post_statusname,
+                "color"      => $post_color,
+                "in_or_out"  => $create_status
+            ),
+            "punchitems = ?", $get_status
+        );
 
-        $query2 = "update " . $db_prefix . "info set `inout` = ('" . $post_statusname . "') where `inout` = ('" . $get_status . "')";
-        $result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
+        tc_update_strings(
+            "info",
+            array("inout" => $post_statusname),
+            "`inout` = ?", $get_status
+        );
 
         echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
         echo "  <tr valign=top>\n";

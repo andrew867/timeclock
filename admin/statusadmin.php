@@ -79,8 +79,7 @@ echo "                <th class=table_heading nowrap width=3% align=center>Delet
 
 $row_count = 0;
 
-$query = "select * from " . $db_prefix . "punchlist";
-$result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+$result = tc_select("*", "punchlist");
 
 while ($row = mysqli_fetch_array($result)) {
 

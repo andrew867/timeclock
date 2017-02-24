@@ -7,11 +7,17 @@ $request = $_SERVER['REQUEST_METHOD'];
 
 // set cookie if 'Remember Me?' checkbox is checked, or reset cookie if 'Reset Cookie?' is checked //
 
+if ($show_display_name == "yes") {
+    $emp_name_field = "displayname";
+} else {
+    $emp_name_field = "empfullname";
+}
+
 if ($request == 'POST') {
     @$remember_me = $_POST['remember_me'];
     @$reset_cookie = $_POST['reset_cookie'];
-    @$fullname = stripslashes($_POST['left_fullname']);
-    @$displayname = stripslashes($_POST['left_displayname']);
+    @$fullname = $_POST['left_fullname'];
+    @$displayname = $_POST['left_displayname'];
     if ((isset($remember_me)) && ($remember_me != '1')) {
         echo "Something is fishy here.\n";
         exit;
@@ -26,35 +32,23 @@ if ($request == 'POST') {
     if ($show_display_name == "yes") {
 
         if (isset($displayname)) {
-            $displayname = addslashes($displayname);
-            $query = "select displayname from " . $db_prefix . "employees where displayname = '" . $displayname . "'";
-            $emp_name_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-
-            while ($row = mysqli_fetch_array($emp_name_result)) {
-                $tmp_displayname = "" . $row['displayname'] . "";
-            }
+            $tmp_displayname = tc_select_value("displayname", "employees", "displayname = ?", $displayname);
             if ((!isset($tmp_displayname)) && (!empty($displayname))) {
                 echo "Username is not in the database.\n";
                 exit;
             }
-            $displayname = stripslashes($displayname);
+            $emp_name = $tmp_displayname;
         }
 
     } elseif ($show_display_name == "no") {
 
         if (isset($fullname)) {
-            $fullname = addslashes($fullname);
-            $query = "select empfullname from " . $db_prefix . "employees where empfullname = '" . $fullname . "'";
-            $emp_name_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-
-            while ($row = mysqli_fetch_array($emp_name_result)) {
-                $tmp_empfullname = "" . $row['empfullname'] . "";
-            }
+            $tmp_empfullname = tc_select_value("empfullname", "employees", "empfullname = ?", $fullname);
             if ((!isset($tmp_empfullname)) && (!empty($fullname))) {
                 echo "Username is not in the database.\n";
                 exit;
             }
-            $fullname = stripslashes($fullname);
+            $emp_name = $tmp_empfullname;
         }
 
     }
@@ -62,13 +56,7 @@ if ($request == 'POST') {
     // end post validation //
 
     if (isset($remember_me)) {
-
-        if ($show_display_name == "yes") {
-            setcookie("remember_me", stripslashes($displayname), time() + (60 * 60 * 24 * 365 * 2));
-        } elseif ($show_display_name == "no") {
-            setcookie("remember_me", stripslashes($fullname), time() + (60 * 60 * 24 * 365 * 2));
-        }
-
+        setcookie("remember_me", $emp_name, time() + (60 * 60 * 24 * 365 * 2));
     } elseif (isset($reset_cookie)) {
         setcookie("remember_me", "", time() - 3600);
     }
@@ -115,50 +103,26 @@ echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
 // query to populate dropdown with employee names //
 
 if ($show_display_name == "yes") {
-
-    $query = "select displayname from " . $db_prefix . "employees where disabled <> '1'  and empfullname <> 'admin' order by displayname";
-    $emp_name_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
     echo "              <select name='left_displayname' tabindex=1>\n";
-    echo "              <option value =''>...</option>\n";
-
-    while ($row = mysqli_fetch_array($emp_name_result)) {
-
-        $abc = stripslashes("" . $row['displayname'] . "");
-
-        if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $abc)) {
-            echo "              <option selected>$abc</option>\n";
-        } else {
-            echo "              <option>$abc</option>\n";
-        }
-
-    }
-
-    echo "              </select></td></tr>\n";
-    ((mysqli_free_result($emp_name_result) || (is_object($emp_name_result) && (get_class($emp_name_result) == "mysqli_result"))) ? true : false);
-    echo "        <tr><td height=7></td></tr>\n";
-
 } else {
-
-    $query = "select empfullname from " . $db_prefix . "employees where disabled <> '1'  and empfullname <> 'admin' order by empfullname";
-    $emp_name_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
     echo "              <select name='left_fullname' tabindex=1>\n";
-    echo "              <option value =''>...</option>\n";
-
-    while ($row = mysqli_fetch_array($emp_name_result)) {
-
-        $def = stripslashes("" . $row['empfullname'] . "");
-        if ((isset($_COOKIE['remember_me'])) && (stripslashes($_COOKIE['remember_me']) == $def)) {
-            echo "              <option selected>$def</option>\n";
-        } else {
-            echo "              <option>$def</option>\n";
-        }
-
-    }
-
-    echo "              </select></td></tr>\n";
-    ((mysqli_free_result($emp_name_result) || (is_object($emp_name_result) && (get_class($emp_name_result) == "mysqli_result"))) ? true : false);
-    echo "        <tr><td height=7></td></tr>\n";
 }
+
+$emp_name_result = tc_select($emp_name_field, "employees", "disabled <> '1' AND empfullname <> 'admin' ORDER BY $emp_name_field");
+echo "              <option value =''>...</option>\n";
+while ($row = mysqli_fetch_array($emp_name_result)) {
+    $abc = "" . $row[$emp_name_field] . "";
+
+    if ((isset($_COOKIE['remember_me'])) && ($_COOKIE['remember_me'] == $abc)) {
+        echo "              <option selected>$abc</option>\n";
+    } else {
+        echo "              <option>$abc</option>\n";
+    }
+}
+echo "              </select></td></tr>\n";
+((mysqli_free_result($emp_name_result) || (is_object($emp_name_result) && (get_class($emp_name_result) == "mysqli_result"))) ? true : false);
+echo "        <tr><td height=7></td></tr>\n";
+
 
 // determine whether to use encrypted passwords or not //
 
@@ -174,8 +138,7 @@ echo "        <tr><td height=4 align=left valign=middle class=misc_items>\n";
 
 // query to populate dropdown with punchlist items //
 
-$query = "select punchitems from " . $db_prefix . "punchlist";
-$punchlist_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+$punchlist_result = tc_select("punchitems",  "punchlist");
 
 echo "              <select name='left_inout' tabindex=3>\n";
 echo "              <option value =''>...</option>\n";
@@ -194,18 +157,18 @@ echo "<input type='text' name='left_notes' maxlength='250' size='17' tabindex=4>
 
 if (!isset($_COOKIE['remember_me'])) {
     echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-                  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Remember&nbsp;Me?</td><td width=90% align=left 
+                  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Remember&nbsp;Me?</td><td width=90% align=left
                     class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='remember_me' value='1'></td></tr>
                     </table></td><tr>\n";
 } elseif (isset($_COOKIE['remember_me'])) {
     echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-                  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Reset&nbsp;Cookie?</td><td width=90% align=left 
+                  <tr><td nowrap height=4 align=left valign=middle class=misc_items width=10%>Reset&nbsp;Cookie?</td><td width=90% align=left
                     class=misc_items style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='reset_cookie' value='1'></td></tr>
                     </table></td><tr>\n";
 }
 
 echo "        <tr><td height=7></td></tr>\n";
-echo "        <tr><td height=4 align=left valign=middle class=misc_items><input type='submit' name='submit_button' value='Submit' align='center' 
+echo "        <tr><td height=4 align=left valign=middle class=misc_items><input type='submit' name='submit_button' value='Submit' align='center'
                 tabindex=6></td></tr></form>\n";
 
 
@@ -232,8 +195,7 @@ if ($request == 'POST') {
         $employee_passwd = crypt($_POST['employee_passwd'], 'xy');
     }
 
-    $query = "select punchitems from " . $db_prefix . "punchlist";
-    $punchlist_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+    $punchlist_result = tc_select("punchitems", "punchlist");
 
     while ($row = mysqli_fetch_array($punchlist_result)) {
         $tmp_inout = "" . $row['punchitems'] . "";
@@ -307,9 +269,6 @@ if ($request == 'POST') {
         exit;
     }
 
-    @$fullname = addslashes($fullname);
-    @$displayname = addslashes($displayname);
-
     // configure timestamp to insert/update //
 
     $time = time();
@@ -324,28 +283,16 @@ if ($request == 'POST') {
     if ($use_passwd == "no") {
 
         if ($show_display_name == "yes") {
-
-            $sel_query = "select empfullname from " . $db_prefix . "employees where displayname = '" . $displayname . "'";
-            $sel_result = mysqli_query($GLOBALS["___mysqli_ston"], $sel_query);
-
-            while ($row = mysqli_fetch_array($sel_result)) {
-                $fullname = stripslashes("" . $row["empfullname"] . "");
-                $fullname = addslashes($fullname);
-            }
+            $fullname = tc_select_value("empfullname", "employees", "displayname = ?", $displayname);
         }
 
+        $clockin = array("fullname" => $fullname, "inout" => $inout, "timestamp" => $tz_stamp, "notes" => $notes);
         if (strtolower($ip_logging) == "yes") {
-            $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes, ipaddress) values ('" . $fullname . "', '" . $inout . "',
-                      '" . $tz_stamp . "', '" . $notes . "', '" . $connecting_ip . "')";
-        } else {
-            $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes) values ('" . $fullname . "', '" . $inout . "', '" . $tz_stamp . "',
-                      '" . $notes . "')";
+            $clockin["ipaddress"] = $connecting_ip;
         }
 
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-
-        $update_query = "update " . $db_prefix . "employees set tstamp = '" . $tz_stamp . "' where empfullname = '" . $fullname . "'";
-        $other_result = mysqli_query($GLOBALS["___mysqli_ston"], $update_query);
+        tc_insert_strings("info", $clockin);
+        tc_update_strings("employees", array("tstamp" => $tz_stamp), "empfullname = ?", $fullname);
 
         echo "<head>\n";
         echo "<meta http-equiv='refresh' content=0;url=index.php>\n";
@@ -353,43 +300,26 @@ if ($request == 'POST') {
 
     } else {
 
-        if ($show_display_name == "yes") {
-            $sel_query = "select empfullname, employee_passwd from " . $db_prefix . "employees where displayname = '" . $displayname . "'";
-            $sel_result = mysqli_query($GLOBALS["___mysqli_ston"], $sel_query);
-
-            while ($row = mysqli_fetch_array($sel_result)) {
-                $tmp_password = "" . $row["employee_passwd"] . "";
-                $fullname = "" . $row["empfullname"] . "";
-            }
-
-            $fullname = stripslashes($fullname);
-            $fullname = addslashes($fullname);
-
-        } else {
-
-            $sel_query = "select empfullname, employee_passwd from " . $db_prefix . "employees where empfullname = '" . $fullname . "'";
-            $sel_result = mysqli_query($GLOBALS["___mysqli_ston"], $sel_query);
-
-            while ($row = mysqli_fetch_array($sel_result)) {
-                $tmp_password = "" . $row["employee_passwd"] . "";
-            }
-
+        $sel_result = tc_select(
+            "empfullname, employee_passwd",
+            "employees",
+            "$emp_name_field = ?",
+            $emp_name
+        );
+        while ($row = mysqli_fetch_array($sel_result)) {
+            $tmp_password = "" . $row["employee_passwd"] . "";
+            $fullname = "" . $row["empfullname"] . "";
         }
 
         if ($employee_passwd == $tmp_password) {
 
+            $clockin = array("fullname" => $fullname, "inout" => $inout, "timestamp" => $tz_stamp, "notes" => $notes);
             if (strtolower($ip_logging) == "yes") {
-                $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes, ipaddress) values ('" . $fullname . "', '" . $inout . "',
-                      '" . $tz_stamp . "', '" . $notes . "', '" . $connecting_ip . "')";
-            } else {
-                $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes) values ('" . $fullname . "', '" . $inout . "', '" . $tz_stamp . "',
-                      '" . $notes . "')";
+                $clockin["ipaddress"] = $connecting_ip;
             }
 
-            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-
-            $update_query = "update " . $db_prefix . "employees set tstamp = '" . $tz_stamp . "' where empfullname = '" . $fullname . "'";
-            $other_result = mysqli_query($GLOBALS["___mysqli_ston"], $update_query);
+            tc_insert_strings("info", $clockin);
+            tc_update_strings("employees", array("tstamp" => $tz_stamp), "empfullname = ?", $fullname);
 
             echo "<head>\n";
             echo "<meta http-equiv='refresh' content=0;url=index.php>\n";
@@ -402,14 +332,7 @@ if ($request == 'POST') {
             echo "        <tr class=right_main_text>\n";
             echo "          <td valign=top>\n";
             echo "<br />\n";
-
-            if ($show_display_name == "yes") {
-                $strip_fullname = stripslashes($displayname);
-            } else {
-                $strip_fullname = stripslashes($fullname);
-            }
-
-            echo "You have entered the wrong password for $strip_fullname. Please try again.";
+            echo "You have entered the wrong password for $emp_name. Please try again.";
             include 'footer.php';
             exit;
         }

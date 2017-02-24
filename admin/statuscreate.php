@@ -153,16 +153,11 @@ if ($request == 'GET') {
         exit;
     }
 
-    $post_statusname = stripslashes($post_statusname);
-    $post_statusname = addslashes($post_statusname);
-
-    $string = strstr($post_statusname, "\'");
+    $string  = strstr($post_statusname, "'");
     $string2 = strstr($post_statusname, "\"");
 
     if (empty($string)) {
-        $query = "select punchitems from " . $db_prefix . "punchlist where punchitems = '" . $post_statusname . "'";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-
+        $result = tc_select("punchitems", "punchlist", "punchitems = ?", $post_statusname);
         while ($row = mysqli_fetch_array($result)) {
             $dupe = '1';
         }
@@ -213,13 +208,6 @@ if ($request == 'GET') {
             echo "            </table>\n";
         }
 
-        if (!empty($string)) {
-            $post_statusname = stripslashes($post_statusname);
-        }
-        if (!empty($string2)) {
-            $post_statusname = stripslashes($post_statusname);
-        }
-
         echo "            <br />\n";
         echo "            <form name='form' action='$self' method='post'>\n";
         echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
@@ -244,13 +232,6 @@ if ($request == 'GET') {
                       <input checked type='radio' name='create_status' value='0'>Out</td></tr>\n";
         }
 
-        if (!empty($string)) {
-            $post_statusname = stripslashes($post_statusname);
-        }
-        if (!empty($string2)) {
-            $post_statusname = stripslashes($post_statusname);
-        }
-
         echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
         echo "            </table>\n";
         echo "            <script language=\"javascript\">cp.writeDiv()</script>\n";
@@ -264,9 +245,7 @@ if ($request == 'GET') {
         exit;
 
     } else {
-
-        $query = "insert into " . $db_prefix . "punchlist (punchitems, color, in_or_out) values ('" . $post_statusname . "', '" . $post_color . "', '" . $create_status . "')";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        $result = tc_insert_strings("punchlist", array("punchitems" => $post_statusname, "color" => $post_color, "in_or_out" => $create_status));
 
         echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr>\n";
