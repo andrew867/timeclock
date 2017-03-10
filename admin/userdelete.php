@@ -98,6 +98,7 @@ if ($request == 'GET') {
         $username = "" . $row['empfullname'] . "";
         $displayname = "" . $row['displayname'] . "";
         $user_email = "" . $row['email'] . "";
+        $user_barcode = "" . $row['barcode'] . "";
         $office = "" . $row['office'] . "";
         $groups = "" . $row['groups'] . "";
         $admin = "" . $row['admin'] . "";
@@ -136,6 +137,8 @@ if ($request == 'GET') {
                       width=80% style='padding-left:20px;'><input type='hidden' name='display_name' value=\"$displayname\">$displayname</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Email Address:</td><td align=left class=table_rows
                       width=80% style='padding-left:20px;'><input type='hidden' name='email_addy' value=\"$user_email\">$user_email</td></tr>\n";
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td><td align=left class=table_rows
+                      width=80% style='padding-left:20px;'><input type='hidden' name='barcode' value=\"$user_barcode\">$user_barcode</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Office:</td><td align=left class=table_rows
                       width=80% style='padding-left:20px;'><input type='hidden' name='office_name' value=\"$office\">$office</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Group:</td><td align=left class=table_rows
@@ -188,6 +191,7 @@ if ($request == 'GET') {
     $post_username = $_POST['post_username'];
     $display_name = $_POST['display_name'];
     $email_addy = $_POST['email_addy'];
+    $user_barcode = $_POST['barcode'];
     $office_name = $_POST['office_name'];
     $group_name = $_POST['group_name'];
     $admin_perms = $_POST['admin_perms'];

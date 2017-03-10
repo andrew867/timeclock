@@ -111,7 +111,46 @@ function tc_update_strings($db, $keyvals, $where = '1=1', $bind = array(), $type
     tc_execute("UPDATE ${db_prefix}$db SET $places WHERE $where", array_merge($values, $bind), $types);
 }
 
+function btag($tag, $attr = array()) {
+    $begin = array(htmlentities($tag));
+    foreach ($attr as $key => $value) {
+        $begin[] = htmlentities($key) . "=\"" . htmlentities($value) . "\"";
+    }
+    return "<" . implode(" ", $begin) . ">";
+}
 
+function tag($tag, $content = "", $attr = array()) {
+    return btag($tag, $attr) . htmlentities($content) . "</" . htmlentities($tag) . ">";
+}
+
+function html_options($result, $selected='') {
+    $rv = array();
+    while ($row = mysqli_fetch_array($result)) {
+        $value = htmlentities($row[0]);
+        $display = htmlentities(is_null(@$row[1]) ? $row[0] : $row[1]);
+        $sel = ($row[0] == $selected) ? " selected" : "";
+        $rv[] = "<option value=\"$value\"$sel>$display</option>\n";
+    }
+    return implode("", $rv);
+}
+
+function yes_no_bool($val, $default=false) {
+    if (strtolower(@$val) == 'yes') {
+        return true;
+    }
+    if (strtolower(@$val) == 'no') {
+        return false;
+    }
+    return $default;
+}
+
+function value_or_null($val) {
+    return ((strlen(trim(@$val)) == 0) ? null : $val);
+}
+
+function has_value($val) {
+    return (strlen(trim(@$val)) != 0);
+}
 
 function secsToHours($secs, $round_time) {
 

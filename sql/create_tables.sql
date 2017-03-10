@@ -46,6 +46,7 @@ CREATE TABLE `employees` (
   `employee_passwd` varchar(25) COLLATE utf8_bin NOT NULL DEFAULT '',
   `displayname` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '',
   `email` varchar(75) COLLATE utf8_bin NOT NULL DEFAULT '',
+  `barcode` varchar(75) COLLATE utf8_bin UNIQUE,
   `groups` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '',
   `office` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '',
   `admin` tinyint(1) NOT NULL DEFAULT '0',
@@ -114,6 +115,7 @@ CREATE TABLE `offices` (
 
 CREATE TABLE `punchlist` (
   `punchitems` varchar(50) PRIMARY KEY COLLATE utf8_bin,
+  `punchnext` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '',
   `color` varchar(7) COLLATE utf8_bin NOT NULL DEFAULT '',
   `in_or_out` tinyint(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -125,7 +127,7 @@ CREATE TABLE `punchlist` (
 --
 
 INSERT INTO employees VALUES ('admin', NULL, 'xy.RY2HT1QTc2', 'administrator', '', '', '', 1, 1, 1, '');
-INSERT INTO dbversion VALUES ('1.4');
+INSERT INTO dbversion VALUES ('1.5');
 INSERT INTO punchlist VALUES ('in', '#009900', 1);
 INSERT INTO punchlist VALUES ('out', '#FF0000', 0);
 INSERT INTO punchlist VALUES ('break', '#FF9900', 0);

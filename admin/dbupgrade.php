@@ -253,6 +253,7 @@ if (!empty($count)) {
         $changes_made += ensure_field("employees", "employee_passwd",  "varchar(25)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
         $changes_made += ensure_field("employees", "displayname",      "varchar(50)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
         $changes_made += ensure_field("employees", "email",            "varchar(75)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("employees", "barcode",          "varchar(75)", "COLLATE utf8_bin UNIQUE");
         $changes_made += ensure_field("employees", "groups",           "varchar(50)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
         $changes_made += ensure_field("employees", "office",           "varchar(50)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
         $changes_made += ensure_field("employees", "admin",            "tinyint(1)",  "NOT NULL DEFAULT '0'");
@@ -320,6 +321,7 @@ if (!empty($count)) {
         $changes_made += ensure_table("punchlist", "punchitems varchar(50) PRIMARY KEY COLLATE utf8_bin");
 
         $changes_made += ensure_field("punchlist", "punchitems", "varchar(50)", "PRIMARY KEY COLLATE utf8_bin");
+        $changes_made += ensure_field("punchlist", "punchnext",  "varchar(50)", "varchar(50) COLLATE utf8_bin NOT NULL DEFAULT ''");
         $changes_made += ensure_field("punchlist", "color",      "varchar(7)",  "COLLATE utf8_bin NOT NULL DEFAULT ''");
         $changes_made += ensure_field("punchlist", "in_or_out",  "tinyint(1)",  "DEFAULT NULL");
 

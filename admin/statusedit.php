@@ -46,6 +46,7 @@ if ($request == 'GET') {
         $punchitem = "" . $row['punchitems'] . "";
         $color = "" . $row['color'] . "";
         $in_or_out = "" . $row['in_or_out'] . "";
+        $punchnext = "" . $row['punchnext'] . "";
     }
 
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
@@ -123,6 +124,10 @@ if ($request == 'GET') {
         exit;
     }
 
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>On Punch Become:</td><td colspan=2 width=80%
+                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><select name='punchnext'>\n";
+    echo "            <option value =''>...</option>" . html_options(tc_select("punchitems",  "punchlist"), $punchnext) . "</select></td></tr>\n";
+
     echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
     echo "            </table>\n";
     echo "            <script language=\"javascript\">cp.writeDiv()</script>\n";
@@ -141,6 +146,7 @@ if ($request == 'GET') {
     $post_statusname = $_POST['post_statusname'];
     $post_color = $_POST['post_color'];
     $create_status = $_POST['create_status'];
+    $punchnext = $_POST['punchnext'];
 
     // begin post validation //
 
@@ -152,6 +158,12 @@ if ($request == 'GET') {
         }
     }
 
+    $punchnext_ok = true;
+    if (has_value($punchnext)) {
+        $punchnext_ok = ($punchnext == tc_select_value("punchitems", "punchlist", "punchitems = ?", $punchnext));
+    }
+
+
     if (($create_status !== '0') && ($create_status !== '1')) {
         exit;
     }
@@ -161,6 +173,7 @@ if ($request == 'GET') {
 
     if ((empty($post_statusname)) || (empty($post_color)) || (!preg_match('/' . "^([[:alnum:]]| |-|_|.)+$" . '/i', $post_statusname)) ||
         ((!preg_match('/' . "^(#[a-fA-F0-9]{6})+$" . '/i', $post_color)) && (!preg_match('/' . "^([a-fA-F0-9]{6})+$" . '/i', $post_color))) || (!empty($string)) || (!empty($string2))
+        || !$punchnext_ok
     ) {
 
         echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
@@ -246,6 +259,11 @@ if ($request == 'GET') {
             echo "              <tr><td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
                     Double Quotes are not allowed.</td></tr>\n";
             echo "            </table>\n";
+        } elseif (!$punchnext_ok) {
+            echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
+            echo "              <tr><td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
+                    \"On Punch\" target is invalid!</td></tr>\n";
+            echo "            </table>\n";
         }
 
         echo "            <br />\n";
@@ -276,6 +294,10 @@ if ($request == 'GET') {
             exit;
         }
 
+        echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>On Punch Become:</td><td colspan=2 width=80%
+                          style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><select name='punchnext'>\n";
+        echo "            <option value =''>...</option>" . html_options(tc_select("punchitems",  "punchlist"), $punchnext) . "</select></td></tr>\n";
+
         echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
         echo "            </table>\n";
         echo "            <script language=\"javascript\">cp.writeDiv()</script>\n";
@@ -296,16 +318,19 @@ if ($request == 'GET') {
             array(
                 "punchitems" => $post_statusname,
                 "color"      => $post_color,
-                "in_or_out"  => $create_status
+                "in_or_out"  => $create_status,
+                "punchnext"  => $punchnext
             ),
             "punchitems = ?", $get_status
         );
 
-        tc_update_strings(
-            "info",
-            array("inout" => $post_statusname),
-            "`inout` = ?", $get_status
-        );
+        if ($post_statusname != $get_status) {
+            tc_update_strings(
+                "info",
+                array("inout" => $post_statusname),
+                "`inout` = ?", $get_status
+            );
+        }
 
         echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
         echo "  <tr valign=top>\n";
@@ -380,6 +405,8 @@ if ($request == 'GET') {
 
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Is Status considered '<b>In</b>' or
                       '<b>Out</b>'?</td><td align=left class=table_rows colspan=2 width=80% style='padding-left:20px;'>$create_status_tmp</td></tr>\n";
+        echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>On Punch:</td><td align=left class=table_rows
+                      colspan=2 width=80% style='padding-left:20px;'>$punchnext</td></tr>\n";
         echo "              <tr><td height=15></td></tr>\n";
         echo "            </table>\n";
         echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";

@@ -103,6 +103,7 @@ if ($request == 'GET') {
         $username = "" . $row['empfullname'] . "";
         $displayname = "" . $row['displayname'] . "";
         $user_email = "" . $row['email'] . "";
+        $user_barcode = "" . $row['barcode'] . "";
         $groups_tmp = "" . $row['groups'] . "";
         $office = "" . $row['office'] . "";
         $admin = "" . $row['admin'] . "";
@@ -144,6 +145,9 @@ if ($request == 'GET') {
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Email Address:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
                       <input type='text' size='25' maxlength='75' name='email_addy' value='$user_email'>&nbsp;*</td></tr>\n";
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td><td colspan=2 width=80%
+                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+                      <input type='text' size='25' maxlength='75' name='barcode' value='$user_barcode'></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Office:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
                       <select name='office_name' onchange='group_names();'>
@@ -225,6 +229,7 @@ if ($request == 'GET') {
     $post_username = $_POST['post_username'];
     $display_name = $_POST['display_name'];
     $email_addy = $_POST['email_addy'];
+    $user_barcode = value_or_null($_POST['barcode']);// UNIQUE constraint so no empty strings
     $office_name = $_POST['office_name'];
     @$get_office = $_POST['get_office'];
     @$group_name = $_POST['group_name'];
@@ -417,6 +422,9 @@ if ($request == 'GET') {
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Email Address:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
                       <input type='text' size='25' maxlength='75' name='email_addy' value='$email_addy'>&nbsp;*</td></tr>\n";
+        echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td><td colspan=2 width=80%
+                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+                      <input type='text' size='25' maxlength='75' name='barcode' value='$user_barcode'></td></tr>\n";
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Office:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
                       <select name='office_name' onchange='group_names();'>\n";
@@ -480,6 +488,7 @@ if ($request == 'GET') {
     tc_update_strings("employees", array(
         'displayname' => $display_name,
         'email'       => $email_addy,
+        'barcode'     => $user_barcode,
         'groups'      => $group_name,
         'office'      => $office_name,
         'admin'       => $admin_perms,
@@ -552,7 +561,7 @@ if ($request == 'GET') {
     echo "              <tr><td height=15></td></tr>\n";
 
     $result4 = tc_select(
-        "empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled",
+        "empfullname, displayname, email, barcode, groups, office, admin, reports, time_admin, disabled",
         "employees",
         "empfullname = ? ORDER BY empfullname",
         $post_username
@@ -561,6 +570,7 @@ if ($request == 'GET') {
         $username = "" . $row['empfullname'] . "";
         $displayname = "" . $row['displayname'] . "";
         $user_email = "" . $row['email'] . "";
+        $user_barcode = "" . $row['barcode'] . "";
         $office = "" . $row['office'] . "";
         $groups = "" . $row['groups'] . "";
         $admin = "" . $row['admin'] . "";
@@ -576,6 +586,8 @@ if ($request == 'GET') {
                       colspan=2 width=80% style='padding-left:20px;'>$displayname</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Email Address:</td><td align=left class=table_rows
                       colspan=2 width=80% style='padding-left:20px;'>$user_email</td></tr>\n";
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td><td align=left class=table_rows
+                      colspan=2 width=80% style='padding-left:20px;'>$user_barcode</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Office:</td><td align=left class=table_rows
                       colspan=2 width=80% style='padding-left:20px;'>$office</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Group:</td><td align=left class=table_rows
