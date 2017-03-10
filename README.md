@@ -1,6 +1,6 @@
 # About
 
-This project is PHP Timeclock v1.04 with the Punchclock v0.8 add-on already installed.
+This project is PHP Timeclock with the Punchclock add-on already installed.
 
 # This Fork
 
@@ -56,8 +56,6 @@ Punchclock enhances PHP Timeclock with 5 extra features:
  - Flexible export to your spreadsheet or business software.
     
 ## PHP Timeclock source credits
-- Version 1.04
-- http://sourceforge.net/projects/timeclock
 - Copyright (C) 2006 Ken Papizan <pappyzan_at_users.sourceforge.net>
 
 
@@ -102,7 +100,7 @@ version than what's tested or later, will probably work fine.
     certain users can run them, then give these users reports level access. 
 
 
-### Migration from another verison of 1.04 (ie: old official release)
+### Migration from another verison (ie: old official release)
 
  -  Backup your current install directory and database.
  -  Delete all files in your current install directory.

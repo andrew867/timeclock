@@ -1,10 +1,13 @@
-PHP Timeclock
-Version 1.04
-http://sourceforge.net/projects/timeclock
+PHP Timeclock Changelog
 Copyright (C) 2006 Ken Papizan <pappyzan_at_users.sourceforge.net>
 
 
-PHP Timeclock Changelog
+PHP Timeclock  2.0.0  released 2017-03-09
+
+  * Barcode punch in/out
+
+
+
 
 1.04  11/15/07
 -----------------------
