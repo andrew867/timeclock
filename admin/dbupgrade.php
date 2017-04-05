@@ -6,6 +6,73 @@ include 'header.php';
 include 'topmain.php';
 echo "<title>$title - Upgrade Database</title>\n";
 
+function msg_changed($msg) {
+    echo "<tr><td width=10 class=table_rows style='padding-left:25px;color:#0000FF;font-weight:bold;'>Changed</td><td class=table_rows align=left>:&nbsp;$msg</td></tr>\n";
+}
+
+function msg_added($msg) {
+    echo "<tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows align=left>:&nbsp;$msg</td></tr>\n";
+}
+
+function msg_converted($msg) {
+    echo "<tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Converted</td><td class=table_rows align=left>:&nbsp;$msg</td></tr>\n";
+}
+
+// Ensure that the corresponding table exists, creates it if missing.
+// Note: need not create all columns since we will add any missing columns
+// with ensure_field.
+function ensure_table($table, $columns, $engine = "ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin") {
+    global $db_name;
+    global $db_prefix;
+    $rows = mysqli_num_rows(tc_query("SHOW TABLES LIKE '$db_prefix$table'"));
+
+    if (empty($rows)) {
+        tc_query("CREATE TABLE $db_prefix$table ($columns) $engine");
+        msg_added("<b>$table</b> table has been added to the <u>$db_name</u> database.");
+        return 1;
+    }
+    return 0;
+}
+
+// Ensure field is present and has correct type. Does not check other
+// attributes (NULL, default, ...)
+function ensure_field($table, $field, $type, $extra) {
+    global $db_prefix;
+    $result = tc_query("SHOW FIELDS FROM $db_prefix$table LIKE '$field'");
+
+    while ($row = mysqli_fetch_array($result)) {
+        $current_type = "" . $row['Type'] . "";
+        if (strtolower($type) !== strtolower($current_type)) {
+            tc_query("ALTER TABLE $db_prefix$table CHANGE `$field` `$field` $type $extra");
+            msg_changed("<b>$field</b> field in <u>$table</u> table has been changed from type $current_type to type $type.");
+            return 1;
+        }
+    }
+
+    if (empty($current_type)) {
+        tc_query("ALTER TABLE $db_prefix$table ADD `$field` $type $extra;");
+        msg_added("<b>$field</b> field has been added to the <u>$table</u> table.");
+        return 1;
+    }
+
+    return 0;
+}
+
+// Ensure a simple non-primary/non-unique index is present on the named
+// field. If a primary/unique index exists, we won't create another.
+function ensure_index($table, $field) {
+    global $db_prefix;
+    $rows = mysqli_num_rows(tc_query("SHOW INDEX FROM $db_prefix$table WHERE column_name = ?", $field));
+
+    if (empty($rows)) {
+        tc_query("CREATE INDEX {$db_prefix}{$table}_{$field} ON {$db_prefix}{$table} (`{$field}`)");
+        msg_added("INDEX has been added to the <u>{$table}.{$field}</u> column.");
+        return 1;
+    }
+    return 0;
+}
+
+
 $self = $_SERVER['PHP_SELF'];
 $request = $_SERVER['REQUEST_METHOD'];
 
@@ -22,11 +89,7 @@ if (!isset($_SESSION['valid_user'])) {
     exit;
 }
 
-$count = "0";
-$tmp_count = "0";
-$emp_tstamp_count = "0";
-$info_timestamp_count = "0";
-$passed_or_not = "0";
+$changes_made = 0;
 $gmt_offset = date('Z');
 
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
@@ -77,29 +140,26 @@ echo "            <br />\n";
 
 // determine the privileges of the PHP Timeclock user //
 
-$result = mysqli_query($GLOBALS["___mysqli_ston"], "show grants for current_user()");
+$count = "0";
+$result = tc_query("show grants for current_user()");
 while ($row = mysqli_fetch_array($result)) {
     $abc = stripslashes("" . $row["0"] . "");
     if (((preg_match("/\bgrant\b/i", $abc)) && (preg_match("/\bselect\b/i", $abc)) &&
          (preg_match("/\binsert\b/i", $abc)) && (preg_match("/\bupdate\b/i", $abc)) &&
          (preg_match("/\bdelete\b/i", $abc)) && (preg_match("/\bcreate\b/i", $abc)) &&
-         (preg_match("/\balter\b/i", $abc)) && (preg_match("/\bon `$db_name`\.\* to '$db_username'@'$db_hostname|%\b/i", $abc))) ||
-        (preg_match("/\bgrant all privileges on `$db_name`\.\* to '$db_username'@'$db_hostname|%' \b/i", $abc)) ||
-        (preg_match("/\bgrant all privileges on \*\.\* to '$db_username'@'$db_hostname|%' \b/i", $abc))
+         (preg_match("/\balter\b/i", $abc)) && (preg_match("/\bon `\Q$db_name`.*\E to '\Q$db_username\E'@/i", $abc))) ||
+        (preg_match("/\bgrant all privileges on \Q`$db_name`.*\E to '\Q$db_username\E'@'/i", $abc)) ||
+        (preg_match("/\bgrant all privileges on \*\.\* to '\Q$db_username\E'@/i", $abc))
     ) {
         $count++;
     }
 }
+
 if (!empty($count)) {
 
     if ($request == 'GET') {
 
-        $query_admin = "select empfullname from " . $db_prefix . "employees where empfullname = 'admin'";
-        $result_admin = mysqli_query($GLOBALS["___mysqli_ston"], $query_admin);
-
-        while ($row = mysqli_fetch_array($result_admin)) {
-            $user_admin = "" . $row["empfullname"] . "";
-        }
+        $user_admin = tc_select_value("empfullname", "employees", "empfullname = 'admin'");
 
         echo "            <form name='form' action='$self' method='post'>\n";
         echo "            <table align=center class=table_border width=60% border=0 cellpadding=3 cellspacing=0>\n";
@@ -153,360 +213,160 @@ if (!empty($count)) {
         echo "              <tr><td height=15></td></tr>\n";
 
 
-        // track the database changes that have been made since version 0.9 //
+        // TABLE: audit //
+        $changes_made += ensure_table("audit", "modified_when bigint(14)");
 
-        // employees table additions //
+        $changes_made += ensure_field("audit", "modified_when",    "bigint(14)",   "");
+        $changes_made += ensure_field("audit", "modified_from",    "bigint(14)",   "NOT NULL");
+        $changes_made += ensure_field("audit", "modified_to",      "bigint(14)",   "NOT NULL");
+        $changes_made += ensure_field("audit", "modified_by_ip",   "varchar(39)",  "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("audit", "modified_by_user", "varchar(50)",  "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("audit", "modified_why",     "varchar(250)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("audit", "user_modified",    "varchar(50)",  "COLLATE utf8_bin NOT NULL DEFAULT ''");
 
-        $field = "employee_passwd";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "employees LIKE '" . $field . "'");
-        @$rows = mysqli_num_rows($result);
+        $changes_made += ensure_index("audit", "modified_when");
 
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees ADD $field VARCHAR(25) NOT NULL;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>employees</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
+        // TABLE: employees //
+        $changes_made += ensure_table("employees", "empfullname varchar(50) PRIMARY KEY COLLATE utf8_bin");
 
-        $field = "displayname";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "employees LIKE '" . $field . "'");
-        @$rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees ADD $field VARCHAR(50) NOT NULL;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>employees</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        $field = "email";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "employees LIKE '" . $field . "'");
-        @$rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees ADD $field VARCHAR(75) NOT NULL;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>employees</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        $field = "groups";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "employees LIKE '" . $field . "'");
-        @$rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees ADD $field VARCHAR(50) NOT NULL;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>employees</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        $field = "office";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "employees LIKE '" . $field . "'");
-        @$rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees ADD $field VARCHAR(50) NOT NULL;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>employees</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        $field = "admin";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "employees LIKE '" . $field . "'");
-        @$rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees ADD $field TINYINT(1) NOT NULL default '0';");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>employees</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        $field = "reports";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "employees LIKE '" . $field . "'");
-        @$rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees ADD $field TINYINT(1) NOT NULL default '0';");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>employees</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        $field = "time_admin";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "employees LIKE '" . $field . "'");
-        @$rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees ADD $field TINYINT(1) NOT NULL default '0';");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>employees</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        $field = "disabled";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "employees LIKE '" . $field . "'");
-        @$rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees ADD $field TINYINT(1) NOT NULL default '0';");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>employees</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        // employees table changes //
-
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW FIELDS FROM " . $db_prefix . "employees");
+        $result = tc_query("SHOW FIELDS FROM {$db_prefix}employees");
         while ($row = mysqli_fetch_array($result)) {
             $name = "" . $row["Field"] . "";
-            $type = "" . $row["Type"] . "";
-            $tmp_type = strtoupper($type);
+            $type = strtolower("" . $row["Type"] . "");
 
-            if (($name == 'empfullname') && ($type != 'varchar(50)')) {
-                $alter_result = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees CHANGE empfullname empfullname VARCHAR(50) NOT NULL");
-                echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#0000FF;font-weight:bold;'>Changed</td><td class=table_rows
-                      align=left>:&nbsp;<b>$name</b> field in <u>employees</u> table has been changed from type $tmp_type to type VARCHAR(50).</td></tr>\n";
-                $passed_or_not = "1";
-            }
+            // This one needs some data conversion:
             if (($name == 'tstamp') && ($type != 'bigint(14)')) {
-                $alter_result = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "employees CHANGE tstamp tstamp BIGINT(14) DEFAULT NULL");
-                echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#0000FF;font-weight:bold;'>Changed</td><td class=table_rows
-                      align=left>:&nbsp;<b>$name</b> field in <u>employees</u> table has been changed from type $tmp_type to type BIGINT(14).</td></tr>\n";
-                $emp_tstamp_count++;
-                $passed_or_not = "1";
+                tc_query("ALTER TABLE {$db_prefix}employees CHANGE tstamp tstamp BIGINT(14) DEFAULT NULL");
+                msg_changed("<b>$name</b> field in <u>employees</u> table has been changed from type $type to type BIGINT(14).");
+                $changes_made += 1;
+
+                tc_query("UPDATE {$db_prefix}employees SET tstamp = (unix_timestamp(tstamp) - '$gmt_offset')");
+                $num_rows = mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
+                if (!empty($num_rows)) {
+                    msg_converted("<b>$num_rows rows</b> in the employees table were converted from a mysql timestamp to a unix timestamp.");
+                }
             }
         }
-        ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
-        // info table additions //
+        $changes_made += ensure_field("employees", "empfullname",      "varchar(50)", "PRIMARY KEY COLLATE utf8_bin");
+        $changes_made += ensure_field("employees", "tstamp",           "bigint(14)",  "DEFAULT NULL");
+        $changes_made += ensure_field("employees", "employee_passwd",  "varchar(25)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("employees", "displayname",      "varchar(50)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("employees", "email",            "varchar(75)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("employees", "barcode",          "varchar(75)", "COLLATE utf8_bin UNIQUE");
+        $changes_made += ensure_field("employees", "groups",           "varchar(50)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("employees", "office",           "varchar(50)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("employees", "admin",            "tinyint(1)",  "NOT NULL DEFAULT '0'");
+        $changes_made += ensure_field("employees", "reports",          "tinyint(1)",  "NOT NULL DEFAULT '0'");
+        $changes_made += ensure_field("employees", "time_admin",       "tinyint(1)",  "NOT NULL DEFAULT '0'");
+        $changes_made += ensure_field("employees", "disabled",         "tinyint(1)",  "NOT NULL DEFAULT '0'");
 
-        $field = "ipaddress";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "info LIKE '" . $field . "'");
-        @$rows = mysqli_num_rows($result);
 
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "info ADD $field VARCHAR(39) NOT NULL;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>employees</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
+        // TABLE: groups //
+        $changes_made += ensure_table("groups", "groupid int(10) AUTO_INCREMENT PRIMARY KEY");
 
-        // info table changes //
+        $changes_made += ensure_field("groups", "groupid",   "int(10)",     "AUTO_INCREMENT PRIMARY KEY");
+        $changes_made += ensure_field("groups", "groupname", "varchar(50)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("groups", "officeid",  "int(10)",     "NOT NULL DEFAULT '0'");
 
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW FIELDS FROM " . $db_prefix . "info");
+
+        // TABLE: info //
+        $changes_made += ensure_table("info", "fullname varchar(50) COLLATE utf8_bin NOT NULL DEFAULT ''");
+
+        $result = tc_query("SHOW FIELDS FROM {$db_prefix}info");
         while ($row = mysqli_fetch_array($result)) {
             $name = "" . $row["Field"] . "";
-            $type = "" . $row["Type"] . "";
-            $tmp_type = strtoupper($type);
+            $type = strtolower("" . $row["Type"] . "");
 
-            if (($name == 'inout') && ($type != 'varchar(50)')) {
-                $alter_result = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "info CHANGE `inout` `inout` VARCHAR(50) NOT NULL");
-                echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#0000FF;font-weight:bold;'>Changed</td><td class=table_rows
-                      align=left>:&nbsp;<b>$name</b> field in <u>info</u> table has been changed from type $tmp_type to type VARCHAR(50).</td></tr>\n";
-                $passed_or_not = "1";
-            }
+            // This one needs some data conversion:
             if (($name == 'timestamp') && ($type != 'bigint(14)')) {
-                $alter_result = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "info CHANGE timestamp timestamp BIGINT(14) DEFAULT NULL");
-                echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#0000FF;font-weight:bold;'>Changed</td><td class=table_rows
-                      align=left>:&nbsp;<b>$name</b> field in <u>info</u> table has been changed from type $tmp_type to type BIGINT(14).</td></tr>\n";
-                $info_timestamp_count++;
-                $passed_or_not = "1";
-            }
-        }
-        ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
+                tc_query("ALTER TABLE {$db_prefix}info CHANGE timestamp timestamp BIGINT(14) DEFAULT NULL");
+                msg_changed("<b>$name</b> field in <u>info</u> table has been changed from type $type to type BIGINT(14).");
+                $changes_made += 1;
 
-        // punchlist table additions //
-
-        $field = "in_or_out";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW fields from " . $db_prefix . "punchlist LIKE '" . $field . "'");
-        $rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $passwd_query = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "punchlist ADD $field TINYINT(1) NOT NULL default '0';");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$field</b> field has been added to the <u>punchlist</u> table.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        // punchlist table changes //
-
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW FIELDS FROM " . $db_prefix . "punchlist");
-        while ($row = mysqli_fetch_array($result)) {
-            $name = "" . $row["Field"] . "";
-            $type = "" . $row["Type"] . "";
-            $tmp_type = strtoupper($type);
-
-            if (($name == 'punchitems') && ($type != 'varchar(50)')) {
-                $alter_result = mysqli_query($GLOBALS["___mysqli_ston"], "ALTER TABLE " . $db_prefix . "punchlist CHANGE punchitems punchitems VARCHAR(50) NOT NULL");
-                echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#0000FF;font-weight:bold;'>Changed</td><td class=table_rows
-                      align=left>:&nbsp;<b>$name</b> field in <u>punchlist</u> table has been changed from type $tmp_type to type VARCHAR(50).</td></tr>\n";
-                $passed_or_not = "1";
-            }
-        }
-        ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
-
-        // add metars table //
-
-        $table = "metars";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW TABLES LIKE '" . $db_prefix . $table . "'");
-        $rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $metars_query = mysqli_query($GLOBALS["___mysqli_ston"], "CREATE TABLE " . $db_prefix . "metars (metar varchar(255) NOT NULL default '',
-                             timestamp timestamp(14) NOT NULL, station varchar(4) NOT NULL default '',
-                             PRIMARY KEY  (station), UNIQUE KEY station (station)) TYPE=MyISAM;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$table</b> table has been added to the <u>$db_name</u> database.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        // add dbversion table //
-
-        $table = "dbversion";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW TABLES LIKE '" . $db_prefix . $table . "'");
-        $rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $dbversion_query = mysqli_query($GLOBALS["___mysqli_ston"], "CREATE TABLE " . $db_prefix . "dbversion (dbversion decimal(5,1) NOT NULL default '0.0',
-                             PRIMARY KEY  (dbversion)) TYPE=MyISAM;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$table</b> table has been added to the <u>$db_name</u> database.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        // dbversion table changes //
-
-        $table = "dbversion";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW TABLES LIKE '" . $db_prefix . $table . "'");
-        $rows = mysqli_num_rows($result);
-
-        if (!empty($rows)) {
-            $dbversion_result = mysqli_query($GLOBALS["___mysqli_ston"], "select * from " . $db_prefix . "dbversion");
-            while ($row = mysqli_fetch_array($dbversion_result)) {
-                $tmp_dbversion = "" . $row["dbversion"] . "";
-            }
-            if (!isset($tmp_dbversion)) {
-                $compare_result = mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO " . $db_prefix . "dbversion (dbversion) VALUES ('" . $dbversion . "');");
-                echo "                  <tr><td width=10 class=table_rows style='padding-left:25px;color:#0000FF;font-weight:bold;'>Changed</td><td class=table_rows
-                          align=left>:&nbsp;the version of the database is $dbversion.</td></tr>\n";
-                $passed_or_not = "1";
-            } elseif (@$tmp_dbversion != $dbversion) {
-                $update_query = "update dbversion set " . $db_prefix . "dbversion = '" . $dbversion . "'";
-                $update_result = mysqli_query($GLOBALS["___mysqli_ston"], $update_query);
-                echo "                  <tr><td width=10 class=table_rows style='padding-left:25px;color:#0000FF;font-weight:bold;'>Changed</td><td class=table_rows
-                          align=left>:&nbsp;the version of the database has been changed from <b>$tmp_dbversion</b> to <b>$dbversion</b>.</td></tr>\n";
-                $passed_or_not = "1";
-            }
-        }
-
-        // add offices table //
-
-        $table = "offices";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW TABLES LIKE '" . $db_prefix . $table . "'");
-        $rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $metars_query = mysqli_query($GLOBALS["___mysqli_ston"], "CREATE TABLE " . $db_prefix . "offices (officename varchar(50) NOT NULL default '',
-                             officeid int(10) NOT NULL auto_increment,
-                             PRIMARY KEY  (officeid), UNIQUE KEY officeid (officeid)) TYPE=MyISAM;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$table</b> table has been added to the <u>$db_name</u> database.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        // add groups table //
-
-        $table = "groups";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW TABLES LIKE '" . $db_prefix . $table . "'");
-        $rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $metars_query = mysqli_query($GLOBALS["___mysqli_ston"], "CREATE TABLE " . $db_prefix . "groups (groupname varchar(50) NOT NULL default '',
-                             groupid int(10) NOT NULL auto_increment,
-                             officeid int(10) NOT NULL default '0',
-                             PRIMARY KEY  (groupid), UNIQUE KEY groupid (groupid)) TYPE=MyISAM;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$table</b> table has been added to the <u>$db_name</u> database.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        // add audit table //
-
-        $table = "audit";
-        $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW TABLES LIKE '" . $db_prefix . $table . "'");
-        $rows = mysqli_num_rows($result);
-
-        if (empty($rows)) {
-            $audit_query = mysqli_query($GLOBALS["___mysqli_ston"], "CREATE TABLE " . $db_prefix . "audit (modified_by_ip varchar(39) NOT NULL default '',
-                             modified_by_user varchar(50) NOT NULL default '',
-                             modified_when bigint(14) NOT NULL, modified_from bigint(14) NOT NULL, 
-                             modified_to bigint(14) NOT NULL, modified_why varchar(250) NOT NULL default '',
-                             user_modified varchar(50) NOT NULL,
-                             PRIMARY KEY  (modified_when), UNIQUE KEY modified_when (modified_when)) TYPE=MyISAM;");
-            echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                      align=left>:&nbsp;<b>$table</b> table has been added to the <u>$db_name</u> database.</td></tr>\n";
-            $passed_or_not = "1";
-        }
-
-        if (isset($recreate_admin)) {
-
-            if ($recreate_admin == '1') {
-
-                // add admin user //
-
-                $admin = "admin";
-
-                $query_admin = "select empfullname from " . $db_prefix . "employees where empfullname = '" . $admin . "'";
-                $result_admin = mysqli_query($GLOBALS["___mysqli_ston"], $query_admin);
-
-                while ($row_admin = mysqli_fetch_array($result_admin)) {
-                    $admin_user = stripslashes("" . $row_admin['empfullname'] . "");
-                }
-
-                if (!isset($admin_user)) {
-                    $add_admin_query = mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO " . $db_prefix . "employees
-                                            VALUES ('admin', NULL, 'xy.RY2HT1QTc2', 'administrator', '', '', '', 1, 1, 1, '');");
-
-                    echo "              <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Added</td><td class=table_rows
-                                  align=left>:&nbsp;<b>$admin</b> user has been added to the <u>$db_name</u> database.</td></tr>\n";
-                    $passed_or_not = "1";
+                tc_query("UPDATE {$db_prefix}info SET timestamp = (unix_timestamp(tstamp) - '$gmt_offset')");
+                $num_rows = mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
+                if (!empty($num_rows)) {
+                    msg_converted("<b>$num_rows rows</b> in the info table were converted from a mysql timestamp to a unix timestamp.");
                 }
             }
         }
 
-        // convert mysql timestamps to unix timestamps //
+        $changes_made += ensure_field("info", "fullname",  "varchar(50)",  "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("info", "inout",     "varchar(50)",  "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("info", "timestamp", "bigint(14)",   "DEFAULT NULL");
+        $changes_made += ensure_field("info", "notes",     "varchar(250)", "COLLATE utf8_bin DEFAULT NULL");
+        $changes_made += ensure_field("info", "ipaddress", "varchar(39)",  "COLLATE utf8_bin NOT NULL DEFAULT ''");
 
-        if (!empty($emp_tstamp_count)) {
-            $emp_tstamp_result = mysqli_query($GLOBALS["___mysqli_ston"], "update " . $db_prefix . "employees set tstamp = (unix_timestamp(tstamp) - '" . $gmt_offset . "')");
-            $employee_rows = mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
+        $changes_made += ensure_index("info", "fullname");
+        $changes_made += ensure_index("info", "timestamp");
 
-            if (!empty($employee_rows)) {
-                echo "                <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Converted</td><td class=table_rows
-                   align=left>:&nbsp;<b>$employee_rows rows</b> in the employees table were converted from a mysql timestamp to a unix 
-                   timestamp.</td></tr>\n";
+
+        // TABLE: metars //
+        $changes_made += ensure_table("metars", "station varchar(4) PRIMARY KEY COLLATE utf8_bin");
+
+        $changes_made += ensure_field("metars", "station",   "varchar(4)",    "PRIMARY KEY COLLATE utf8_bin");
+        $changes_made += ensure_field("metars", "metar",     "varchar(255)",  "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("metars", "timestamp", "timestamp",     "NOT NULL");
+
+
+        // TABLE: offices //
+        $changes_made += ensure_table("offices", "officeid int(10) AUTO_INCREMENT PRIMARY KEY");
+
+        $changes_made += ensure_field("offices", "officeid",   "int(10)",     "AUTO_INCREMENT PRIMARY KEY");
+        $changes_made += ensure_field("offices", "officename", "varchar(50)", "COLLATE utf8_bin NOT NULL DEFAULT ''");
+
+
+        // TABLE: punchlist //
+        $changes_made += ensure_table("punchlist", "punchitems varchar(50) PRIMARY KEY COLLATE utf8_bin");
+
+        $changes_made += ensure_field("punchlist", "punchitems", "varchar(50)", "PRIMARY KEY COLLATE utf8_bin");
+        $changes_made += ensure_field("punchlist", "punchnext",  "varchar(50)", "varchar(50) COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("punchlist", "color",      "varchar(7)",  "COLLATE utf8_bin NOT NULL DEFAULT ''");
+        $changes_made += ensure_field("punchlist", "in_or_out",  "tinyint(1)",  "DEFAULT NULL");
+
+
+        // TABLE: dbversion //
+        $changes_made += ensure_table("dbversion", "dbversion decimal(5,1) NOT NULL DEFAULT '0.0'");
+
+        $changes_made += ensure_field("dbversion", "dbversion", "decimal(5,1)", "NOT NULL DEFAULT '0.0'");
+
+        $current_dbversion = tc_select_value("dbversion", "dbversion");
+        if (empty($current_dbversion)) {
+            tc_insert_strings("dbversion", array("dbversion" => $dbversion));
+            $changes_made += 1;
+            msg_changed("the database is now at version $dbversion.");
+        }
+        elseif ($current_dbversion != $dbversion) {
+            tc_update_strings("dbversion", array("dbversion" => $dbversion));
+            msg_changed("the database has been upgraded from version <b>$current_dbversion</b> to version <b>$dbversion</b>.");
+            $changes_made += 1;
+        }
+
+        // Recreate admin //
+        if (isset($recreate_admin) and $recreate_admin == '1') {
+            $admin = "admin";
+            $admin_user = tc_select_value("empfullname", "employees", "empfullname = ?", $admin);
+
+            if (!isset($admin_user)) {
+                tc_insert_strings("employees", array(
+                    "empfullname"     => $admin,
+                    "employee_passwd" => 'xy.RY2HT1QTc2',
+                    "displayname"     => 'administrator',
+                    "admin"           => 1,
+                    "reports"         => 1,
+                    "time_admin"      => 1,
+                ));
+                msg_added("<b>$admin</b> user has been added to the <u>$db_name</u> database.");
+                $changes_made += 1;
             }
         }
-        unset($emp_tstamp_count);
 
-        if (!empty($info_timestamp_count)) {
-            $info_timestamp_result = mysqli_query($GLOBALS["___mysqli_ston"], "update " . $db_prefix . "info set timestamp = (unix_timestamp(timestamp) - '" . $gmt_offset . "')");
-            $info_rows = mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
 
-            if (!empty($info_rows)) {
-                echo "                <tr><td width=10 class=table_rows style='padding-left:25px;color:purple;font-weight:bold;'>Converted</td><td class=table_rows
-                   align=left>:<b>$info_rows rows</b> in the info table were converted from a mysql timestamp to a unix timestamp.</b></td></tr>\n";
-            }
-        }
-        unset($info_timestamp_count);
-
-        if (empty($passed_or_not)) {
-            echo "              <tr><td class=table_rows style='padding-left:25px;' height=40 valign=bottom colspan=2><b>No changes were made to the
-                      database.</b></td></tr>\n";
+        if (empty($changes_made)) {
+            echo "<tr><td class=table_rows style='padding-left:25px;' height=40 valign=bottom colspan=2><b>No changes were made to the database.</b></td></tr>\n";
         } else {
-            echo "              <tr><td class=table_rows style='padding-left:25px;' height=40 valign=bottom colspan=2><b>Your database is now up to date.</b>
-                      </td></tr>\n";
+            echo "<tr><td class=table_rows style='padding-left:25px;' height=40 valign=bottom colspan=2><b>Your database is now up to date.</b></td></tr>\n";
         }
         echo "            </table>\n";
         echo "          </td>\n";

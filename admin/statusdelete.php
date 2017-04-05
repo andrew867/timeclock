@@ -40,8 +40,7 @@ if ($request == 'GET') {
 
     $get_status = $_GET['statusname'];
 
-    $query = "select * from " . $db_prefix . "punchlist where punchitems = '" . $get_status . "'";
-    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+    $result = tc_select("*", "punchlist", "punchitems = ?", $get_status);
 
     while ($row = mysqli_fetch_array($result)) {
 
@@ -124,7 +123,7 @@ if ($request == 'GET') {
     echo "            </table>\n";
     echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
     echo "              <tr><td class=table_rows height=53 align=left colspan=2 style='color:red;font-size:10px;'>
-                      Deleting this status does NOT delete it from the database history. It merely removes it from the list of status 
+                      Deleting this status does NOT delete it from the database history. It merely removes it from the list of status
                       choices.</td></tr></table>\n";
     echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
     echo "              <tr><td width=30><input type='image' name='submit' value='Delete Status' src='../images/buttons/next_button.png'></td>
@@ -145,11 +144,9 @@ if ($request == 'GET') {
         exit;
     }
 
-    $query = "select * from " . $db_prefix . "punchlist where punchitems = '" . $post_statusname . "'";
-    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+    $result = tc_select("*", "punchlist", "punchitems = ?", $post_statusname);
 
     while ($row = mysqli_fetch_array($result)) {
-
         $punchitem = "" . $row['punchitems'] . "";
         $color = "" . $row['color'] . "";
         $in_or_out = "" . $row['in_or_out'] . "";
@@ -159,8 +156,7 @@ if ($request == 'GET') {
         exit;
     }
 
-    $query2 = "delete from " . $db_prefix . "punchlist where punchitems = ('" . $post_statusname . "')";
-    $result2 = mysqli_query($GLOBALS["___mysqli_ston"], $query2);
+    $result2 = tc_delete("punchlist", "punchitems = ?", $post_statusname);
 
     if ($post_in_out == '1') {
         $post_in_out = 'In';
@@ -232,7 +228,7 @@ if ($request == 'GET') {
     echo "              </tr>\n";
     echo "              <tr><td height=15></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Status Name:</td><td align=left width=80%
-                      style='padding-left:20px;' class=table_rows><input type='hidden' name='post_statusname' 
+                      style='padding-left:20px;' class=table_rows><input type='hidden' name='post_statusname'
                       value=\"$post_statusname\">$post_statusname</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Color:</td><td align=left class=table_rows
                       width=80% style='padding-left:20px;'><input type='hidden' name='post_color' value=\"$post_color\">$post_color</td></tr>\n";

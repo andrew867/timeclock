@@ -87,6 +87,24 @@ $use_passwd = "yes";
 $use_reports_password = "no";
 
 
+/* Choose whether to allow barcode clock-in/out. Options are "yes" or "no".
+   If "yes" is chosen, the barcode entry will be visible and focused by
+   default on the main timeclock screen. Scanning the employee barcode will
+   immediately change their status.
+*/
+
+$barcode_clockin = "yes";
+
+
+/* Choose whether to allow selecting employee name from dropdown to
+   clock-in/out. Options are "yes" or "no". If "yes" is chosen, the a
+   dropdown (and password entry if enabled) will be displayed on the
+   timeclock screen and employees will be able to change their status.
+*/
+
+$manual_clockin = "yes";
+
+
 /* Enable the option to log the ip addresses of the connecting computers when users
    punch-in/out, or when a time is manually added, edited, or deleted. Default is
    "yes". */
@@ -402,7 +420,7 @@ $city = "Topeka, KS";
 
 
 $app_name = "PHP Timeclock";
-$app_version = "1.04";
+$app_version = "2.0.0";
 
 /* Sets the title in the header. This is what the page will be named by default when you
    make a "favorite" or "bookmark" in your browser. Change as you see fit. */

@@ -79,19 +79,16 @@ if ($request !== 'POST') {
     echo "              <tr><td height=15></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' 
-                      size='25' maxlength='50' name='post_username' 
-                      onFocus=\"javascript:form.display_name.disabled=true;form.email_addy.disabled=true;
-                      form.display_name.style.background='#eeeeee';form.email_addy.style.background='#eeeeee';\" ></td></tr>\n";
+                      size='25' maxlength='50' name='post_username'></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Display Name:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' 
-                      size='25' maxlength='50' name='display_name' 
-                      onFocus=\"javascript:form.post_username.disabled=true;form.email_addy.disabled=true;
-                      form.post_username.style.background='#eeeeee';form.email_addy.style.background='#eeeeee';\"></td></tr>\n";
+                      size='25' maxlength='50' name='display_name'></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Email Address:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' 
-                      size='25' maxlength='75' name='email_addy' 
-                      onFocus=\"javascript:form.post_username.disabled=true;form.display_name.disabled=true;
-                      form.post_username.style.background='#eeeeee';form.display_name.style.background='#eeeeee';\"></td></tr>\n";
+                      size='25' maxlength='75' name='email_addy'></td></tr>\n";
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td><td colspan=2 width=80%
+                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' 
+                      size='25' maxlength='75' name='barcode'></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Office:</td><td colspan=2 width=80%
                       style='padding-left:20px;'>
                       <select name='office_name' onchange='group_names();'>\n";
@@ -118,16 +115,12 @@ elseif ($request == 'POST') {
 include 'header_post.php';
 include 'topmain.php';
 
-@$post_username = stripslashes($_POST['post_username']);
-@$display_name = stripslashes($_POST['display_name']);
+@$post_username = $_POST['post_username'];
+@$display_name = $_POST['display_name'];
 @$email_addy = $_POST['email_addy'];
+@$barcode = $_POST['barcode'];
 @$office_name = $_POST['office_name'];
 @$group_name = $_POST['group_name'];
-
-//$post_username = addslashes($post_username);
-//$display_name = addslashes($display_name);
-//$office_name = addslashes($office_name);
-//$group_name = addslashes($group_name);
 
 // begin post validation //
 
@@ -213,40 +206,28 @@ if (!preg_match('/^([[:alnum:]]|_|.|-|@)+$/', $email_addy)) {
         $evil_input = "1";
     }
 }
-if (($post_username == "") && ($display_name == "") && ($email_addy == "")) {
+if (!(has_value($post_username) || has_value($display_name) || has_value($email_addy) || has_value($barcode))) {
     echo "            <br />\n";
     echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
     echo "              <tr>\n";
     echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red nowrap>
-                    &nbsp;A Username, Display Name, or Email Address is required.</td></tr>\n";
+                    &nbsp;A Username, Display Name, Email Address, or Barcode is required.</td></tr>\n";
     echo "            </table>\n";
     $evil_input = "1";
 }
 
-if (!empty($office_name)) {
-    $query = "select * from " . $db_prefix . "offices where officename = '" . $office_name . "'";
-    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-    while ($row = mysqli_fetch_array($result)) {
-        $tmp_officename = "" . $row['officename'] . "";
-    }
-    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
-    if (!isset($tmp_officename)) {
-        echo "Office is not defined.\n";
-        exit;
-    }
+if (has_value($office_name)
+    and is_null(tc_select_value("officename", "offices", "officename = ?", $office_name))
+) {
+    echo "Office is not defined.\n";
+    exit;
 }
 
-if (!empty($group_name)) {
-    $query = "select * from " . $db_prefix . "groups where groupname = '" . $group_name . "'";
-    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-    while ($row = mysqli_fetch_array($result)) {
-        $tmp_groupname = "" . $row['groupname'] . "";
-    }
-    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
-    if (!isset($tmp_officename)) {
-        echo "Group is not defined.\n";
-        exit;
-    }
+if (has_value($group_name)
+    and is_null(tc_select_value("groupname", "groups", "groupname = ?", $group_name))
+) {
+    echo "Group is not defined.\n";
+    exit;
 }
 
 // end post validation //
@@ -262,19 +243,16 @@ if (isset($evil_input)) {
     echo "              <tr><td height=15></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' style='color:red;' size='25' maxlength='50' 
-                      name='post_username' value='$post_username' 
-                      onFocus=\"javascript:form.display_name.disabled=true;form.email_addy.disabled=true;
-                      form.display_name.style.background='#eeeeee';form.email_addy.style.background='#eeeeee';\"></td></tr>\n";
+                      name='post_username' value='$post_username'></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Display Name:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text' style='color:red;' size='25' maxlength='50' 
-                      name='display_name' value='$display_name' 
-                      onFocus=\"javascript:form.post_username.disabled=true;form.email_addy.disabled=true;
-                      form.post_username.style.background='#eeeeee';form.email_addy.style.background='#eeeeee';\"></td></tr>\n";
+                      name='display_name' value='$display_name'></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Email Address:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text style='color:red;' size='25' maxlength='75' 
-                      name='email_addy' value='$email_addy' 
-                      onFocus=\"javascript:form.post_username.disabled=true;form.display_name.disabled=true;
-                      form.post_username.style.background='#eeeeee';form.display_name.style.background='#eeeeee';\"></td></tr>\n";
+                      name='email_addy' value='$email_addy'></td></tr>\n";
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td><td colspan=2 width=80%
+                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text style='color:red;' size='25' maxlength='75' 
+                      name='barcode' value='$barcode'></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Office:</td><td colspan=2 width=80%
                       style='padding-left:20px;'>
                       <select name='office_name' onchange='group_names();'>\n";
@@ -297,82 +275,49 @@ if (isset($evil_input)) {
 
 } else {
 
-$post_username = addslashes($post_username);
-$display_name = addslashes($display_name);
-$office_name = addslashes($office_name);
-$group_name = addslashes($group_name);
+$query_where = array();
+$query_params = array();
+$tmp_var = array();
 
-if (!empty($post_username)) {
-    $tmp_var = $post_username;
-    $tmp_var2 = "Username";
+if (has_value($post_username)) {
+    $tmp_var[] = "'$post_username' in Username";
+    $query_where[] = "empfullname LIKE ?";
+    $query_params[] = "%" . $post_username . "%";
+}
 
-    if ((!empty($office_name)) && (!empty($group_name))) {
-        $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-            where empfullname LIKE '%" . $post_username . "%' and office = '" . $office_name . "' and groups = '" . $group_name . "'
-            order by empfullname";
-        $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
-    } elseif (!empty($office_name)) {
-        $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-            where empfullname LIKE '%" . $post_username . "%' and office = '" . $office_name . "'
-            order by empfullname";
-        $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
-    } elseif (empty($office_name)) {
-        $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-            where empfullname LIKE '%" . $post_username . "%'
-            order by empfullname";
-        $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
-    }
-} elseif (!empty($display_name)) {
-    $tmp_var = $display_name;
-    $tmp_var2 = "Display Name";
+if (has_value($display_name)) {
+    $tmp_var[] = "'$display_name' in Display Name";
+    $query_where[] = "displayname LIKE ?";
+    $query_params[] = "%" . $display_name . "%";
+}
 
-    if ((!empty($office_name)) && (!empty($group_name))) {
-        $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-            where displayname LIKE '%" . $display_name . "%' and office = '" . $office_name . "' and groups = '" . $group_name . "'
-            order by empfullname";
-        $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
-    } elseif (!empty($office_name)) {
-        $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-            where displayname LIKE '%" . $display_name . "%' and office = '" . $office_name . "'
-            order by empfullname";
-        $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
-    } elseif (empty($office_name)) {
-        $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-            where displayname LIKE '%" . $display_name . "%'
-            order by empfullname";
-        $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
-    }
-} elseif (!empty($email_addy)) {
-    $tmp_var = $email_addy;
-    $tmp_var2 = "Email Address";
+if (has_value($email_addy)) {
+    $tmp_var[] = "'$email_addy' in Email Address";
+    $query_where[] = "email LIKE ?";
+    $query_params[] = "%" . $email_addy . "%";
+}
 
-    if ((!empty($office_name)) && (!empty($group_name))) {
-        $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-            where email LIKE '%" . $email_addy . "%' and office = '" . $office_name . "' and groups = '" . $group_name . "'
-            order by empfullname";
-        $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
-    } elseif (!empty($office_name)) {
-        $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-            where email LIKE '%" . $email_addy . "%' and office = '" . $office_name . "'
-            order by empfullname";
-        $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
-    } elseif (empty($office_name)) {
-        $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-            where email LIKE '%" . $email_addy . "%'
-            order by empfullname";
-        $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
+if (has_value($barcode)) {
+    $tmp_var[] = "'$barcode' in Barcode";
+    $query_where[] = "barcode LIKE ?";
+    $query_params[] = "%" . $barcode . "%";
+}
+
+if (has_value($office_name)) {
+    $query_where[] = "office = ?";
+    $query_params[] = $office_name;
+
+    if (has_value($group_name)) {
+        $query_where[] = "groups = ?";
+        $query_params[] = $group_name;
     }
 }
 
-$tmp_var = stripslashes($tmp_var);
-$tmp_var2 = stripslashes($tmp_var2);
+$tmp_var = implode(" AND ", $tmp_var);
 $row_count = "0";
+$result4 = tc_select("*", "employees", implode(" AND ", $query_where) . " ORDER BY empfullname", $query_params);
 
 while ($row = mysqli_fetch_array($result4)) {
-
-@$user_count_rows = mysqli_num_rows($user_count);
-@$admin_count_rows = mysqli_num_rows($admin_count);
-@$reports_count_rows = mysqli_num_rows($reports_count);
 
 $row_count++;
 
@@ -380,7 +325,7 @@ if ($row_count == "1") {
 
     echo "            <table width=90% align=center height=40 border=0 cellpadding=0 cellspacing=0>\n";
     echo "              <tr><th class=table_heading_no_color nowrap width=100% halign=left>User Search Summary</th></tr>\n";
-    echo "              <tr><td height=40 class=table_rows nowrap halign=left>Search Results for \"$tmp_var\" in $tmp_var2</td></tr>\n";
+    echo "              <tr><td height=40 class=table_rows nowrap halign=left>Search Results for $tmp_var</td></tr>\n";
     echo "            </table>\n";
     echo "            <table class=table_border width=90% align=center border=0 cellpadding=0 cellspacing=0>\n";
     echo "              <tr>\n";
@@ -401,8 +346,8 @@ if ($row_count == "1") {
 }
 
 $row_color = ($row_count % 2) ? $color2 : $color1;
-$empfullname = stripslashes("" . $row['empfullname'] . "");
-$displayname = stripslashes("" . $row['displayname'] . "");
+$empfullname = "" . $row['empfullname'] . "";
+$displayname = "" . $row['displayname'] . "";
 
 echo "              <tr class=table_border bgcolor='$row_color'><td class=table_rows width=3%>&nbsp;$row_count</td>\n";
 echo "                <td class=table_rows width=13%>&nbsp;<a class=footer_links title=\"Edit User: $empfullname\"
@@ -464,8 +409,6 @@ echo "              </tr>\n";
 
 if ($row_count == "0") {
 
-$post_username = stripslashes($post_username);
-
 echo "            <br/>\n";
 echo "
 <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
@@ -506,9 +449,7 @@ echo "
                                                                                               style='color:red;'
                                                                                               size='25' maxlength='50'
                                                                                               name='post_username'
-                                                                                              value=\"$post_username\"
-                                                                                              onFocus=\"javascript:form.display_name.disabled=true;form.email_addy.disabled=true;
-                                                                                              form.display_name.style.background='#eeeeee';form.email_addy.style.background='#eeeeee';\">
+                                                                                              value=\"$post_username\">
             </td>
         </tr>
         \n";
@@ -520,9 +461,7 @@ echo "
                                                                                               style='color:red;'
                                                                                               size='25' maxlength='50'
                                                                                               name='display_name'
-                                                                                              value=\"$display_name\"
-                                                                                              onFocus=\"javascript:form.post_username.disabled=true;form.email_addy.disabled=true;
-                                                                                              form.post_username.style.background='#eeeeee';form.email_addy.style.background='#eeeeee';\">
+                                                                                              value=\"$display_name\">
             </td>
         </tr>
         \n";
@@ -533,9 +472,18 @@ echo "
                 style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text style='
                                                                                               color:red;' size='25'
                 maxlength='75'
-                name='email_addy' value=\"$email_addy\"
-                onFocus=\"javascript:form.post_username.disabled=true;form.display_name.disabled=true;
-                form.post_username.style.background='#eeeeee';form.display_name.style.background='#eeeeee';\">
+                name='email_addy' value=\"$email_addy\">
+            </td>
+        </tr>
+        \n";
+        echo "
+        <tr>
+            <td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td>
+            <td colspan=2 width=80%
+                style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'><input type='text style='
+                                                                                              color:red;' size='25'
+                maxlength='75'
+                name='barcode' value=\"$barcode\">
             </td>
         </tr>
         \n";

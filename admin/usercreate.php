@@ -90,6 +90,9 @@ if ($request == 'GET') {
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Email Address:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
                       <input type='text' size='25' maxlength='75' name='email_addy'>&nbsp;*</td></tr>\n";
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td><td colspan=2 width=80%
+                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+                      <input type='text' size='25' maxlength='75' name='barcode'></td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Office:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
                       <select name='office_name' onchange='group_names();'>\n";
@@ -110,6 +113,9 @@ if ($request == 'GET') {
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>User Account Disabled?</td>\n";
     echo "                <td class=table_rows align=left width=80% style='padding-left:20px;'><input type='radio' name='disabled' value='1'>&nbsp;Yes
                     <input type='radio' name='disabled' value='0' checked>&nbsp;No</td></tr>\n";
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Initial Punch:</td><td colspan=2 width=80%
+                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+                      <select name='inout'><option value=''>...</option>" . html_options(tc_select("punchitems", "punchlist")) . "</select></td></tr>\n";
     echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
     echo "            </table>\n";
     echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
@@ -123,31 +129,21 @@ if ($request == 'GET') {
     include 'header_post.php';
     include 'topmain.php';
 
-    $post_username = stripslashes($_POST['post_username']);
-    $display_name = stripslashes($_POST['display_name']);
+    $post_username = $_POST['post_username'];
+    $display_name = $_POST['display_name'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
     $email_addy = $_POST['email_addy'];
+    $user_barcode = value_or_null($_POST['barcode']);// UNIQUE constraint so no empty strings
     $office_name = $_POST['office_name'];
     @$group_name = $_POST['group_name'];
     $admin_perms = $_POST['admin_perms'];
     $reports_perms = $_POST['reports_perms'];
     $time_admin_perms = $_POST['time_admin_perms'];
     $post_disabled = $_POST['disabled'];
+    $inout = $_POST['inout'];
 
-    $post_username = addslashes($post_username);
-    $display_name = addslashes($display_name);
-
-    $query5 = "select empfullname from " . $db_prefix . "employees where empfullname = '" . $post_username . "' order by empfullname";
-    $result5 = mysqli_query($GLOBALS["___mysqli_ston"], $query5);
-
-    while ($row = mysqli_fetch_array($result5)) {
-        $tmp_username = "" . $row['empfullname'] . "";
-    }
-    ((mysqli_free_result($result5) || (is_object($result5) && (get_class($result5) == "mysqli_result"))) ? true : false);
-
-    $post_username = stripslashes($post_username);
-    $display_name = stripslashes($display_name);
+    $tmp_username = tc_select_value("empfullname", "employees", "empfullname = ? ORDER by empfullname", $post_username);
 
     $string = strstr($post_username, "\"");
     $string2 = strstr($display_name, "\"");
@@ -160,11 +156,6 @@ if ($request == 'GET') {
         (($reports_perms != '1') && (!empty($reports_perms))) || (($time_admin_perms != '1') && (!empty($time_admin_perms))) ||
         (($post_disabled != '1') && (!empty($post_disabled))) || (!empty($string)) || (!empty($string2))
     ) {
-
-        if (@tmp_username == $post_username) {
-            $tmp_username = stripslashes($tmp_username);
-        }
-
         echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
         echo "  <tr valign=top>\n";
         echo "    <td class=left_main width=180 align=left scope=col>\n";
@@ -317,41 +308,21 @@ if ($request == 'GET') {
             echo "            </table>\n";
         }
 
-        if (!empty($office_name)) {
-            $query = "select * from " . $db_prefix . "offices where officename = '" . $office_name . "'";
-            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-            while ($row = mysqli_fetch_array($result)) {
-                $tmp_officename = "" . $row['officename'] . "";
-            }
-            ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
-            if (!isset($tmp_officename)) {
-                echo "Office is not defined.\n";
-                exit;
-            }
+        if (!empty($office_name)
+            and is_null(tc_select_value("officename", "offices", "officename = ?", $office_name))
+        ) {
+            echo "Office is not defined.\n";
+            exit;
         }
 
-        if (!empty($group_name)) {
-            $query = "select * from " . $db_prefix . "groups where groupname = '" . $group_name . "'";
-            $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
-            while ($row = mysqli_fetch_array($result)) {
-                $tmp_groupname = "" . $row['groupname'] . "";
-            }
-            ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
-            if (!isset($tmp_officename)) {
-                echo "Group is not defined.\n";
-                exit;
-            }
+        if (!empty($group_name)
+            and is_null(tc_select_value("groupname", "groups", "groupname = ?", $group_name))
+        ) {
+            echo "Group is not defined.\n";
+            exit;
         }
 
         // end post validation //
-
-        if (!empty($string)) {
-            $post_username = stripslashes($post_username);
-        }
-        if (!empty($string2)) {
-            $display_name = stripslashes($display_name);
-        }
-
         $password = crypt($password, 'xy');
         $confirm_password = crypt($confirm_password, 'xy');
 
@@ -369,13 +340,6 @@ if ($request == 'GET') {
                       style='color:red;font-family:Tahoma;font-size:11px;padding-left:20px;'>
                       <input type='text' size='25' maxlength='50' name='display_name' value=\"$display_name\">&nbsp;*</td></tr>\n";
 
-        if (!empty($string)) {
-            $post_username = addslashes($post_username);
-        }
-        if (!empty($string2)) {
-            $displayname = addslashes($display_name);
-        }
-
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Password:</td><td colspan=2 width=80%
                       style='padding-left:20px;'><input type='password' size='25' maxlength='25' name='password'></td></tr>\n";
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Confirm Password:</td><td colspan=2 width=80%
@@ -384,6 +348,9 @@ if ($request == 'GET') {
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Email Address:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:11px;padding-left:20px;'>
                       <input type='text' size='25' maxlength='75' name='email_addy' value=\"$email_addy\">&nbsp;*</td></tr>\n";
+        echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td><td colspan=2 width=80%
+                      style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+                      <input type='text' size='25' maxlength='75' name='barcode' value='$user_barcode'></td></tr>\n";
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Office:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
                       <select name='office_name' onchange='group_names();'>\n";
@@ -427,6 +394,9 @@ if ($request == 'GET') {
             echo "                <td class=table_rows align=left width=80% style='padding-left:20px;'><input type='radio' name='disabled' value='1'>&nbsp;Yes
                     <input type='radio' name='disabled' value='0' checked>&nbsp;No</td></tr>\n";
         }
+        echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Initial Punch:</td><td colspan=2 width=80%
+                          style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
+                          <select name='inout'><option value=''>...</option>" . html_options(tc_select("punchitems", "punchlist"), $inout) . "</select></td></tr>\n";
         echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
         echo "            </table>\n";
         echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
@@ -438,16 +408,35 @@ if ($request == 'GET') {
         exit;
     }
 
-    $post_username = addslashes($post_username);
-    $display_name = addslashes($display_name);
-
     $password = crypt($password, 'xy');
     $confirm_password = crypt($confirm_password, 'xy');
 
-    $query3 = "insert into " . $db_prefix . "employees (empfullname, displayname, employee_passwd, email, groups, office, admin, reports, time_admin, disabled)
-           values ('" . $post_username . "', '" . $display_name . "', '" . $password . "', '" . $email_addy . "', '" . $group_name . "', '" . $office_name . "', '" . $admin_perms . "',
-           '" . $reports_perms . "', '" . $time_admin_perms . "', '" . $post_disabled . "')";
-    $result3 = mysqli_query($GLOBALS["___mysqli_ston"], $query3);
+    tc_insert_strings("employees", array(
+        'empfullname'     => $post_username,
+        'displayname'     => $display_name,
+        'employee_passwd' => $password,
+        'email'           => $email_addy,
+        'barcode'         => $user_barcode,
+        'groups'          => $group_name,
+        'office'          => $office_name,
+        'admin'           => $admin_perms,
+        'reports'         => $reports_perms,
+        'time_admin'      => $time_admin_perms,
+        'disabled'        => $post_disabled
+    ));
+
+    if (has_value($inout)) {
+        $inout = tc_select_value("punchitems", "punchlist", "punchitems = ?", $inout);
+        if (has_value($inout)) {
+            $tz_stamp = time();
+            $clockin = array("fullname" => $post_username, "inout" => $inout, "timestamp" => $tz_stamp);
+            if (yes_no_bool($ip_logging)) {
+                $clockin["ipaddress"] = $connecting_ip;
+            }
+            tc_insert_strings("info", $clockin);
+            tc_update_strings("employees", array("tstamp" => $tz_stamp), "empfullname = ?", $post_username);
+        }
+    }
 
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
@@ -505,16 +494,15 @@ if ($request == 'GET') {
                 </th></tr>\n";
     echo "              <tr><td height=15></td></tr>\n";
 
-    $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
-	  where empfullname = '" . $post_username . "'
-          order by empfullname";
-    $result4 = mysqli_query($GLOBALS["___mysqli_ston"], $query4);
-
+    $result4 = tc_select(
+        "empfullname, displayname, email, barcode, groups, office, admin, reports, time_admin, disabled",
+        "employees", "empfullname = ? ORDER BY empfullname", $post_username
+    );
     while ($row = mysqli_fetch_array($result4)) {
-
-        $username = stripslashes("" . $row['empfullname'] . "");
-        $displayname = stripslashes("" . $row['displayname'] . "");
+        $username = "" . $row['empfullname'] . "";
+        $displayname = "" . $row['displayname'] . "";
         $user_email = "" . $row['email'] . "";
+        $user_barcode = "" . $row['barcode'] . "";
         $office = "" . $row['office'] . "";
         $groups = "" . $row['groups'] . "";
         $admin = "" . $row['admin'] . "";
@@ -532,6 +520,8 @@ if ($request == 'GET') {
                       colspan=2 width=80% style='padding-left:20px;'>***hidden***</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Email Address:</td><td align=left class=table_rows
                       colspan=2 width=80% style='padding-left:20px;'>$user_email</td></tr>\n";
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td><td align=left class=table_rows
+                      colspan=2 width=80% style='padding-left:20px;'>$user_barcode</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Office:</td><td align=left class=table_rows
                       colspan=2 width=80% style='padding-left:20px;'>$office</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Group:</td><td align=left class=table_rows
@@ -565,6 +555,8 @@ if ($request == 'GET') {
     }
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>User Account Disabled?</td><td align=left class=table_rows
                       colspan=2 width=80% style='padding-left:20px;'>$disabled</td></tr>\n";
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Initial Punch:</td><td align=left class=table_rows
+                      colspan=2 width=80% style='padding-left:20px;'>$inout</td></tr>\n";
     echo "              <tr><td height=15></td></tr>\n";
     echo "            </table>\n";
     echo "            <table align=center width=60% border=0 cellpadding=0 cellspacing=3>\n";
