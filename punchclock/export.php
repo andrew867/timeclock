@@ -198,13 +198,13 @@ $group_name = isset($_POST['group_name']) ? $_POST['group_name'] : null;
 $office_name = isset($_POST['office_name']) ? $_POST['office_name'] : null;
 
 // Program options.
-$c_reg_ot = bool($_POST['c_reg_ot']);
-$c_inout = bool($_POST['c_inout']);
-$c_date = bool($_POST['c_date']);
-$c_employee = bool($_POST['c_employee']);
-$c_name = bool($_POST['c_name']);
-$c_group = bool($_POST['c_group']);
-$c_office = bool($_POST['c_office']);
+$c_reg_ot   = isset($_POST['c_reg_ot']) ? bool($_POST['c_reg_ot']) : null;
+$c_inout    = isset($_POST['c_inout']) ? bool($_POST['c_inout']) : null;
+$c_date     = isset($_POST['c_date']) ? bool($_POST['c_date']) : null;
+$c_employee = isset($_POST['c_employee']) ? bool($_POST['c_employee']) : null;
+$c_name     = isset($_POST['c_name']) ? bool($_POST['c_name']) : null;
+$c_group    = isset($_POST['c_group']) ? bool($_POST['c_group']) : null;
+$c_office   = isset($_POST['c_office']) ? bool($_POST['c_office']) : null;
 
 ////////////////////////////////////////
 $PAGE_TITLE = "Export - $title";

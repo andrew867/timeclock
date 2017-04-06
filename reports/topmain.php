@@ -11,7 +11,7 @@ if ($logo == "none") {
 
 } else {
 
-    echo "<td align=left><a href='../index.php'><img border=0 src='$logo'></a></td>\n";
+    echo "<td align=left><a href='../index.php'><img border=0 src='../$logo'></a></td>\n";
 }
 
 // if db is out of date, report it here //

@@ -17,9 +17,9 @@ $end_local_timestamp = make_timestamp($to_date) + $one_day - 1; // through end o
 $begin_utm_timestamp = utm_timestamp($begin_local_timestamp);
 $end_utm_timestamp = utm_timestamp($end_local_timestamp);
 
-$employee_clause = $user_name == 'All' ? '' : "   and {$db_prefix}employees.empfullname = '" . mysql_real_escape_string($user_name) . "'\n";
-$office_clause = $office_name == 'All' ? '' : "   and {$db_prefix}employees.office = '" . mysql_real_escape_string($office_name) . "'\n";
-$groups_clause = $group_name == 'All' ? '' : "   and {$db_prefix}employees.groups = '" . mysql_real_escape_string($group_name) . "'\n";
+$employee_clause = $user_name == 'All' ? '' : "   and {$db_prefix}employees.empfullname = '" . mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $user_name) . "'\n";
+$office_clause = $office_name == 'All' ? '' : "   and {$db_prefix}employees.office = '" . mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $office_name) . "'\n";
+$groups_clause = $group_name == 'All' ? '' : "   and {$db_prefix}employees.groups = '" . mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $group_name) . "'\n";
 
 // Select employees whose timecards need to be scanned.
 $query = <<<End_Of_SQL
@@ -30,15 +30,15 @@ where timestamp between $begin_utm_timestamp and $end_utm_timestamp
 {$employee_clause}{$office_clause}{$groups_clause}order by 1
 End_Of_SQL;
 
-$result = mysql_query($query)
-or trigger_error("export_display: Cannot select employees. " . mysql_error(), E_USER_WARNING);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query)
+or trigger_error("export_display: Cannot select employees. " . mysqli_error($GLOBALS["___mysqli_ston"]), E_USER_WARNING);
 
 // Scan employee timecards between given dates and record computed hours.
 setup_record_hours();
 $week_begin_local_timestamp = work_week_begin($begin_local_timestamp);
 $GLOBALS['tc_begin_local_timestamp'] = $begin_local_timestamp; // for filtering records between week begin and report begin date
 
-while ($row = mysql_fetch_array($result)) {
+while ($row = mysqli_fetch_array($result)) {
 
     $empfullname = $row['fullname'];
 
@@ -49,7 +49,7 @@ while ($row = mysql_fetch_array($result)) {
 
         // Walk each timecard and insert records into temporary database table t_computed_hours.
         $tc = new Timecard($empfullname, $begin, $end);
-        list($timecard_row_count, $total_hours, $overtime_hours) = $tc->walk(null, record_hours, null);
+        list($timecard_row_count, $total_hours, $overtime_hours) = $tc->walk(null, 'record_hours', null);
 
         $begin = $end;
     }
@@ -83,8 +83,8 @@ select coalesce(sum(hours),0) as sum_hours $cols
 {$group_by_clause}{$order_by_clause}
 End_Of_SQL;
 
-$result = mysql_query($query)
-or trigger_error("export_display: Cannot select hours. " . mysql_error(), E_USER_WARNING);
+$result = mysqli_query($GLOBALS["___mysqli_ston"], $query)
+or trigger_error("export_display: Cannot select hours. " . mysqli_error($GLOBALS["___mysqli_ston"]), E_USER_WARNING);
 
 // Print export page header.
 $begin_date = date('l F j, Y', $begin_local_timestamp);
@@ -140,7 +140,7 @@ End_Of_HTML;
 
 // Build export table html.
 $row_count = 0;
-while ($row = mysql_fetch_array($result)) {
+while ($row = mysqli_fetch_array($result)) {
 
     if ($row_count == 0) {
         // Table header
@@ -184,11 +184,23 @@ End_Of_HTML;
 
     $hours = sprintf("%01.02f", $row['sum_hours']);
     $reg_ot = $row['reg_ot'] == 'O' ? 'OT' : 'Reg';
-    $h_inout = htmlentities($row['inout']);
-    $h_color = $row['color'] ? htmlentities($row['color']) : 'inherit';
+    if (isset($row['inout'])) {
+        $h_inout = htmlentities($row['inout']);
+    } else {
+        $h_inout = '';
+    }
+    if (isset($row['color'])) {
+        $h_color = $row['color'] ? htmlentities($row['color']) : 'inherit';
+    } else {
+        $h_color = 'inherit';
+    }
     $date = $row['hours_date'];
     $h_empfullname = htmlentities($row['empfullname']);
-    $h_name = htmlentities($row['displayname']);
+    if (isset($row['displayname'])) {
+        $h_name = htmlentities($row['displayname']);
+    } else {
+        $h_name = '';
+    }
     $h_groups = htmlentities($row['groups']);
     $h_office = htmlentities($row['office']);
 
@@ -236,7 +248,7 @@ print <<<End_Of_HTML
 
 End_Of_HTML;
 
-mysql_free_result($result);
+((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
 ////////////////////////////////////////
 function setup_record_hours() {
@@ -254,9 +266,9 @@ create temporary table t_computed_hours (
   `office` varchar(50)
 )
 End_Of_SQL;
-    mysql_query("DROP TABLE IF EXISTS t_computed_hours");
-    mysql_query($sql)
-    or trigger_error("export_display: Cannot create temporary table t_computed_hours. " . mysql_error(), E_USER_WARNING);
+    mysqli_query($GLOBALS["___mysqli_ston"], "DROP TABLE IF EXISTS t_computed_hours");
+    mysqli_query($GLOBALS["___mysqli_ston"], $sql)
+    or trigger_error("export_display: Cannot create temporary table t_computed_hours. " . mysqli_error($GLOBALS["___mysqli_ston"]), E_USER_WARNING);
 }
 
 function record_hours($tc) {
@@ -288,38 +300,38 @@ function record_hours($tc) {
 
         if (round($hours, 3) > 0) {
             $reg_ot = 'R';
-            $q_inout = mysql_real_escape_string($tc->row['inout']);
-            $q_color = mysql_real_escape_string($tc->row['color']);
-            $q_employee = mysql_real_escape_string($tc->row['fullname']);
-            $q_name = mysql_real_escape_string($tc->row['displayname']);
-            $q_group = mysql_real_escape_string($tc->row['groups']);
-            $q_office = mysql_real_escape_string($tc->row['office']);
+            $q_inout = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['inout']);
+            $q_color = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['color']);
+            $q_employee = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['fullname']);
+            $q_name = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['displayname']);
+            $q_group = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['groups']);
+            $q_office = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['office']);
             #$date        = date('Y-m-d H:i',$start_time); ## debug
             $date = date('Y-m-d', $start_time);
             $sql = <<<End_Of_SQL
 insert into t_computed_hours (hours,reg_ot,`inout`,color,hours_date,empfullname,displayname,groups,office)
 values ($hours,'$reg_ot','$q_inout','$q_color','$date','$q_employee','$q_name','$q_group','$q_office')
 End_Of_SQL;
-            mysql_query($sql)
-            or trigger_error("export_display: Cannot insert regular hours into temp table. " . mysql_error(), E_USER_WARNING);
+            mysqli_query($GLOBALS["___mysqli_ston"], $sql)
+            or trigger_error("export_display: Cannot insert regular hours into temp table. " . mysqli_error($GLOBALS["___mysqli_ston"]), E_USER_WARNING);
         }
 
         if (round($overtime, 3) > 0) {
             $reg_ot = 'O';
-            $q_inout = mysql_real_escape_string($tc->row['inout']);
-            $q_color = mysql_real_escape_string($tc->row['color']);
-            $q_employee = mysql_real_escape_string($tc->row['fullname']);
-            $q_name = mysql_real_escape_string($tc->row['displayname']);
-            $q_group = mysql_real_escape_string($tc->row['groups']);
-            $q_office = mysql_real_escape_string($tc->row['office']);
+            $q_inout = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['inout']);
+            $q_color = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['color']);
+            $q_employee = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['fullname']);
+            $q_name = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['displayname']);
+            $q_group = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['groups']);
+            $q_office = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $tc->row['office']);
             #$date        = date('Y-m-d H:i',$start_time); ## debug
             $date = date('Y-m-d', $start_time);
             $sql = <<<End_Of_SQL
 insert into t_computed_hours (hours,reg_ot,`inout`,color,hours_date,empfullname,displayname,groups,office)
 values ($overtime,'$reg_ot','$q_inout','$q_color','$date','$q_employee','$q_name','$q_group','$q_office')
 End_Of_SQL;
-            mysql_query($sql)
-            or trigger_error("export_display: Cannot insert overtime hours into temp table. " . mysql_error(), E_USER_WARNING);
+            mysqli_query($GLOBALS["___mysqli_ston"], $sql)
+            or trigger_error("export_display: Cannot insert overtime hours into temp table. " . mysqli_error($GLOBALS["___mysqli_ston"]), E_USER_WARNING);
         }
     }
 }

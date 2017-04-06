@@ -1,6 +1,19 @@
 # if you would like to utilize a table prefix when upgrading these tables, be sure to use the one you have setup in config.inc.php.
 # this option is $db_prefix.  if you are unaware of what is meant by utilizing a 'table prefix', then please disregard.
 
+-- Database upgrades may be performed automatically in the app under
+-- "Administration -> Upgrade Database" as long as the database connection
+-- used by your web app has the required privileges. Otherwise you must
+-- perform the upgrade manually.
+--
+-- When upgrading from versions older than 1.04, perform the upgrades
+-- described in this file in order to reach dbversion 1.4.
+--
+-- To upgrade from dbversion 1.4 or newer, run the upgrade scripts in this
+-- directory, one at a time, until your database is upgraded to the latest
+-- version.
+
+
 
 ###################################################################
 #                                                                 #

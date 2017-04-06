@@ -72,19 +72,20 @@ echo "            </table>\n";
 echo "            <table class=table_border width=60% align=center border=0 cellpadding=0 cellspacing=0>\n";
 echo "              <tr><th class=table_heading nowrap width=7% align=left>&nbsp;</th>\n";
 echo "                <th class=table_heading nowrap width=23% align=left>Status Name</th>\n";
-echo "                <th class=table_heading nowrap width=60% align=left>Color</th>\n";
+echo "                <th class=table_heading nowrap width=23% align=left>On Punch</th>\n";
+echo "                <th class=table_heading nowrap width=37% align=left>Color</th>\n";
 echo "                <th class=table_heading nowrap width=4% align=center>In/Out</th>\n";
 echo "                <th class=table_heading nowrap width=3% align=center>Edit</th>\n";
 echo "                <th class=table_heading nowrap width=3% align=center>Delete</th></tr>\n";
 
 $row_count = 0;
 
-$query = "select * from " . $db_prefix . "punchlist";
-$result = mysql_query($query);
+$result = tc_select("*", "punchlist");
 
-while ($row = mysql_fetch_array($result)) {
+while ($row = mysqli_fetch_array($result)) {
 
     $punchitem = "" . $row['punchitems'] . "";
+    $punchnext = "" . $row['punchnext'] . "";
     $color = "" . $row['color'] . "";
     $in_or_out = "" . $row['in_or_out'] . "";
 
@@ -100,7 +101,9 @@ while ($row = mysql_fetch_array($result)) {
     echo "              <tr class=table_border bgcolor='$row_color'><td nowrap class=table_rows width=7%>&nbsp;$row_count</td>\n";
     echo "                <td nowrap class=table_rows width=23%>&nbsp;<a class=footer_links title='Edit Status: $punchitem'
                     href='statusedit.php?statusname=$punchitem'>$punchitem</a></td>\n";
-    echo "                <td class=table_rows width=60% align=left style='color:$color';>&nbsp;$color</td>\n";
+    echo "                <td nowrap class=table_rows width=23%>&nbsp;" . ($punchnext ? "&rarr;&nbsp;" : "") . "<a class=footer_links title='Edit Status: $punchnext'
+                    href='statusedit.php?statusname=$punchnext'>$punchnext</a></td>\n";
+    echo "                <td class=table_rows width=37% align=left style='color:$color';>&nbsp;$color</td>\n";
     echo "                <td nowrap class=table_rows width=4% align=center>$in_or_out_tmp</td>\n";
 
     if ((strpos($user_agent, "MSIE 6")) || (strpos($user_agent, "MSIE 5")) || (strpos($user_agent, "MSIE 4")) || (strpos($user_agent, "MSIE 3"))) {

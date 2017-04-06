@@ -38,7 +38,7 @@ if ($request == 'GET') {
         exit;
     }
 
-    $get_user = stripslashes($_GET['username']);
+    $get_user = $_GET['username'];
     @$get_office = $_GET['officename'];
 
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
@@ -91,32 +91,26 @@ if ($request == 'GET') {
     echo "        <tr class=right_main_text>\n";
     echo "          <td valign=top>\n";
 
-    $get_user = addslashes($get_user);
+    $result = tc_select("*", "employees", "empfullname = ? ORDER BY empfullname", $get_user);
 
-    $row_count = 0;
+    while ($row = mysqli_fetch_array($result)) {
 
-    $query = "select * from " . $db_prefix . "employees where empfullname = '" . $get_user . "' order by empfullname";
-    $result = mysql_query($query);
-
-    while ($row = mysql_fetch_array($result)) {
-
-        $username = stripslashes("" . $row['empfullname'] . "");
-        $displayname = stripslashes("" . $row['displayname'] . "");
+        $username = "" . $row['empfullname'] . "";
+        $displayname = "" . $row['displayname'] . "";
         $user_email = "" . $row['email'] . "";
+        $user_barcode = "" . $row['barcode'] . "";
         $office = "" . $row['office'] . "";
         $groups = "" . $row['groups'] . "";
         $admin = "" . $row['admin'] . "";
         $reports = "" . $row['reports'] . "";
         $time_admin = "" . $row['time_admin'] . "";
     }
-    mysql_free_result($result);
-    $get_user = stripslashes($get_user);
+    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
     // make sure you cannot delete the last admin user in the system!! //
 
     if (!empty($admin)) {
-        $admin_count = mysql_query("select empfullname from " . $db_prefix . "employees where admin = '1'");
-        @$admin_count_rows = mysql_num_rows($admin_count);
+        @$admin_count_rows = mysqli_num_rows(tc_select("empfullname", "employees", "admin = '1'"));
         if (@$admin_count_rows == "1") {
             $evil = "1";
         }
@@ -143,6 +137,8 @@ if ($request == 'GET') {
                       width=80% style='padding-left:20px;'><input type='hidden' name='display_name' value=\"$displayname\">$displayname</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Email Address:</td><td align=left class=table_rows
                       width=80% style='padding-left:20px;'><input type='hidden' name='email_addy' value=\"$user_email\">$user_email</td></tr>\n";
+    echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Barcode:</td><td align=left class=table_rows
+                      width=80% style='padding-left:20px;'><input type='hidden' name='barcode' value=\"$user_barcode\">$user_barcode</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Office:</td><td align=left class=table_rows
                       width=80% style='padding-left:20px;'><input type='hidden' name='office_name' value=\"$office\">$office</td></tr>\n";
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Group:</td><td align=left class=table_rows
@@ -192,9 +188,10 @@ if ($request == 'GET') {
     exit;
 } elseif ($request == 'POST') {
 
-    $post_username = stripslashes($_POST['post_username']);
-    $display_name = stripslashes($_POST['display_name']);
+    $post_username = $_POST['post_username'];
+    $display_name = $_POST['display_name'];
     $email_addy = $_POST['email_addy'];
+    $user_barcode = $_POST['barcode'];
     $office_name = $_POST['office_name'];
     $group_name = $_POST['group_name'];
     $admin_perms = $_POST['admin_perms'];
@@ -202,69 +199,41 @@ if ($request == 'GET') {
     $time_admin_perms = $_POST['time_admin_perms'];
     @$delete_data = $_POST['delete_all_user_data'];
 
-    $post_username = addslashes($post_username);
-    $display_name = addslashes($display_name);
-
     // begin post validation //
 
-    if (!empty($post_username)) {
-        $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
-            $tmp_username = "" . $row['empfullname'] . "";
-        }
-        if (!isset($tmp_username)) {
-            echo "Something is fishy here.\n";
-            exit;
-        }
+    if (!empty($post_username)
+         and is_null(tc_select_value("empfullname", "employees", "empfullname = ?", $post_username))
+    ) {
+        echo "Something is fishy here.\n";
+        exit;
     }
 
-    if (!empty($display_name)) {
-        $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "' and displayname = '" . $display_name . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
-            $tmp_display_name = "" . $row['displayname'] . "";
-        }
-        if (!isset($tmp_display_name)) {
-            echo "Something is fishy here.\n";
-            exit;
-        }
+    if (!empty($display_name)
+         and is_null(tc_select_value("displayname", "employees", "empfullname = ? AND displayname = ?", array($post_username, $display_name)))
+    ) {
+        echo "Something is fishy here.\n";
+        exit;
     }
 
-    if (!empty($email_addy)) {
-        $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "' and email = '" . $email_addy . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
-            $tmp_email_addy = "" . $row['email'] . "";
-        }
-        if (!isset($tmp_email_addy)) {
-            echo "Something is fishy here.\n";
-            exit;
-        }
+    if (!empty($email_addy)
+         and is_null(tc_select_value("email", "employees", "empfullname = ? AND email = ?", array($post_username, $email_addy)))
+    ) {
+        echo "Something is fishy here.\n";
+        exit;
     }
 
-    if (!empty($office_name)) {
-        $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "' and office = '" . $office_name . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
-            $tmp_office_name = "" . $row['office'] . "";
-        }
-        if (!isset($tmp_office_name)) {
-            echo "Something is fishy here.\n";
-            exit;
-        }
+    if (!empty($office_name)
+         and is_null(tc_select_value("office", "employees", "empfullname = ? AND office = ?", array($post_username, $office_name)))
+    ) {
+        echo "Something is fishy here.\n";
+        exit;
     }
 
-    if (!empty($group_name)) {
-        $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "' and groups = '" . $group_name . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
-            $tmp_group_name = "" . $row['groups'] . "";
-        }
-        if (!isset($tmp_group_name)) {
-            echo "Something is fishy here.\n";
-            exit;
-        }
+    if (!empty($group_name)
+         and is_null(tc_select_value("groups", "employees", "empfullname = ? AND groups = ?", array($post_username, $group_name)))
+    ) {
+        echo "Something is fishy here.\n";
+        exit;
     }
 
     if (($admin_perms != '0') && ($admin_perms != '1')) {
@@ -286,16 +255,11 @@ if ($request == 'GET') {
 
     // end post validation //
 
-    $query2 = "delete from " . $db_prefix . "employees where empfullname = ('" . $post_username . "')";
-    $result2 = mysql_query($query2);
+    tc_delete("employees", "empfullname = ?", $post_username);
 
     if ($delete_data == "1") {
-        $query3 = "delete from " . $db_prefix . "info where fullname = ('" . $post_username . "')";
-        $result3 = mysql_query($query3);
+        tc_delete("info", "fullname = ?", $post_username);
     }
-
-    $post_username = stripslashes($post_username);
-    $display_name = stripslashes($display_name);
 
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";

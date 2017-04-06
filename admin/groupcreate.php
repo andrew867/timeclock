@@ -85,18 +85,18 @@ if ($request == 'GET') {
     // query to populate dropdown with parent offices //
 
     $query = "select * from " . $db_prefix . "offices order by officename asc";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Parent Office:</td><td colspan=2 align=left width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
                       <select name='select_office_name'>\n";
     echo "                        <option value ='1'>Choose One</option>\n";
 
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         echo "                        <option>" . $row['officename'] . "</option>\n";
     }
     echo "                      </select>&nbsp;*</td></tr>\n";
-    mysql_free_result($result);
+    ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
     echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
     echo "            </table>\n";
@@ -166,12 +166,12 @@ if ($request == 'GET') {
 
     if (!empty($select_office_name)) {
         $query = "select * from " . $db_prefix . "offices where officename = '" . $select_office_name . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+        while ($row = mysqli_fetch_array($result)) {
             $getoffice = "" . $row['officename'] . "";
             $officeid = "" . $row['officeid'] . "";
         }
-        mysql_free_result($result);
+        ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
     }
     if ((!isset($getoffice)) && ($select_office_name != '1')) {
         echo "Office is not defined for this user. Go back and associate this user with an office.\n";
@@ -181,9 +181,9 @@ if ($request == 'GET') {
     // check for duplicate groupnames with matching officeids //
 
     $query = "select * from " . $db_prefix . "groups where groupname = '" . $post_groupname . "' and officeid = '" . @$officeid . "'";
-    $result = mysql_query($query);
+    $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         $tmp_groupname = "" . $row['groupname'] . "";
     }
 
@@ -255,14 +255,14 @@ if ($request == 'GET') {
         // query to populate dropdown with parent offices //
 
         $query = "select * from " . $db_prefix . "offices order by officename asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Parent Office:</td><td colspan=2 align=left width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
                       <select name='select_office_name'>\n";
         echo "                        <option value ='1'>Choose One</option>\n";
 
-        while ($row = mysql_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {
             if ("" . $row['officename'] . "" == $select_office_name) {
                 echo "                        <option selected>" . $row['officename'] . "</option>\n";
             } else {
@@ -270,7 +270,7 @@ if ($request == 'GET') {
             }
         }
         echo "                      </select>&nbsp;*</td></tr>\n";
-        mysql_free_result($result);
+        ((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
 
         echo "              <tr><td class=table_rows align=right colspan=3 style='color:red;font-family:Tahoma;font-size:10px;'>*&nbsp;required&nbsp;</td></tr>\n";
         echo "            </table>\n";
@@ -285,7 +285,7 @@ if ($request == 'GET') {
     } else {
 
         $query = "insert into " . $db_prefix . "groups (groupname, officeid) values ('" . $post_groupname . "', '" . $officeid . "')";
-        $result = mysql_query($query);
+        $result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
         echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td class=table_rows width=20 align=center><img src='../images/icons/accept.png' /></td><td class=table_rows_green>

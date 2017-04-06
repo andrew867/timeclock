@@ -66,19 +66,19 @@ if ($authorized && isset($_POST['inout'])) {
     // Post employee time.
 
     $inout = $_POST['inout'];
-    $q_inout = mysql_real_escape_string($inout);
+    $q_inout = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $inout);
     $h_inout = htmlentities($inout);
 
     $notes = isset($_POST['notes']) ? $_POST['notes'] : '';
-    $q_notes = mysql_real_escape_string($notes);
+    $q_notes = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $notes);
     $h_notes = htmlentities($notes);
 
-    $q_empfullname = mysql_real_escape_string($empfullname);
+    $q_empfullname = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $empfullname);
 
     // Validate and get inout display color.
     $query = "select color from " . $db_prefix . "punchlist where punchitems = '$q_inout'";
-    $punchlist_result = mysql_query($query);
-    $inout_color = mysql_result($punchlist_result, 0, 0);
+    $punchlist_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+    $inout_color = mysqli_result($punchlist_result,  0,  0);
     if (!$inout_color) {
         #print error_msg("In/Out Status is not in the database.");
         trigger_error('In/Out Status is not in the database.', E_USER_WARNING);
@@ -101,11 +101,11 @@ set tstamp = '$tz_stamp'
 where empfullname = '$q_empfullname'
 End_Of_SQL;
 
-    if (mysql_query($insert_query)) {
-        mysql_query($update_query)
-        or trigger_error('entry: cannot update tstamp in employee record. ' . mysql_error(), E_USER_WARNING);
+    if (mysqli_query($GLOBALS["___mysqli_ston"], $insert_query)) {
+        mysqli_query($GLOBALS["___mysqli_ston"], $update_query)
+        or trigger_error('entry: cannot update tstamp in employee record. ' . mysqli_error($GLOBALS["___mysqli_ston"]), E_USER_WARNING);
     } else {
-        trigger_error('entry: cannot insert timestamp into info record. ' . mysql_error(), E_USER_WARNING);
+        trigger_error('entry: cannot insert timestamp into info record. ' . mysqli_error($GLOBALS["___mysqli_ston"]), E_USER_WARNING);
     }
 
     # Uncomment next to display success message. The entry status display also shows last punch-in/out.
@@ -212,12 +212,12 @@ $PAGE_BODY_ID = 'entry';
 
                     // query to produce buttons for the punchlist items //
                     $query = "select punchitems,color,in_or_out from " . $db_prefix . "punchlist order by in_or_out desc, color, punchitems";
-                    $punchlist_result = mysql_query($query);
-                    while ($row = mysql_fetch_array($punchlist_result)) {
+                    $punchlist_result = mysqli_query($GLOBALS["___mysqli_ston"], $query);
+                    while ($row = mysqli_fetch_array($punchlist_result)) {
                         $punchclass = $row['in_or_out'] ? 'punch-in' : 'punch-out';
                         echo "<input type=\"submit\" name=\"inout\" value=\"{$row['punchitems']}\" class=\"$punchclass\" style=\"color:{$row['color']}\" />\n";
                     }
-                    mysql_free_result($punchlist_result);
+                    ((mysqli_free_result($punchlist_result) || (is_object($punchlist_result) && (get_class($punchlist_result) == "mysqli_result"))) ? true : false);
 
                     ?>
                 </td>
