@@ -64,17 +64,17 @@ echo "        <tr><td class=left_rows height=18 align=left valign=middle><img sr
                 alt='Upgrade Database' />&nbsp;&nbsp;&nbsp;<a class=admin_headings href='dbupgrade.php'>Upgrade Database</a></td></tr>\n";
 echo "      </table></td>\n";
 
-$user_count = mysqli_query("select empfullname from " . $db_prefix . "employees
+$user_count = mysqli_query($db,"select empfullname from " . $db_prefix . "employees
                            order by empfullname");
 @$user_count_rows = mysqli_num_rows($user_count);
 
-$admin_count = mysqli_query("select empfullname from " . $db_prefix . "employees where admin = '1'");
+$admin_count = mysqli_query($db,"select empfullname from " . $db_prefix . "employees where admin = '1'");
 @$admin_count_rows = mysqli_num_rows($admin_count);
 
-$time_admin_count = mysqli_query("select empfullname from " . $db_prefix . "employees where time_admin = '1'");
+$time_admin_count = mysqli_query($db,"select empfullname from " . $db_prefix . "employees where time_admin = '1'");
 @$time_admin_count_rows = mysqli_num_rows($time_admin_count);
 
-$reports_count = mysqli_query("select empfullname from " . $db_prefix . "employees where reports = '1'");
+$reports_count = mysqli_query($db,"select empfullname from " . $db_prefix . "employees where reports = '1'");
 @$reports_count_rows = mysqli_num_rows($reports_count);
 
 echo "    <td align=left class=right_main scope=col>\n";
@@ -110,7 +110,7 @@ $row_count = 0;
 
 $query = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
           order by empfullname";
-$result = mysqli_query($query);
+$result = mysqli_query($db,$query);
 
 while ($row = mysqli_fetch_array($result)) {
 

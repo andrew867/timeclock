@@ -225,7 +225,7 @@ if (($post_username == "") && ($display_name == "") && ($email_addy == "")) {
 
 if (!empty($office_name)) {
     $query = "select * from " . $db_prefix . "offices where officename = '" . $office_name . "'";
-    $result = mysqli_query($query);
+    $result = mysqli_query($db,$query);
     while ($row = mysqli_fetch_array($result)) {
         $tmp_officename = "" . $row['officename'] . "";
     }
@@ -238,7 +238,7 @@ if (!empty($office_name)) {
 
 if (!empty($group_name)) {
     $query = "select * from " . $db_prefix . "groups where groupname = '" . $group_name . "'";
-    $result = mysqli_query($query);
+    $result = mysqli_query($db,$query);
     while ($row = mysqli_fetch_array($result)) {
         $tmp_groupname = "" . $row['groupname'] . "";
     }
@@ -310,17 +310,17 @@ if (!empty($post_username)) {
         $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
             where empfullname LIKE '%" . $post_username . "%' and office = '" . $office_name . "' and groups = '" . $group_name . "'
             order by empfullname";
-        $result4 = mysqli_query($query4);
+        $result4 = mysqli_query($db,$query4);
     } elseif (!empty($office_name)) {
         $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
             where empfullname LIKE '%" . $post_username . "%' and office = '" . $office_name . "'
             order by empfullname";
-        $result4 = mysqli_query($query4);
+        $result4 = mysqli_query($db,$query4);
     } elseif (empty($office_name)) {
         $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
             where empfullname LIKE '%" . $post_username . "%'
             order by empfullname";
-        $result4 = mysqli_query($query4);
+        $result4 = mysqli_query($db,$query4);
     }
 } elseif (!empty($display_name)) {
     $tmp_var = $display_name;
@@ -330,17 +330,17 @@ if (!empty($post_username)) {
         $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
             where displayname LIKE '%" . $display_name . "%' and office = '" . $office_name . "' and groups = '" . $group_name . "'
             order by empfullname";
-        $result4 = mysqli_query($query4);
+        $result4 = mysqli_query($db,$query4);
     } elseif (!empty($office_name)) {
         $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
             where displayname LIKE '%" . $display_name . "%' and office = '" . $office_name . "'
             order by empfullname";
-        $result4 = mysqli_query($query4);
+        $result4 = mysqli_query($db,$query4);
     } elseif (empty($office_name)) {
         $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
             where displayname LIKE '%" . $display_name . "%'
             order by empfullname";
-        $result4 = mysqli_query($query4);
+        $result4 = mysqli_query($db,$query4);
     }
 } elseif (!empty($email_addy)) {
     $tmp_var = $email_addy;
@@ -350,17 +350,17 @@ if (!empty($post_username)) {
         $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
             where email LIKE '%" . $email_addy . "%' and office = '" . $office_name . "' and groups = '" . $group_name . "'
             order by empfullname";
-        $result4 = mysqli_query($query4);
+        $result4 = mysqli_query($db,$query4);
     } elseif (!empty($office_name)) {
         $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
             where email LIKE '%" . $email_addy . "%' and office = '" . $office_name . "'
             order by empfullname";
-        $result4 = mysqli_query($query4);
+        $result4 = mysqli_query($db,$query4);
     } elseif (empty($office_name)) {
         $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
             where email LIKE '%" . $email_addy . "%'
             order by empfullname";
-        $result4 = mysqli_query($query4);
+        $result4 = mysqli_query($db,$query4);
     }
 }
 

@@ -139,7 +139,7 @@ if ($request == 'GET') {
     $display_name = addslashes($display_name);
 
     $query5 = "select empfullname from " . $db_prefix . "employees where empfullname = '" . $post_username . "' order by empfullname";
-    $result5 = mysqli_query($query5);
+    $result5 = mysqli_query($db,$query5);
 
     while ($row = mysqli_fetch_array($result5)) {
         $tmp_username = "" . $row['empfullname'] . "";
@@ -319,7 +319,7 @@ if ($request == 'GET') {
 
         if (!empty($office_name)) {
             $query = "select * from " . $db_prefix . "offices where officename = '" . $office_name . "'";
-            $result = mysqli_query($query);
+            $result = mysqli_query($db,$query);
             while ($row = mysqli_fetch_array($result)) {
                 $tmp_officename = "" . $row['officename'] . "";
             }
@@ -332,7 +332,7 @@ if ($request == 'GET') {
 
         if (!empty($group_name)) {
             $query = "select * from " . $db_prefix . "groups where groupname = '" . $group_name . "'";
-            $result = mysqli_query($query);
+            $result = mysqli_query($db,$query);
             while ($row = mysqli_fetch_array($result)) {
                 $tmp_groupname = "" . $row['groupname'] . "";
             }
@@ -447,7 +447,7 @@ if ($request == 'GET') {
     $query3 = "insert into " . $db_prefix . "employees (empfullname, displayname, employee_passwd, email, groups, office, admin, reports, time_admin, disabled)
            values ('" . $post_username . "', '" . $display_name . "', '" . $password . "', '" . $email_addy . "', '" . $group_name . "', '" . $office_name . "', '" . $admin_perms . "',
            '" . $reports_perms . "', '" . $time_admin_perms . "', '" . $post_disabled . "')";
-    $result3 = mysqli_query($query3);
+    $result3 = mysqli_query($db,$query3);
 
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
@@ -508,7 +508,7 @@ if ($request == 'GET') {
     $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
 	  where empfullname = '" . $post_username . "'
           order by empfullname";
-    $result4 = mysqli_query($query4);
+    $result4 = mysqli_query($db,$query4);
 
     while ($row = mysqli_fetch_array($result4)) {
 

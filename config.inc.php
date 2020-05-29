@@ -65,10 +65,10 @@ $restrict_ips = "no";
 $allowed_networks = array();
 
 
-/* Choose "yes" if you want to disable the Edit System Settings page within PHP 
-   Timeclock. This page allows you to make *most* of your changes to the 
-   config.inc.php file through the PHP Timeclock interface instead of editing 
-   the config.inc.php file by hand. Many will view this as a possible security risk  
+/* Choose "yes" if you want to disable the Edit System Settings page within PHP
+   Timeclock. This page allows you to make *most* of your changes to the
+   config.inc.php file through the PHP Timeclock interface instead of editing
+   the config.inc.php file by hand. Many will view this as a possible security risk
    and might would rather disable this functionality. Default is "no". */
 
 $disable_sysedit = "no";
@@ -81,7 +81,7 @@ $disable_sysedit = "no";
 $use_passwd = "yes";
 
 
-/* If you only want certain users to have the ability to view and run the reports, 
+/* If you only want certain users to have the ability to view and run the reports,
    change $use_reports_password to "yes". Default is "no"; */
 
 $use_reports_password = "yes";
@@ -103,16 +103,16 @@ $email = "none";
 /* --- OPTIONAL CHANGES --- */
 
 
-/* Choose the way dates are displayed. DO NOT EDIT THESE DATE VARIABLES MANUALLY UNLESS YOU 
+/* Choose the way dates are displayed. DO NOT EDIT THESE DATE VARIABLES MANUALLY UNLESS YOU
    KNOW WHAT YOU ARE DOING. Instead, change these date variables via the Edit System Settings
-   page in the Administration section of PHP Timeclock (sysedit.php). $datefmt default is 
-   "n/j/y", $js_datefmt default is "M/d/yy", $tmp_datefmt default is "m/d/yy", and 
-   $calendar_style default is "amer". You will need to choose date formats with matching 
-   numbers, ie: if format number 10 is used for $datefmt, then format number 10 will need to 
-   be used for $js_format and $tmp_format as well. "euro" will need to be chosen for date 
-   format numbers 1-6, and "amer" will need to be chosen for date format numbers 7-12. 
-   Again, if you are confused, i urge you to change these settings via the Edit System 
-   Settings page in the Administration Section. Choosing mismatched options will lead to 
+   page in the Administration section of PHP Timeclock (sysedit.php). $datefmt default is
+   "n/j/y", $js_datefmt default is "M/d/yy", $tmp_datefmt default is "m/d/yy", and
+   $calendar_style default is "amer". You will need to choose date formats with matching
+   numbers, ie: if format number 10 is used for $datefmt, then format number 10 will need to
+   be used for $js_format and $tmp_format as well. "euro" will need to be chosen for date
+   format numbers 1-6, and "amer" will need to be chosen for date format numbers 7-12.
+   Again, if you are confused, i urge you to change these settings via the Edit System
+   Settings page in the Administration Section. Choosing mismatched options will lead to
    much confusion and plenty of headaches later.
 
    Possibilities for these variables are:
@@ -177,13 +177,13 @@ $display_office = "all";
 $display_group = "all";
 
 
-/* Display a column on the main page that shows the office each person is affiliated with. 
+/* Display a column on the main page that shows the office each person is affiliated with.
    Default is "no". */
 
 $display_office_name = "no";
 
 
-/* Display a column on the main page that shows the group each person is affiliated with. 
+/* Display a column on the main page that shows the group each person is affiliated with.
    Default is "no". */
 
 $display_group_name = "no";
@@ -202,7 +202,7 @@ $logo = "images/logos/phptimeclock.png";
 $refresh = "300";
 
 
-/* This creates a clickable date in the top right of each page. By Default, it links to 
+/* This creates a clickable date in the top right of each page. By Default, it links to
    "This Day in History" on the historychannel.com website. Set it to "none" to ignore this option. */
 
 $date_link = "";
@@ -222,7 +222,7 @@ $color2 = "#FBFBFB";
 $links = "none";
 
 
-/* Insert/change/delete below the display names for the links you inserted above. 
+/* Insert/change/delete below the display names for the links you inserted above.
    If $links is set to "none", this option is ignored. */
 
 $display_links = "none";
@@ -240,7 +240,7 @@ $display_links = "none";
 $paginate = "yes";
 
 
-/* Choose whether to show the punch-in/out details for each punch for each user on the 
+/* Choose whether to show the punch-in/out details for each punch for each user on the
    Hours Worked report or not. Default is "yes". */
 
 $show_details = "yes";
@@ -272,11 +272,11 @@ $report_start_time = "00:00";
 $report_end_time = "23:59";
 
 
-/* Setting this variable to "yes" will display a single dropdown box containing usernames 
-   to choose from when running the reports. Setting this variable to "no" will instead 
-   display a triple dropdown box containing offices, groups, and usernames to choose from 
-   when running the reports. A single dropdown box works well if there are just a few 
-   usernames in the system, and a triple dropdown works well if multiple offices and/or 
+/* Setting this variable to "yes" will display a single dropdown box containing usernames
+   to choose from when running the reports. Setting this variable to "no" will instead
+   display a triple dropdown box containing offices, groups, and usernames to choose from
+   when running the reports. A single dropdown box works well if there are just a few
+   usernames in the system, and a triple dropdown works well if multiple offices and/or
    groups are in the system. Default is "no". */
 
 $username_dropdown_only = "no";
@@ -288,8 +288,8 @@ $username_dropdown_only = "no";
 $user_or_display = "display";
 
 
-/* Choose whether to include in the reports the ip addresses of the systems that connect to 
-   sign-in/out into PHP Timeclock or not. This option is useful for auditing purposes. The 
+/* Choose whether to include in the reports the ip addresses of the systems that connect to
+   sign-in/out into PHP Timeclock or not. This option is useful for auditing purposes. The
    ip_logging option must be set to "yes" in order for this option to work as expected.
    Default is "yes". */
 
@@ -316,8 +316,8 @@ $use_client_tz = "no";
 
 /* To display the punch-in/out times in the timezone of the web server, leave this option set
    to "yes". If using PHP 5.1+ then leave this as-is, to change the time zone please use
-   date.timezone in your php.ini. Leaving date.timezone unset may cause PHP to choose the 
-   wrong timezone. Setting this option to "yes" will display the punch-in/out times according 
+   date.timezone in your php.ini. Leaving date.timezone unset may cause PHP to choose the
+   wrong timezone. Setting this option to "yes" will display the punch-in/out times according
    to the timezone through date("Z"). The default setting is "no". */
 
 $use_server_tz = "no";

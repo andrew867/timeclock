@@ -13,7 +13,7 @@ if (isset($_POST['login_userid']) && (isset($_POST['login_password']))) {
 
     $query = "select empfullname, employee_passwd, admin, time_admin from " . $db_prefix . "employees
               where empfullname = '" . $login_userid . "'";
-    $result = mysqli_query($query);
+    $result = mysqli_query($db,$query);
 
     while ($row = mysqli_fetch_array($result)) {
 

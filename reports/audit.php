@@ -410,7 +410,7 @@ if ($request == 'GET') {
 
     $query = "select * from " . $db_prefix . "audit where modified_when >= '" . $from_timestamp . "' and modified_when <= '" . $to_timestamp . "'
           order by modified_when asc";
-    $result = mysqli_query($query);
+    $result = mysqli_query($db,$query);
 
     while ($row = mysqli_fetch_array($result)) {
 

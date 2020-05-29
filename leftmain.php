@@ -28,7 +28,7 @@ if ($request == 'POST') {
         if (isset($displayname)) {
             $displayname = addslashes($displayname);
             $query = "select displayname from " . $db_prefix . "employees where displayname = '" . $displayname . "'";
-            $emp_name_result = mysqli_query($query);
+            $emp_name_result = mysqli_query($db,$query);
 
             while ($row = mysqli_fetch_array($emp_name_result)) {
                 $tmp_displayname = "" . $row['displayname'] . "";
@@ -45,7 +45,7 @@ if ($request == 'POST') {
         if (isset($fullname)) {
             $fullname = addslashes($fullname);
             $query = "select empfullname from " . $db_prefix . "employees where empfullname = '" . $fullname . "'";
-            $emp_name_result = mysqli_query($query);
+            $emp_name_result = mysqli_query($db,$query);
 
             while ($row = mysqli_fetch_array($emp_name_result)) {
                 $tmp_empfullname = "" . $row['empfullname'] . "";
@@ -79,8 +79,8 @@ if ($request == 'POST') {
 if ($display_weather == 'yes') {
 
     include 'phpweather.php';
-    $metar = get_metar($metar);
-    $data = process_metar($metar);
+    $metar = get_metar($db,$db_prefix,$metar);
+    $data = process_metar($db,$db_prefix,$metar);
 
     if ($weather_units == "f") {
         $mph = " mph";
@@ -219,21 +219,21 @@ if ($display_weather == 'yes') {
     }
 }
 echo '<section id="main-content">
-          <section class="wrapper">            
+          <section class="wrapper">
               <!--overview start-->
 			  <div class="row">
 				<div class="col-lg-12">
 					<h3 class="page-header"><i class="fa fa-laptop"></i> Home</h3>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-home"></i><a href="index.php">Home</a></li>				  	
+						<li><i class="fa fa-home"></i><a href="index.php">Home</a></li>
 					</ol>
 				</div>
 			</div>
-              
+
            <div class="row">
                   <div class="col-sm-6">
-                      <section class="panel">   
-											
+                      <section class="panel">
+
 					';
 echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
 echo "  <tr valign=top>\n";
@@ -274,7 +274,7 @@ echo "        <tr><td height=4 align=left valign=middle class=control-label col-
 if ($show_display_name == "yes") {
 
     $query = "select displayname from " . $db_prefix . "employees where disabled <> '1'  and empfullname <> 'admin' order by displayname";
-    $emp_name_result = mysqli_query($query);
+    $emp_name_result = mysqli_query($db,$query);
     echo "              <select class=form-control input-lg m-bot15 name='left_displayname' tabindex=1>\n";
     echo "              <option value =''>...</option>\n";
 
@@ -297,7 +297,7 @@ if ($show_display_name == "yes") {
 } else {
 
     $query = "select empfullname from " . $db_prefix . "employees where disabled <> '1'  and empfullname <> 'admin' order by empfullname";
-    $emp_name_result = mysqli_query($query);
+    $emp_name_result = mysqli_query($db,$query);
     echo "              <select class=form-control input-lg m-bot15 name='left_fullname' tabindex=1>\n";
     echo "              <option value =''>...</option>\n";
 
@@ -332,7 +332,7 @@ echo "        <tr><td height=4 align=left valign=middle class=control-label col-
 // query to populate dropdown with punchlist items //
 
 $query = "select punchitems from " . $db_prefix . "punchlist";
-$punchlist_result = mysqli_query($query);
+$punchlist_result = mysqli_query($db,$query);
 
 echo "              <select class=form-control input-lg m-bot15 name='left_inout' tabindex=3>\n";
 echo "              <option value =''>...</option>\n";
@@ -351,12 +351,12 @@ echo "<input class='form-control input-lg m-bot15' type='text' name='left_notes'
 
 if (!isset($_COOKIE['remember_me'])) {
     echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-                  <tr><td nowrap height=4 align=left valign=middle class=control-label col-lg-2 width=10%>Remember&nbsp;Me?</td><td width=90% align=left 
+                  <tr><td nowrap height=4 align=left valign=middle class=control-label col-lg-2 width=10%>Remember&nbsp;Me?</td><td width=90% align=left
                     class=control-label col-lg-2 style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='remember_me' value='1'></td></tr>
                     </table></td><tr>\n";
 } elseif (isset($_COOKIE['remember_me'])) {
     echo "        <tr><td width=100%><table width=100% border=0 cellpadding=0 cellspacing=0>
-                  <tr><td nowrap height=4 align=left valign=middle class=control-label col-lg-2 width=10%>Reset&nbsp;Cookie?</td><td width=90% align=left 
+                  <tr><td nowrap height=4 align=left valign=middle class=control-label col-lg-2 width=10%>Reset&nbsp;Cookie?</td><td width=90% align=left
                     class=control-label col-lg-2 style='padding-left:0px;padding-right:0px;' tabindex=5><input type='checkbox' name='reset_cookie' value='1'></td></tr>
                     </table></td><tr>\n";
 }
@@ -411,7 +411,7 @@ if ($request == 'POST') {
     }
 
     $query = "select punchitems from " . $db_prefix . "punchlist";
-    $punchlist_result = mysqli_query($query);
+    $punchlist_result = mysqli_query($db,$query);
 
     while ($row = mysqli_fetch_array($punchlist_result)) {
         $tmp_inout = "" . $row['punchitems'] . "";
@@ -514,7 +514,7 @@ if ($request == 'POST') {
         if ($show_display_name == "yes") {
 
             $sel_query = "select empfullname from " . $db_prefix . "employees where displayname = '" . $displayname . "'";
-            $sel_result = mysqli_query($sel_query);
+            $sel_result = mysqli_query($db,$sel_query);
 
             while ($row = mysqli_fetch_array($sel_result)) {
                 $fullname = stripslashes("" . $row["empfullname"] . "");
@@ -530,10 +530,10 @@ if ($request == 'POST') {
                       '" . $notes . "')";
         }
 
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         $update_query = "update " . $db_prefix . "employees set tstamp = '" . $tz_stamp . "' where empfullname = '" . $fullname . "'";
-        $other_result = mysqli_query($update_query);
+        $other_result = mysqli_query($db,$update_query);
 
         echo "<head>\n";
         echo "<meta http-equiv='refresh' content=0;url=index.php>\n";
@@ -543,7 +543,7 @@ if ($request == 'POST') {
 
         if ($show_display_name == "yes") {
             $sel_query = "select empfullname, employee_passwd from " . $db_prefix . "employees where displayname = '" . $displayname . "'";
-            $sel_result = mysqli_query($sel_query);
+            $sel_result = mysqli_query($db,$sel_query);
 
             while ($row = mysqli_fetch_array($sel_result)) {
                 $tmp_password = "" . $row["employee_passwd"] . "";
@@ -556,7 +556,7 @@ if ($request == 'POST') {
         } else {
 
             $sel_query = "select empfullname, employee_passwd from " . $db_prefix . "employees where empfullname = '" . $fullname . "'";
-            $sel_result = mysqli_query($sel_query);
+            $sel_result = mysqli_query($db,$sel_query);
 
             while ($row = mysqli_fetch_array($sel_result)) {
                 $tmp_password = "" . $row["employee_passwd"] . "";
@@ -574,10 +574,10 @@ if ($request == 'POST') {
                       '" . $notes . "')";
             }
 
-            $result = mysqli_query($query);
+            $result = mysqli_query($db,$query);
 
             $update_query = "update " . $db_prefix . "employees set tstamp = '" . $tz_stamp . "' where empfullname = '" . $fullname . "'";
-            $other_result = mysqli_query($update_query);
+            $other_result = mysqli_query($db,$update_query);
 
             echo "<head>\n";
             echo "<meta http-equiv='refresh' content=0;url=index.php>\n";
@@ -590,7 +590,7 @@ if ($request == 'POST') {
             echo "        <tr class=table_text>\n";
             echo "          <td valign=top>\n";
             echo "<br />\n";
-             
+
 
             if ($show_display_name == "yes") {
                 $strip_fullname = stripslashes($displayname);

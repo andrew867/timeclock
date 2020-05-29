@@ -81,16 +81,16 @@ echo "                <th class=table_heading nowrap width=3% align=center>Delet
 $row_count = 0;
 
 $query = "select * from " . $db_prefix . "offices order by officename";
-$result = mysqli_query($query);
+$result = mysqli_query($db,$query);
 
 while ($row = mysqli_fetch_array($result)) {
 
     $query2 = "select office from " . $db_prefix . "employees where office = '" . $row['officename'] . "'";
-    $result2 = mysqli_query($query2);
+    $result2 = mysqli_query($db,$query2);
     @$user_cnt = mysqli_num_rows($result2);
 
     $query3 = "select * from " . $db_prefix . "groups where officeid = '" . $row['officeid'] . "'";
-    $result3 = mysqli_query($query3);
+    $result3 = mysqli_query($db,$query3);
     @$group_cnt = mysqli_num_rows($result3);
 
     $row_count++;

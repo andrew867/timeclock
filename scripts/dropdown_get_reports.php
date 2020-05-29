@@ -14,7 +14,7 @@
         <?php
 
         $query = "select * from ".$db_prefix."offices order by officename asc";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         $cnt=1;
         while ($row=mysqli_fetch_array($result)) {
@@ -44,7 +44,7 @@
         <?php
 
         $query = "select * from ".$db_prefix."offices order by officename asc";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         while ($row=mysqli_fetch_array($result)) {
           $office_row = addslashes("".$row['officename']."");
@@ -54,7 +54,7 @@
                 $query2 = "select * from ".$db_prefix."offices, ".$db_prefix."groups where ".$db_prefix."groups.officeid = ".$db_prefix."offices.officeid
                            and ".$db_prefix."offices.officename = '".$office_row."'
                            order by ".$db_prefix."groups.groupname asc";
-                $result2 = mysqli_query($query2);
+                $result2 = mysqli_query($db,$query2);
                 echo "groups_select.options[0] = new Option(\"All\");\n";
                 echo "groups_select.options[0].value = 'All';\n";
                 $cnt = 1;
@@ -107,7 +107,7 @@
         <?php
 
         $query = "select * from ".$db_prefix."offices order by officename asc";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         while ($row=mysqli_fetch_array($result)) {
         $office_row = addslashes("".$row['officename']."");
@@ -117,7 +117,7 @@
             $query2 = "select * from ".$db_prefix."offices, ".$db_prefix."groups where ".$db_prefix."groups.officeid = ".$db_prefix."offices.officeid
                        and ".$db_prefix."offices.officename = '".$office_row."'
                        order by ".$db_prefix."groups.groupname asc";
-            $result2 = mysqli_query($query2);
+            $result2 = mysqli_query($db,$query2);
 
             while ($row2=mysqli_fetch_array($result2)) {
             $groups = "".$row2['groupname']."";
@@ -127,7 +127,7 @@
                 <?php
                 $query3 = "select * from ".$db_prefix."employees where office = '".$office_row."' and groups = '".$groups."'  and empfullname <> 'admin'
                            order by empfullname asc";
-                $result3 = mysqli_query($query3);
+                $result3 = mysqli_query($db,$query3);
 
                 echo "users_select.options[0] = new Option(\"All\");\n";
                 echo "users_select.options[0].value = 'All';\n";

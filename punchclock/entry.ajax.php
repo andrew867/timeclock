@@ -18,7 +18,7 @@ turn_off_magic_quotes();
 // Connect to db.
 $db = mysqli_connect($db_hostname, $db_username, $db_password)
 or die("Could not connect to the database.");
-mysqli_select_db($db_name);
+mysqli_select_db($db,$db_name);
 
 // Parse arguments.
 $emp = isset($_GET['emp']) ? $_GET['emp'] : null;
@@ -60,7 +60,7 @@ if ($authorized_to_post_time && isset($_POST['inout'])) {
 
     // Validate and get inout display color.
     $query = "select color from " . $db_prefix . "punchlist where punchitems = '$q_inout'";
-    $punchlist_result = mysqli_query($query);
+    $punchlist_result = mysqli_query($db,$query);
     $inout_color = mysqli_result($punchlist_result, 0, 0);
     if (!$inout_color) {
         #print error_msg("In/Out Status is not in the database.");
@@ -84,7 +84,7 @@ where empfullname = '$q_empfullname'
 End_Of_SQL;
 
     if (mysqli_query($insert_query)) {
-        mysqli_query($update_query)
+        mysqli_query($db,$update_query)
         or trigger_error('punchclock: cannot update tstamp in employee record. ' . mysqli_error(), E_USER_WARNING);
     } else {
         trigger_error('punchclock: cannot insert timestamp into info record. ' . mysqli_error(), E_USER_WARNING);
@@ -258,7 +258,7 @@ End_Of_HTML;
 
                     // query to produce buttons for punchlist items //
                     $query = "select punchitems,color,in_or_out from " . $db_prefix . "punchlist order by in_or_out desc, color, punchitems";
-                    $punchlist_result = mysqli_query($query);
+                    $punchlist_result = mysqli_query($db,$query);
                     while ($row = mysqli_fetch_array($punchlist_result)) {
                         $punchclass = $row['in_or_out'] ? 'punch-in' : 'punch-out';
                         ## Note: nyroModel plays with submit buttons so the following does not work.

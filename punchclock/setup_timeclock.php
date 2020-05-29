@@ -41,14 +41,14 @@ if (!$db) {
     echo "Error: Could not connect to the database. Please try again later.";
     exit;
 }
-mysqli_select_db($db_name);
+mysqli_select_db($db,$db_name);
 
 $table = "dbversion";
-$result = mysqli_query("SHOW TABLES LIKE '" . $db_prefix . $table . "'");
+$result = mysqli_query($db,"SHOW TABLES LIKE '" . $db_prefix . $table . "'");
 $rows = $result ? mysqli_num_rows($result) : 0;
 $dbexists = $rows == 1 ? "1" : "0";
 
-$db_version_result = mysqli_query("select * from " . $db_prefix . "dbversion");
+$db_version_result = mysqli_query($db,"select * from " . $db_prefix . "dbversion");
 while (@$row = mysqli_fetch_array($db_version_result)) {
     @$my_dbversion = "" . $row["dbversion"] . "";
 }

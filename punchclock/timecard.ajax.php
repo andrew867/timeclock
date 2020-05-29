@@ -41,7 +41,7 @@ if (isset($_REQUEST['next']))
 // Connect to db.
 $db = mysqli_connect($db_hostname, $db_username, $db_password)
 or die("Could not connect to the database.");
-mysqli_select_db($db_name);
+mysqli_select_db($db,$db_name);
 
 $u_empfullname = rawurlencode($empfullname);
 

@@ -84,7 +84,7 @@ function secsToHours($secs, $round_time) {
 function disabled_acct($get_user) {
 
     $query = "select empfullname, disabled from employees where empfullname = '" . addslashes($get_user) . "'";
-    $result = mysqli_query($query);
+    $result = mysqli_query($db,$query);
 
     while ($row = mysqli_fetch_array($result)) {
 
@@ -289,7 +289,7 @@ function ip_range($network, $ip) {
     return $result;
 }
 
-function setTimeZone() {
+function setTimeZone($use_client_tz,$use_server_tz ) {
     if ($use_client_tz == "yes") {
         if (isset($_COOKIE['tzoffset'])) {
             $tzo = $_COOKIE['tzoffset'];

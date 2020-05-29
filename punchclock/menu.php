@@ -34,7 +34,7 @@ include 'header.php';
 <?php
 // Construct list of links to punchclocks for each office.
 
-$result = mysqli_query("SELECT officename FROM offices ORDER BY officename");
+$result = mysqli_query($db,"SELECT officename FROM offices ORDER BY officename");
 
 $row_count = 0;
 while ($row = mysqli_fetch_array($result)) {

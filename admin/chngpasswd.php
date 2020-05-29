@@ -102,7 +102,7 @@ if ($request == 'GET') {
     $get_user = addslashes($get_user);
 
     $query = "select empfullname from " . $db_prefix . "employees where empfullname = '" . $get_user . "'";
-    $result = mysqli_query($query);
+    $result = mysqli_query($db,$query);
     while ($row = mysqli_fetch_array($result)) {
         $username = stripslashes("" . $row['empfullname'] . "");
     }
@@ -114,7 +114,7 @@ if ($request == 'GET') {
 
     if (!empty($get_office)) {
         $query = "select * from " . $db_prefix . "offices where officename = '" . $get_office . "'";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
         while ($row = mysqli_fetch_array($result)) {
             $getoffice = "" . $row['officename'] . "";
         }
@@ -158,7 +158,7 @@ if ($request == 'GET') {
 
     if (!empty($get_office)) {
         $query = "select * from " . $db_prefix . "offices where officename = '" . $get_office . "'";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
         while ($row = mysqli_fetch_array($result)) {
             $getoffice = "" . $row['officename'] . "";
         }
@@ -229,7 +229,7 @@ if ($request == 'GET') {
 
     if (!empty($post_username)) {
         $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "'";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
         while ($row = mysqli_fetch_array($result)) {
             $username = "" . $row['empfullname'] . "";
         }
@@ -292,7 +292,7 @@ if ($request == 'GET') {
         $post_username = addslashes($post_username);
 
         $query = "update " . $db_prefix . "employees set employee_passwd = ('" . $new_password . "') where empfullname = ('" . $post_username . "')";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         $post_username = stripslashes($post_username);
 

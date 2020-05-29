@@ -75,7 +75,7 @@ class Timecard {
 
         if ($this->begin_local_timestamp < $local_timestamp) {
             // Get previous record to timecard to see if employee is already signed in at beginning of the period.
-            $result = mysqli_query($this->_query_prev_record($begin_utm_timestamp))
+            $result = mysqli_query($db,$this->_query_prev_record($begin_utm_timestamp))
             or trigger_error('Timecard->walk: no previous result: ' . mysqli_error(), E_USER_WARNING);
 
             if ($result && mysqli_num_rows($result) > 0) {
@@ -98,7 +98,7 @@ class Timecard {
 
         // Get timecard entries.
         $query = $this->_query($begin_utm_timestamp, $end_utm_timestamp);
-        $result = mysqli_query($query)
+        $result = mysqli_query($db,$query)
         or trigger_error('Timecard->walk: no result: ' . mysqli_error(), E_USER_WARNING);
 
         // Process timecard entries.

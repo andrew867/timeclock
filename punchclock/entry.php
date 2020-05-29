@@ -77,7 +77,7 @@ if ($authorized && isset($_POST['inout'])) {
 
     // Validate and get inout display color.
     $query = "select color from " . $db_prefix . "punchlist where punchitems = '$q_inout'";
-    $punchlist_result = mysqli_query($query);
+    $punchlist_result = mysqli_query($db,$query);
     $inout_color = mysqli_result($punchlist_result, 0, 0);
     if (!$inout_color) {
         #print error_msg("In/Out Status is not in the database.");
@@ -102,7 +102,7 @@ where empfullname = '$q_empfullname'
 End_Of_SQL;
 
     if (mysqli_query($insert_query)) {
-        mysqli_query($update_query)
+        mysqli_query($db,$update_query)
         or trigger_error('entry: cannot update tstamp in employee record. ' . mysqli_error(), E_USER_WARNING);
     } else {
         trigger_error('entry: cannot insert timestamp into info record. ' . mysqli_error(), E_USER_WARNING);
@@ -212,7 +212,7 @@ $PAGE_BODY_ID = 'entry';
 
                     // query to produce buttons for the punchlist items //
                     $query = "select punchitems,color,in_or_out from " . $db_prefix . "punchlist order by in_or_out desc, color, punchitems";
-                    $punchlist_result = mysqli_query($query);
+                    $punchlist_result = mysqli_query($db,$query);
                     while ($row = mysqli_fetch_array($punchlist_result)) {
                         $punchclass = $row['in_or_out'] ? 'punch-in' : 'punch-out';
                         echo "<input type=\"submit\" name=\"inout\" value=\"{$row['punchitems']}\" class=\"$punchclass\" style=\"color:{$row['color']}\" />\n";

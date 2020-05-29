@@ -11,7 +11,7 @@
         @$office_name = $_POST['office_name'];
 
         $query = "select * from ".$db_prefix."offices";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         $cnt=1;
         while ($row=mysqli_fetch_array($result)) {
@@ -40,7 +40,7 @@
         <?php
 
         $query = "select * from ".$db_prefix."offices";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         while ($row=mysqli_fetch_array($result)) {
         $office_row = addslashes("".$row['officename']."");
@@ -50,7 +50,7 @@
             <?php
             $query2 = "select * from ".$db_prefix."offices, ".$db_prefix."groups where ".$db_prefix."groups.officeid = ".$db_prefix."offices.officeid
                        and ".$db_prefix."offices.officename = '".$office_row."'";
-            $result2 = mysqli_query($query2);
+            $result2 = mysqli_query($db,$query2);
             echo "groups_select.options[0] = new Option(\"...\");\n";
             echo "groups_select.options[0].value = '';\n";
             $cnt = 1;

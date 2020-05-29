@@ -85,7 +85,7 @@ if ($request == 'GET') {
     // query to populate dropdown with parent offices //
 
     $query = "select * from " . $db_prefix . "offices order by officename asc";
-    $result = mysqli_query($query);
+    $result = mysqli_query($db,$query);
 
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Parent Office:</td><td colspan=2 align=left width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
@@ -166,7 +166,7 @@ if ($request == 'GET') {
 
     if (!empty($select_office_name)) {
         $query = "select * from " . $db_prefix . "offices where officename = '" . $select_office_name . "'";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
         while ($row = mysqli_fetch_array($result)) {
             $getoffice = "" . $row['officename'] . "";
             $officeid = "" . $row['officeid'] . "";
@@ -181,7 +181,7 @@ if ($request == 'GET') {
     // check for duplicate groupnames with matching officeids //
 
     $query = "select * from " . $db_prefix . "groups where groupname = '" . $post_groupname . "' and officeid = '" . @$officeid . "'";
-    $result = mysqli_query($query);
+    $result = mysqli_query($db,$query);
 
     while ($row = mysqli_fetch_array($result)) {
         $tmp_groupname = "" . $row['groupname'] . "";
@@ -255,7 +255,7 @@ if ($request == 'GET') {
         // query to populate dropdown with parent offices //
 
         $query = "select * from " . $db_prefix . "offices order by officename asc";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Parent Office:</td><td colspan=2 align=left width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
@@ -285,7 +285,7 @@ if ($request == 'GET') {
     } else {
 
         $query = "insert into " . $db_prefix . "groups (groupname, officeid) values ('" . $post_groupname . "', '" . $officeid . "')";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td class=table_rows width=20 align=center><img src='../images/icons/accept.png' /></td><td class=table_rows_green>

@@ -101,7 +101,7 @@ if ($request == 'GET') {
     $get_user = addslashes($get_user);
 
     $query = "select * from " . $db_prefix . "employees where empfullname = '" . $get_user . "' order by empfullname";
-    $result = mysqli_query($query);
+    $result = mysqli_query($db,$query);
 
     while ($row = mysqli_fetch_array($result)) {
 
@@ -148,7 +148,7 @@ if ($request == 'GET') {
     // query to populate dropdown with statuses //
 
     $query2 = "select * from " . $db_prefix . "punchlist order by punchitems asc";
-    $result2 = mysqli_query($query2);
+    $result2 = mysqli_query($db,$query2);
 
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Status:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
@@ -196,7 +196,7 @@ if ($request == 'GET') {
 
     if (!empty($get_user)) {
         $query = "select * from " . $db_prefix . "employees where empfullname = '" . $get_user . "'";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
         while ($row = mysqli_fetch_array($result)) {
             $tmp_get_user = "" . $row['empfullname'] . "";
         }
@@ -208,7 +208,7 @@ if ($request == 'GET') {
 
     if (!empty($post_username)) {
         $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "'";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
         while ($row = mysqli_fetch_array($result)) {
             $tmp_username = "" . $row['empfullname'] . "";
         }
@@ -220,7 +220,7 @@ if ($request == 'GET') {
 
     if (!empty($post_displayname)) {
         $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "' and displayname = '" . $post_displayname . "'";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
         while ($row = mysqli_fetch_array($result)) {
             $tmp_post_displayname = "" . $row['displayname'] . "";
         }
@@ -234,7 +234,7 @@ if ($request == 'GET') {
         if ($post_statusname != '1') {
 
             $query = "select * from " . $db_prefix . "punchlist where punchitems = '" . $post_statusname . "'";
-            $result = mysqli_query($query);
+            $result = mysqli_query($db,$query);
 
             while ($row = mysqli_fetch_array($result)) {
                 $punchitems = "" . $row['punchitems'] . "";
@@ -498,7 +498,7 @@ if ($request == 'GET') {
         // query to populate dropdown with statuses //
 
         $query2 = "select * from " . $db_prefix . "punchlist order by punchitems asc";
-        $result2 = mysqli_query($query2);
+        $result2 = mysqli_query($db,$query2);
 
         echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Status:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
@@ -548,7 +548,7 @@ if ($request == 'GET') {
         // check for duplicate time for $post_username
 
         $query = "select * from " . $db_prefix . "info where fullname = '" . $post_username . "'";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         $post_username = stripslashes($post_username);
         $post_displayname = stripslashes($post_displayname);
@@ -594,7 +594,7 @@ if ($request == 'GET') {
                 // query to populate dropdown with statuses //
 
                 $query2 = "select * from " . $db_prefix . "punchlist order by punchitems asc";
-                $result2 = mysqli_query($query2);
+                $result2 = mysqli_query($db,$query2);
 
                 echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Status:</td><td colspan=2 width=80%
                       style='color:red;font-family:Tahoma;font-size:10px;padding-left:20px;'>
@@ -634,7 +634,7 @@ if ($request == 'GET') {
         $post_displayname = addslashes($post_displayname);
 
         $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "'";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         while ($row = mysqli_fetch_array($result)) {
             $employees_table_timestamp = "" . $row['tstamp'] . "";
@@ -643,7 +643,7 @@ if ($request == 'GET') {
 
         if ($timestamp > $employees_table_timestamp) {
             $update_query = "update " . $db_prefix . "employees set tstamp = '" . $timestamp . "' where empfullname = '" . $post_username . "'";
-            $update_result = mysqli_query($update_query);
+            $update_result = mysqli_query($db,$update_query);
         }
 
         // determine who the authenticated user is for audit log
@@ -674,18 +674,18 @@ if ($request == 'GET') {
 
         $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes) values ('" . $post_username . "', '" . $post_statusname . "', '" . $timestamp . "',
           '" . $post_notes . "')";
-        $result = mysqli_query($query);
+        $result = mysqli_query($db,$query);
 
         // add the results to the audit table
 
         if (strtolower($ip_logging) == "yes") {
             $query2 = "insert into " . $db_prefix . "audit (modified_by_ip, modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values
            ('" . $connecting_ip . "', '" . $user . "', '" . $time_tz_stamp . "', '0', '" . $timestamp . "', '" . $post_why . "', '" . $post_username . "')";
-            $result2 = mysqli_query($query2);
+            $result2 = mysqli_query($db,$query2);
         } else {
             $query2 = "insert into " . $db_prefix . "audit (modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values
            ('" . $user . "', '" . $time_tz_stamp . "', '0', '" . $timestamp . "', '" . $post_why . "', '" . $post_username . "')";
-            $result2 = mysqli_query($query2);
+            $result2 = mysqli_query($db,$query2);
         }
 
         $post_username = stripslashes($post_username);
