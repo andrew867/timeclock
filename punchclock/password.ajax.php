@@ -14,9 +14,9 @@ require_once 'lib.common.php';
 turn_off_magic_quotes();
 
 // Connect to db.
-$db = mysql_connect($db_hostname, $db_username, $db_password)
+$db = mysqli_connect($db_hostname, $db_username, $db_password)
 or die("Could not connect to the database.");
-mysql_select_db($db_name);
+mysqli_select_db($db_name);
 
 // Parse arguments
 $change_password = isset($_GET['change_password']) ? true : false;
@@ -55,7 +55,7 @@ if ($old_password) {
                 $_SESSION['authenticated'] = $empfullname;
                 exit_next("entry.ajax.php?emp=$u_empfullname");
             } else {
-                print error_msg("Cannot save your new password. " . mysql_error());
+                print error_msg("Cannot save your new password. " . mysqli_error());
             }
         } else {
             print error_msg("Your new password and the confirm password do not match.<br/>Please re-enter and confirm your new password.");

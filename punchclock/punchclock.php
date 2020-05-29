@@ -29,7 +29,7 @@ $PAGE_TITLE = "Punchclock - $title";
 if (isset($_REQUEST['office'])) {
     $office = $_REQUEST['office'];
     $h_office = htmlentities($office);
-    $q_office = mysql_real_escape_string($office);
+    $q_office = mysqli_real_escape_string($office);
     $u_office = rawurlencode($office);
 
     $display_office = $office ? $office : 'all'; // override config option
@@ -39,7 +39,7 @@ if (isset($_REQUEST['office'])) {
 if (isset($_REQUEST['group'])) {
     $group = $_REQUEST['group'];
     $h_group = htmlentities($group);
-    $q_group = mysql_real_escape_string($group);
+    $q_group = mysqli_real_escape_string($group);
     $u_group = rawurlencode($group);
 
     $display_group = $group ? $group : 'all'; // override config option

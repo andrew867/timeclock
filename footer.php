@@ -9,9 +9,9 @@
     <script src="scripts/jquery.scrollTo.min.js"></script>
     <script src="scripts/jquery.nicescroll.js" type="text/javascript"></script>
     <!-- charts scripts -->
-   
+
     <script src="scripts/jquery.sparkline.js" type="text/javascript"></script>
-   
+
     <script src="scripts/owl.carousel.js" ></script>
     <!-- jQuery full calendar -->
 
@@ -21,8 +21,8 @@
 	<script src="scripts/jquery.rateit.min.js"></script>
     <!-- custom select -->
     <script src="scripts/jquery.customSelect.min.js" ></script>
-	
-   
+
+
     <!--custome script for all page-->
     <script src="scripts/scripts.js"></script>
     <!-- custom script for this page-->
@@ -32,18 +32,18 @@
 
 	<script src="scripts/jquery.autosize.min.js"></script>
 	<script src="scripts/jquery.placeholder.min.js"></script>
-	<script src="scripts/gdp-data.js"></script>	
+	<script src="scripts/gdp-data.js"></script>
 	<script src="scripts/morris.min.js"></script>
-	<script src="scripts/sparklines.js"></script>	
+	<script src="scripts/sparklines.js"></script>
 
 	<script src="scripts/jquery.slimscroll.min.js"></script>
- 
+
 <?php
 
 // display 'Powered by' info in bottom right of each page //
 
-echo "        <tr class=hide><td height=4% class=misc_items align=right valign=middle scope=row colspan=2>Powered by&nbsp;<a class=footer_links 
-            href='http://httpd.apache.org/'>Apache</a>&nbsp;&#177<a class=footer_links href='http://mysql.org'>&nbsp;MySql</a> 
+echo "        <tr class=hide><td height=4% class=misc_items align=right valign=middle scope=row colspan=2>Powered by&nbsp;<a class=footer_links
+            href='http://httpd.apache.org/'>Apache</a>&nbsp;&#177<a class=footer_links href='http://mysqli.org'>&nbsp;mysqli</a>
             &#177";
 
 if ($email == "none") {

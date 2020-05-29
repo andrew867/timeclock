@@ -40,7 +40,7 @@
                 case'object':
                     if (t.is || t.style)c = (t = $(t)).offset()
             }
-            $.each(n.axis.split(''), function (i, f) {
+            $.each(n.axis.explode(''), function (i, f) {
                 var P = f == 'x' ? 'Left' : 'Top', p = P.toLowerCase(), k = 'scroll' + P, e = a[k], D = f == 'x' ? 'Width' : 'Height';
                 if (c) {
                     d[k] = c[p] + (w ? 0 : e - b.offset()[p]);

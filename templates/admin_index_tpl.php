@@ -6,35 +6,35 @@ echo "              <tr><td colspan=3 class=table_rows width=10% align=left styl
 echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td>
                   <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td>
                   <td class=table_rows width=80% align=left style='padding-left:10px;color:#27408b;'><b><u>DESCRIPTION</u></b></td></tr>\n";
-echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>MySql DB Settings</th></tr>\n";
+echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>mysqli DB Settings</th></tr>\n";
 echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_hostname:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_hostname</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your 
-                      mysql server, default is <b>localhost</b>.</td></tr>\n";
+                      mysqli server, default is <b>localhost</b>.</td></tr>\n";
 $row_count++;
 $row_color = ($row_count % 2) ? $color2 : $color1;
 echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_name:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_name</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysql 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysqli 
                       database you created during the install.</td></tr>\n";
 $row_count++;
 $row_color = ($row_count % 2) ? $color2 : $color1;
 echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_username:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_username</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql username you 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysqli username you 
                       created during the install.</td></tr>\n";
 $row_count++;
 $row_color = ($row_count % 2) ? $color2 : $color1;
 echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_password:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>********</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql password for 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysqli password for 
                       the username you created during the install.</td></tr>\n";
 $row_count++;
 $row_color = ($row_count % 2) ? $color2 : $color1;
 echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_prefix:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_prefix</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This adds a prefix to the 
-                      tablenames in the database. This can be helpful if you have an existing mysql database that you would like to use with PHP 
+                      tablenames in the database. This can be helpful if you have an existing mysqli database that you would like to use with PHP 
                       Timeclock. If you are unaware of what is meant by 'table prefix', then please leave this option as is. Default is to leave it 
                       blank.</td></tr>\n";
 $row_count++;

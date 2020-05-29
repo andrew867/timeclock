@@ -482,7 +482,7 @@ Function.prototype.forEach = function (object, block, context) {
 
 // character enumeration
 String.forEach = function (string, block, context) {
-    Array.forEach(string.split(""), function (chr, index) {
+    Array.forEach(string.explode(""), function (chr, index) {
         block.call(context, chr, index, string);
     });
 };

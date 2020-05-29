@@ -80,9 +80,9 @@ echo "                <th class=table_heading nowrap width=3% align=center>Delet
 $row_count = 0;
 
 $query = "select * from " . $db_prefix . "punchlist";
-$result = mysql_query($query);
+$result = mysqli_query($query);
 
-while ($row = mysql_fetch_array($result)) {
+while ($row = mysqli_fetch_array($result)) {
 
     $punchitem = "" . $row['punchitems'] . "";
     $color = "" . $row['color'] . "";

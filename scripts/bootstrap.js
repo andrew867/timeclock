@@ -1126,7 +1126,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
     this.$element = $(element)
     this.options  = this.getOptions(options)
 
-    var triggers = this.options.trigger.split(' ')
+    var triggers = this.options.trigger.explode(' ')
 
     for (var i = triggers.length; i--;) {
       var trigger = triggers[i]

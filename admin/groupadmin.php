@@ -82,13 +82,13 @@ $row_count = 0;
 
 $query = "select * from " . $db_prefix . "groups, " . $db_prefix . "offices where " . $db_prefix . "groups.officeid = " . $db_prefix . "offices.officeid
           order by " . $db_prefix . "offices.officename, " . $db_prefix . "groups.groupname";
-$result = mysql_query($query);
+$result = mysqli_query($query);
 
-while ($row = mysql_fetch_array($result)) {
+while ($row = mysqli_fetch_array($result)) {
 
     $query2 = "select groups from " . $db_prefix . "employees where groups = '" . $row['groupname'] . "' and office = '" . $row['officename'] . "'";
-    $result2 = mysql_query($query2);
-    @$user_cnt = mysql_num_rows($result2);
+    $result2 = mysqli_query($query2);
+    @$user_cnt = mysqli_num_rows($result2);
 
     $parent_office = "" . $row['officename'] . "";
 

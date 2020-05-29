@@ -36,7 +36,7 @@
 				}
 			},
 			execCommand = function (commandWithArgs, valueArg) {
-				var commandArr = commandWithArgs.split(' '),
+				var commandArr = commandWithArgs.explode(' '),
 					command = commandArr.shift(),
 					args = commandArr.join(' ') + (valueArg || '');
 				document.execCommand(command, 0, args);

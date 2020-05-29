@@ -41,9 +41,9 @@ if ($request == 'GET') {
     $get_status = $_GET['statusname'];
 
     $query = "select * from " . $db_prefix . "punchlist where punchitems = '" . $get_status . "'";
-    $result = mysql_query($query);
+    $result = mysqli_query($query);
 
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
 
         $punchitem = "" . $row['punchitems'] . "";
         $color = "" . $row['color'] . "";
@@ -148,11 +148,11 @@ if ($request == 'GET') {
 
     if (!empty($get_status)) {
         $query = "select * from " . $db_prefix . "punchlist where punchitems = '" . $get_status . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
+        $result = mysqli_query($query);
+        while ($row = mysqli_fetch_array($result)) {
             $getstatus = "" . $row['punchitems'] . "";
         }
-        mysql_free_result($result);
+        mysqli_free_result($result);
         if (!isset($getstatus)) {
             echo "Status is not defined.\n";
             exit;
@@ -319,10 +319,10 @@ if ($request == 'GET') {
 
         $query = "update " . $db_prefix . "punchlist set punchitems = ('" . $post_statusname . "'), color = ('" . $post_color . "'), in_or_out = ('" . $create_status . "')
           where punchitems  = ('" . $get_status . "')";
-        $result = mysql_query($query);
+        $result = mysqli_query($query);
 
         $query2 = "update " . $db_prefix . "info set `inout` = ('" . $post_statusname . "') where `inout` = ('" . $get_status . "')";
-        $result2 = mysql_query($query2);
+        $result2 = mysqli_query($query2);
 
         echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
         echo "  <tr valign=top>\n";

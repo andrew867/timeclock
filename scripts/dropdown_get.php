@@ -11,10 +11,10 @@
         @$office_name = $_GET['officename'];
 
         $query = "select * from ".$db_prefix."offices";
-        $result = mysql_query($query);
+        $result = mysqli_query($query);
 
         $cnt=1;
-        while ($row=mysql_fetch_array($result)) {
+        while ($row=mysqli_fetch_array($result)) {
           if (isset($abc)) {
           echo "select.options[$cnt] = new Option(\"".$row['officename']."\");\n";
           echo "select.options[$cnt].value = \"".$row['officename']."\";\n";
@@ -26,7 +26,7 @@
           }
           $cnt++;
         }
-        mysql_free_result($result);
+        mysqli_free_result($result);
         ?>
     }
 
@@ -43,9 +43,9 @@
         <?php
 
         $query = "select * from ".$db_prefix."offices";
-        $result = mysql_query($query);
+        $result = mysqli_query($query);
 
-        while ($row=mysql_fetch_array($result)) {
+        while ($row=mysqli_fetch_array($result)) {
         $office_row = addslashes("".$row['officename']."");
         ?>
 
@@ -53,12 +53,12 @@
             <?php
             $query2 = "select * from ".$db_prefix."offices, ".$db_prefix."groups where ".$db_prefix."groups.officeid = ".$db_prefix."offices.officeid
                        and ".$db_prefix."offices.officename = '".$office_row."'";
-            $result2 = mysql_query($query2);
+            $result2 = mysqli_query($query2);
             echo "groups_select.options[0] = new Option(\"...\");\n";
             echo "groups_select.options[0].value = '';\n";
             $cnt = 1;
 
-            while ($row2=mysql_fetch_array($result2)) {
+            while ($row2=mysqli_fetch_array($result2)) {
               $groups = "".$row2['groupname']."";
               echo "groups_select.options[$cnt] = new Option(\"$groups\");\n";
               echo "groups_select.options[$cnt].value = \"$groups\";\n";
@@ -69,8 +69,8 @@
         }
         <?php
         }
-        mysql_free_result($result);
-        mysql_free_result($result2);
+        mysqli_free_result($result);
+        mysqli_free_result($result2);
         ?>
 
         if (groups_select.options[groups_select.selectedIndex].value != '') {

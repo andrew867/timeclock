@@ -13,10 +13,10 @@
         @$office_name = $display_office;
 
         $query = "select * from ".$db_prefix."offices order by officename asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($query);
 
         $cnt=1;
-        while ($row=mysql_fetch_array($result)) {
+        while ($row=mysqli_fetch_array($result)) {
           if (isset($abc)) {
           echo "select.options[$cnt] = new Option(\"".$row['officename']."\");\n";
           echo "select.options[$cnt].value = \"".$row['officename']."\";\n";
@@ -28,7 +28,7 @@
           }
           $cnt++;
         }
-        mysql_free_result($result);
+        mysqli_free_result($result);
         ?>
     }
 
@@ -45,9 +45,9 @@
         <?php
 
         $query = "select * from ".$db_prefix."offices order by officename asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($query);
 
-        while ($row=mysql_fetch_array($result)) {
+        while ($row=mysqli_fetch_array($result)) {
         $office_row = addslashes("".$row['officename']."");
         ?>
 
@@ -57,12 +57,12 @@
             $query2 = "select * from ".$db_prefix."offices, ".$db_prefix."groups where ".$db_prefix."groups.officeid = ".$db_prefix."offices.officeid
                        and ".$db_prefix."offices.officename = '".$office_row."'
                        order by ".$db_prefix."groups.groupname asc";
-            $result2 = mysql_query($query2);
+            $result2 = mysqli_query($query2);
             echo "groups_select.options[0] = new Option(\"all\");\n";
             echo "groups_select.options[0].value = 'all';\n";
             $cnt = 1;
 
-            while ($row2=mysql_fetch_array($result2)) {
+            while ($row2=mysqli_fetch_array($result2)) {
               $groups = "".$row2['groupname']."";
               echo "groups_select.options[$cnt] = new Option(\"$groups\");\n";
               echo "groups_select.options[$cnt].value = \"$groups\";\n";
@@ -73,8 +73,8 @@
         }
         <?php
         }
-        mysql_free_result($result);
-        mysql_free_result($result2);
+        mysqli_free_result($result);
+        mysqli_free_result($result2);
         ?>
 
         if (groups_select.options[groups_select.selectedIndex].value != 'all') {
@@ -88,10 +88,10 @@
             echo "groups_select.options[0].value = 'all';\n";
 
             $query3 = "select * from ".$db_prefix."groups order by groupname asc";
-            $result3 = mysql_query($query3);
+            $result3 = mysqli_query($query3);
 
             $cnt=1;
-            while ($row3=mysql_fetch_array($result3)) {
+            while ($row3=mysqli_fetch_array($result3)) {
               if ("".$row3['groupname']."" == stripslashes($display_group)) {
               echo "groups_select.options[$cnt] = new Option(\"".$row3['groupname']."\",\"".$row3['groupname']."\", true, true);\n";
               } else {
@@ -100,7 +100,7 @@
               }
               $cnt++;
             }
-            mysql_free_result($result3);
+            mysqli_free_result($result3);
             ?>
         }
     }

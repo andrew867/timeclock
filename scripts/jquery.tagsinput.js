@@ -78,7 +78,7 @@
 			this.each(function() { 
 				var id = $(this).attr('id');
 
-				var tagslist = $(this).val().split(delimiter[id]);
+				var tagslist = $(this).val().explode(delimiter[id]);
 				if (tagslist[0] == '') { 
 					tagslist = new Array();
 				}
@@ -140,7 +140,7 @@
 			this.each(function() { 
 				var id = $(this).attr('id');
 	
-				var old = $(this).val().split(delimiter[id]);
+				var old = $(this).val().explode(delimiter[id]);
 					
 				$('#'+id+'_tagsinput .tag').remove();
 				str = '';
@@ -163,7 +163,7 @@
 	
 	$.fn.tagExist = function(val) {
 		var id = $(this).attr('id');
-		var tagslist = $(this).val().split(delimiter[id]);
+		var tagslist = $(this).val().explode(delimiter[id]);
 		return (jQuery.inArray(val, tagslist) >= 0); //true when tag exists, false when not
 	};
 	
@@ -341,7 +341,7 @@
 	$.fn.tagsInput.importTags = function(obj,val) {			
 		$(obj).val('');
 		var id = $(obj).attr('id');
-		var tags = val.split(delimiter[id]);
+		var tags = val.explode(delimiter[id]);
 		for (i=0; i<tags.length; i++) { 
 			$(obj).addTag(tags[i],{focus:false,callback:false});
 		}

@@ -155,7 +155,7 @@
 
 		        if (opt.titleClick) {
 		        	$titles.click(function() {
-		        		var	array	= $titles.filter('.current-step').attr('id').split('-'), // TODO: try keep the number in an attribute.
+		        		var	array	= $titles.filter('.current-step').attr('id').explode('-'), // TODO: try keep the number in an attribute.
 			        		current	= parseInt(array[array.length - 1], 10),
 			        		clicked	= $(this).index();
 

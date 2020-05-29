@@ -531,7 +531,7 @@
 
     formatNumber = function (num, prec, groupsize, groupsep, decsep) {
         var p, i;
-        num = (prec === false ? parseFloat(num).toString() : num.toFixed(prec)).split('');
+        num = (prec === false ? parseFloat(num).toString() : num.toFixed(prec)).explode('');
         p = (p = $.inArray('.', num)) < 0 ? num.length : p;
         if (p < num.length) {
             num[p] = decsep;
@@ -619,7 +619,7 @@
             var key, range, rangelist = [];
             for (key in map) {
                 if (map.hasOwnProperty(key) && typeof key === 'string' && key.indexOf(':') > -1) {
-                    range = key.split(':');
+                    range = key.explode(':');
                     range[0] = range[0].length === 0 ? -Infinity : parseFloat(range[0]);
                     range[1] = range[1].length === 0 ? Infinity : parseFloat(range[1]);
                     range[2] = map[key];
@@ -913,7 +913,7 @@
                     if (vals === undefined || vals === null) {
                         vals = $this.html();
                     }
-                    values = vals.replace(/(^\s*<!--)|(-->\s*$)|\s+/g, '').split(',');
+                    values = vals.replace(/(^\s*<!--)|(-->\s*$)|\s+/g, '').explode(',');
                 } else {
                     values = userValues;
                 }
@@ -1042,15 +1042,15 @@
                 if (val === undefined || val === null) {
                     val = UNSET_OPTION;
                 } else if (val.substr(0, 1) === '[') {
-                    val = val.substr(1, val.length - 2).split(',');
+                    val = val.substr(1, val.length - 2).explode(',');
                     for (i = val.length; i--;) {
                         val[i] = normalizeValue(val[i].replace(/(^\s*)|(\s*$)/g, ''));
                     }
                 } else if (val.substr(0, 1) === '{') {
-                    pairs = val.substr(1, val.length - 2).split(',');
+                    pairs = val.substr(1, val.length - 2).explode(',');
                     val = {};
                     for (i = pairs.length; i--;) {
-                        keyval = pairs[i].split(':', 2);
+                        keyval = pairs[i].explode(':', 2);
                         val[keyval[0].replace(/(^\s*)|(\s*$)/g, '')] = normalizeValue(keyval[1].replace(/(^\s*)|(\s*$)/g, ''));
                     }
                 } else {
@@ -1401,7 +1401,7 @@
                 val = values[i];
                 isStr = typeof(values[i]) === 'string';
                 isArray = typeof(values[i]) === 'object' && values[i] instanceof Array;
-                sp = isStr && values[i].split(':');
+                sp = isStr && values[i].explode(':');
                 if (isStr && sp.length === 2) { // x:y
                     xvalues.push(Number(sp[0]));
                     yvalues.push(Number(sp[1]));
@@ -1684,7 +1684,7 @@
                 if (isStackString || $.isArray(val)) {
                     stacked = true;
                     if (isStackString) {
-                        val = values[i] = normalizeValues(val.split(':'));
+                        val = values[i] = normalizeValues(val.explode(':'));
                     }
                     val = remove(val, null); // min/max will treat null as zero
                     groupMin = Math.min.apply(Math, val);

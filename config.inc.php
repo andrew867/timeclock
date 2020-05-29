@@ -11,11 +11,11 @@ username and password information!
 /* --- REQUIRED CHANGES --- */
 
 
-/* mysql info --- $db_hostname is the hostname for your mysql server, default is localhost.
-              --- $db_username is the mysql username you created during the install.
-              --- $db_password is the mysql password for the username you created during
+/* mysqli info --- $db_hostname is the hostname for your mysqli server, default is localhost.
+              --- $db_username is the mysqli username you created during the install.
+              --- $db_password is the mysqli password for the username you created during
                   the install.
-              --- $db_name is the mysql database you created during the install. */
+              --- $db_name is the mysqli database you created during the install. */
 
 $db_hostname = "localhost";
 $db_username = "root";
@@ -27,7 +27,7 @@ $db_name = "timeclock";
 
 
 /* This adds a prefix to the tablenames in the database. This can be helpful if you
-   have an existing mysql database that you would like to use with PHP Timeclock.
+   have an existing mysqli database that you would like to use with PHP Timeclock.
    If you are unaware of what is meant by "table prefix", then please leave this
    option as is. Default is to leave it blank. */
 

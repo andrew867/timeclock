@@ -43,7 +43,7 @@
 // display 'Powered by' info in bottom right of each page //
 
 echo "        <tr class=hide><td height=4% class=misc_items align=right valign=middle scope=row colspan=2>Powered by&nbsp;<a class=footer_links
-            href='http://httpd.apache.org/'>Apache</a>&nbsp;&#177<a class=footer_links href='http://mysql.org'>&nbsp;MySql</a>
+            href='http://httpd.apache.org/'>Apache</a>&nbsp;&#177<a class=footer_links href='http://mysqli.org'>&nbsp;mysqli</a>
             &#177";
 
 if ($email == "none") {

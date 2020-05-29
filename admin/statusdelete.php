@@ -41,9 +41,9 @@ if ($request == 'GET') {
     $get_status = $_GET['statusname'];
 
     $query = "select * from " . $db_prefix . "punchlist where punchitems = '" . $get_status . "'";
-    $result = mysql_query($query);
+    $result = mysqli_query($query);
 
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
 
         $punchitem = "" . $row['punchitems'] . "";
         $color = "" . $row['color'] . "";
@@ -146,9 +146,9 @@ if ($request == 'GET') {
     }
 
     $query = "select * from " . $db_prefix . "punchlist where punchitems = '" . $post_statusname . "'";
-    $result = mysql_query($query);
+    $result = mysqli_query($query);
 
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
 
         $punchitem = "" . $row['punchitems'] . "";
         $color = "" . $row['color'] . "";
@@ -160,7 +160,7 @@ if ($request == 'GET') {
     }
 
     $query2 = "delete from " . $db_prefix . "punchlist where punchitems = ('" . $post_statusname . "')";
-    $result2 = mysql_query($query2);
+    $result2 = mysqli_query($query2);
 
     if ($post_in_out == '1') {
         $post_in_out = 'In';

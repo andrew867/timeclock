@@ -61,7 +61,7 @@ if ($old_password) {
                 $_SESSION['login_msg'] = "Your password has been changed.\n";
                 exit_next($return_url);
             } else {
-                print error_msg("Cannot save your new password. " . mysql_error());
+                print error_msg("Cannot save your new password. " . mysqli_error());
             }
         } else {
             print error_msg("Your new password and the confirm password do not match.<br/>Please re-enter and confirm your new password.");

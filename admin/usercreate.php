@@ -139,12 +139,12 @@ if ($request == 'GET') {
     $display_name = addslashes($display_name);
 
     $query5 = "select empfullname from " . $db_prefix . "employees where empfullname = '" . $post_username . "' order by empfullname";
-    $result5 = mysql_query($query5);
+    $result5 = mysqli_query($query5);
 
-    while ($row = mysql_fetch_array($result5)) {
+    while ($row = mysqli_fetch_array($result5)) {
         $tmp_username = "" . $row['empfullname'] . "";
     }
-    mysql_free_result($result5);
+    mysqli_free_result($result5);
 
     $post_username = stripslashes($post_username);
     $display_name = stripslashes($display_name);
@@ -319,11 +319,11 @@ if ($request == 'GET') {
 
         if (!empty($office_name)) {
             $query = "select * from " . $db_prefix . "offices where officename = '" . $office_name . "'";
-            $result = mysql_query($query);
-            while ($row = mysql_fetch_array($result)) {
+            $result = mysqli_query($query);
+            while ($row = mysqli_fetch_array($result)) {
                 $tmp_officename = "" . $row['officename'] . "";
             }
-            mysql_free_result($result);
+            mysqli_free_result($result);
             if (!isset($tmp_officename)) {
                 echo "Office is not defined.\n";
                 exit;
@@ -332,11 +332,11 @@ if ($request == 'GET') {
 
         if (!empty($group_name)) {
             $query = "select * from " . $db_prefix . "groups where groupname = '" . $group_name . "'";
-            $result = mysql_query($query);
-            while ($row = mysql_fetch_array($result)) {
+            $result = mysqli_query($query);
+            while ($row = mysqli_fetch_array($result)) {
                 $tmp_groupname = "" . $row['groupname'] . "";
             }
-            mysql_free_result($result);
+            mysqli_free_result($result);
             if (!isset($tmp_officename)) {
                 echo "Group is not defined.\n";
                 exit;
@@ -447,7 +447,7 @@ if ($request == 'GET') {
     $query3 = "insert into " . $db_prefix . "employees (empfullname, displayname, employee_passwd, email, groups, office, admin, reports, time_admin, disabled)
            values ('" . $post_username . "', '" . $display_name . "', '" . $password . "', '" . $email_addy . "', '" . $group_name . "', '" . $office_name . "', '" . $admin_perms . "',
            '" . $reports_perms . "', '" . $time_admin_perms . "', '" . $post_disabled . "')";
-    $result3 = mysql_query($query3);
+    $result3 = mysqli_query($query3);
 
     echo "<table width=100% height=89% border=0 cellpadding=0 cellspacing=1>\n";
     echo "  <tr valign=top>\n";
@@ -508,9 +508,9 @@ if ($request == 'GET') {
     $query4 = "select empfullname, displayname, email, groups, office, admin, reports, time_admin, disabled from " . $db_prefix . "employees
 	  where empfullname = '" . $post_username . "'
           order by empfullname";
-    $result4 = mysql_query($query4);
+    $result4 = mysqli_query($query4);
 
-    while ($row = mysql_fetch_array($result4)) {
+    while ($row = mysqli_fetch_array($result4)) {
 
         $username = stripslashes("" . $row['empfullname'] . "");
         $displayname = stripslashes("" . $row['displayname'] . "");
@@ -522,7 +522,7 @@ if ($request == 'GET') {
         $time_admin = "" . $row['time_admin'] . "";
         $disabled = "" . $row['disabled'] . "";
     }
-    mysql_free_result($result4);
+    mysqli_free_result($result4);
 
     echo "              <tr><td class=table_rows height=25 width=20% style='padding-left:32px;' nowrap>Username:</td><td align=left class=table_rows
                       colspan=2 width=80% style='padding-left:20px;'>$username</td></tr>\n";

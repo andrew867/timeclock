@@ -3,7 +3,7 @@
 $row_count = 0;
 $page_count = 0;
 
-while ($row = mysql_fetch_array($result)) {
+while ($row = mysqli_fetch_array($result)) {
 
     $display_stamp = "" . $row["timestamp"] . "";
     $time = date($timefmt, $display_stamp);
@@ -131,5 +131,5 @@ if (!isset($_GET['printer_friendly'])) {
     echo "          </td></tr>\n";
 }
 
-mysql_free_result($result);
+mysqli_free_result($result);
 ?>

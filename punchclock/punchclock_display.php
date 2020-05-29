@@ -13,8 +13,8 @@ $sortcolumn = $show_display_name == 'yes' ? 'displayname' : 'empfullname';
 $sortdirection = 'asc';
 
 // Construct query
-$office_clause = $display_office == 'all' ? '' : "   and {$db_prefix}employees.office = '" . mysql_real_escape_string($display_office) . "'\n";
-$groups_clause = $display_group == 'all' ? '' : "   and {$db_prefix}employees.groups = '" . mysql_real_escape_string($display_group) . "'\n";
+$office_clause = $display_office == 'all' ? '' : "   and {$db_prefix}employees.office = '" . mysqli_real_escape_string($display_office) . "'\n";
+$groups_clause = $display_group == 'all' ? '' : "   and {$db_prefix}employees.groups = '" . mysqli_real_escape_string($display_group) . "'\n";
 
 $query = <<<End_Of_SQL
 select {$db_prefix}employees.*, {$db_prefix}info.*, {$db_prefix}punchlist.*
@@ -27,11 +27,11 @@ select {$db_prefix}employees.*, {$db_prefix}info.*, {$db_prefix}punchlist.*
 {$office_clause}{$groups_clause}order by $sortcolumn $sortdirection
 End_Of_SQL;
 
-$result = mysql_query($query)
-or trigger_error("punchclock_display: Cannot select employees. " . mysql_error(), E_USER_WARNING);
+$result = mysqli_query($query)
+or trigger_error("punchclock_display: Cannot select employees. " . mysqli_error(), E_USER_WARNING);
 
 $row_count = 0;
-while ($row = mysql_fetch_array($result)) {
+while ($row = mysqli_fetch_array($result)) {
 
     if ($row_count == 0) {
 
@@ -131,5 +131,5 @@ End_Of_HTML;
     print error_msg("No active employee records were found.");
 }
 
-mysql_free_result($result);
+mysqli_free_result($result);
 ?>

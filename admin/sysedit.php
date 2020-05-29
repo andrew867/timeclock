@@ -339,31 +339,31 @@ if ($request == 'GET') {
     echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td>
                   <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td>
                   <td class=table_rows width=80% align=left style='padding-left:10px;color:#27408b;'><b><u>DESCRIPTION</u></b></td></tr>\n";
-    echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>MySql DB Settings</th></tr>\n";
+    echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>mysqli DB Settings</th></tr>\n";
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_hostname:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_hostname</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your 
-                      mysql server, default is <b>localhost</b>.</td></tr>\n";
+                      mysqli server, default is <b>localhost</b>.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_hostname\" value=\"$db_hostname\">\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_name:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_name</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysql 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysqli 
                       database you created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_name\" value=\"$db_name\">\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_username:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_username</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql username you 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysqli username you 
                       created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_username\" value=\"$db_username\">\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_password:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>********</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql password for 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysqli password for 
                       the username you created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_password\" value=\"$db_password\">\n";
     $row_count++;
@@ -371,7 +371,7 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_prefix:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_prefix</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This adds a prefix to the
-                      tablenames in the database. This can be helpful if you have an existing mysql database that you would like to use with PHP
+                      tablenames in the database. This can be helpful if you have an existing mysqli database that you would like to use with PHP
                       Timeclock. If you are unaware of what is meant by 'table prefix', then please leave this option as is. Default is to leave it
                       blank.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_prefix\" value=\"$db_prefix\">\n";
@@ -967,9 +967,9 @@ if ($request == 'GET') {
                           <option value = 'all'>all</option>\n";
 
         $query = "select DISTINCT(groupname) from groups order by groupname asc";
-        $result = mysql_query($query);
+        $result = mysqli_query($query);
 
-        while ($row = mysql_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {
             if ("" . $row['groupname'] . "" == $display_group) {
                 echo "                    <option selected>" . $row['groupname'] . "</option>\n";
             } else {
@@ -1300,8 +1300,8 @@ if ($request == 'GET') {
 
     if ($post_office_name != 'all') {
         $query = "select * from offices where officename = '" . $post_office_name . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
+        $result = mysqli_query($query);
+        while ($row = mysqli_fetch_array($result)) {
             $officename = "" . $row['officename'] . "";
         }
         if (!isset($officename)) {
@@ -1312,8 +1312,8 @@ if ($request == 'GET') {
 
     if ($post_group_name != 'all') {
         $query2 = "select * from groups where groupname = '" . $post_group_name . "'";
-        $result2 = mysql_query($query2);
-        while ($row2 = mysql_fetch_array($result2)) {
+        $result2 = mysqli_query($query2);
+        while ($row2 = mysqli_fetch_array($result2)) {
             $groupname = "" . $row2['groupname'] . "";
         }
         if (!isset($groupname)) {
@@ -1680,31 +1680,31 @@ if ($request == 'GET') {
         echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td>
                   <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td>
                   <td class=table_rows width=80% align=left style='padding-left:10px;color:#27408b;'><b><u>DESCRIPTION</u></b></td></tr>\n";
-        echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>MySql DB Settings</th></tr>\n";
+        echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>mysqli DB Settings</th></tr>\n";
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_hostname:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_hostname</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your 
-                      mysql server, default is <b>localhost</b>.</td></tr>\n";
+                      mysqli server, default is <b>localhost</b>.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_hostname\" value=\"$post_db_hostname\">\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_name:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_name</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysql 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysqli 
                       database you created during the install.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_name\" value=\"$post_db_name\">\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_username:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_username</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql username you 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysqli username you 
                       created during the install.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_username\" value=\"$post_db_username\">\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_password:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>********</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql password for 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysqli password for 
                       the username you created during the install.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_password\" value=\"$post_db_password\">\n";
         $row_count++;
@@ -1712,7 +1712,7 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_prefix:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_prefix</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This adds a prefix to the
-                      tablenames in the database. This can be helpful if you have an existing mysql database that you would like to use with PHP
+                      tablenames in the database. This can be helpful if you have an existing mysqli database that you would like to use with PHP
                       Timeclock. If you are unaware of what is meant by 'table prefix', then please leave this option as is. Default is to leave it
                       blank.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_prefix\" value=\"$post_db_prefix\">\n";
@@ -2300,9 +2300,9 @@ if ($request == 'GET') {
                              <select name='group_name'>
                           <option value = 'all'>all</option>\n";
             $query = "select DISTINCT(groupname) from groups order by groupname asc";
-            $result = mysql_query($query);
+            $result = mysqli_query($query);
 
-            while ($row = mysql_fetch_array($result)) {
+            while ($row = mysqli_fetch_array($result)) {
                 if ("" . $row['groupname'] . "" == $post_group_name) {
                     echo "                    <option selected>" . $row['groupname'] . "</option>\n";
                 } else {
@@ -2787,11 +2787,11 @@ username and password information!
 /* --- REQUIRED CHANGES --- */
 
 
-/* mysql info --- $db_hostname is the hostname for your mysql server, default is localhost.
-              --- $db_username is the mysql username you created during the install.
-              --- $db_password is the mysql password for the username you created during
+/* mysqli info --- $db_hostname is the hostname for your mysqli server, default is localhost.
+              --- $db_username is the mysqli username you created during the install.
+              --- $db_password is the mysqli password for the username you created during
                   the install.
-              --- $db_name is the mysql database you created during the install. */
+              --- $db_name is the mysqli database you created during the install. */
 
 $db_hostname = "' . $post_db_hostname . '";
 $db_username = "' . $post_db_username . '";
@@ -2803,7 +2803,7 @@ $db_name = "' . $post_db_name . '";
 
 
 /* This adds a prefix to the tablenames in the database. This can be helpful if you
-   have an existing mysql database that you would like to use with PHP Timeclock.
+   have an existing mysqli database that you would like to use with PHP Timeclock.
    If you are unaware of what is meant by "table prefix", then please leave this
    option as is. Default is to leave it blank. */
 
