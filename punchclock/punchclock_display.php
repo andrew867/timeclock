@@ -13,8 +13,8 @@ $sortcolumn = $show_display_name == 'yes' ? 'displayname' : 'empfullname';
 $sortdirection = 'asc';
 
 // Construct query
-$office_clause = $display_office == 'all' ? '' : "   and {$db_prefix}employees.office = '" . mysqli_real_escape_string($display_office) . "'\n";
-$groups_clause = $display_group == 'all' ? '' : "   and {$db_prefix}employees.groups = '" . mysqli_real_escape_string($display_group) . "'\n";
+$office_clause = $display_office == 'all' ? '' : "   and {$db_prefix}employees.office = '" . mysqli_real_escape_string($db,$display_office) . "'\n";
+$groups_clause = $display_group == 'all' ? '' : "   and {$db_prefix}employees.groups = '" . mysqli_real_escape_string($db,$display_group) . "'\n";
 
 $query = <<<End_Of_SQL
 select {$db_prefix}employees.*, {$db_prefix}info.*, {$db_prefix}punchlist.*
@@ -28,7 +28,7 @@ select {$db_prefix}employees.*, {$db_prefix}info.*, {$db_prefix}punchlist.*
 End_Of_SQL;
 
 $result = mysqli_query($db,$query)
-or trigger_error("punchclock_display: Cannot select employees. " . mysqli_error(), E_USER_WARNING);
+or trigger_error("punchclock_display: Cannot select employees. " . mysql_error(), E_USER_WARNING);
 
 $row_count = 0;
 while ($row = mysqli_fetch_array($result)) {

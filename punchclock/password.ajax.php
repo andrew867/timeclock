@@ -55,7 +55,7 @@ if ($old_password) {
                 $_SESSION['authenticated'] = $empfullname;
                 exit_next("entry.ajax.php?emp=$u_empfullname");
             } else {
-                print error_msg("Cannot save your new password. " . mysqli_error());
+                print error_msg("Cannot save your new password. " . mysql_error());
             }
         } else {
             print error_msg("Your new password and the confirm password do not match.<br/>Please re-enter and confirm your new password.");

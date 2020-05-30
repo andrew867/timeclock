@@ -189,7 +189,7 @@ if (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $post_username)) {
         $evil_input = "1";
     }
 }
-if (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) {
+if (!preg_match('/^([[:alnum:]]|\s|\-|\'|\,)+$/i', $display_name)) {
     if ($display_name == "") {
     } else {
         echo "            <br />\n";
@@ -201,7 +201,7 @@ if (!preg_match('/' . "^([[:alnum:]]| |-|'|,)+$" . '/i', $display_name)) {
         $evil_input = "1";
     }
 }
-if (!preg_match('/' . "^([[:alnum:]]|_|.|-|@)+$", $email_addy)) {
+if (!preg_match('/^([[:alnum:]]|_|.|-|@)+$/', $email_addy)) {
     if ($email_addy == "") {
     } else {
         echo "            <br />\n";
@@ -408,16 +408,12 @@ echo "              <tr class=table_border bgcolor='$row_color'><td class=table_
 echo "                <td class=table_rows width=13%>&nbsp;<a class=footer_links title=\"Edit User: $empfullname\"
                     href=\"useredit.php?username=$empfullname&officename=" . $row["office"] . "\">$empfullname</a></td>\n";
 echo "                <td class=table_rows width=18%>$displayname</td>\n";
-//echo "                <td class=table_rows width=23
-%>".$row["email"]."</td>\n";
-echo "
-<td class=table_rows width=10%>".$row['office']."</td>\n";
-echo "
-<td class=table_rows width=10%>".$row['groups']."</td>\n";
+//echo "                <td class=table_rows width=23%>".$row["email"]."</td>\n";
+echo "<td class=table_rows width=10%>".$row['office']."</td>\n";
+echo "<td class=table_rows width=10%>".$row['groups']."</td>\n";
 
 if ("".$row["disabled"]."" == 1) {
-echo "
-<td class=table_rows width=3% align=center><img src='../images/icons/cross.png'/></td>\n";
+echo "<td class=table_rows width=3% align=center><img src='../images/icons/cross.png'/></td>\n";
 } else {
 $disabled = "";
 echo "

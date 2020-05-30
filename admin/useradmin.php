@@ -124,8 +124,7 @@ echo "              <tr class=table_border bgcolor='$row_color'><td nowrap class
 echo "                <td class=table_rows nowrap width=13%>&nbsp;<a title=\"Edit User: $empfullname\" class=footer_links 
                     href=\"useredit.php?username=$empfullname&officename=" . $row["office"] . "\">$empfullname</a></td>\n";
 echo "                <td class=table_rows nowrap width=18%>&nbsp;$displayname</td>\n";
-//echo "                <td class=table_rows nowrap width=23
-%>&nbsp;".$row["email"]."</td>\n";
+//echo "                <td class=table_rows nowrap width=23%>&nbsp;".$row["email"]."</td>\n";
 echo "
 <td class=table_rows nowrap width=10%>&nbsp;".$row['office']."</td>\n";
 echo "

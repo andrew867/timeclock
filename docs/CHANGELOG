@@ -44,7 +44,7 @@ PHP Timeclock Changelog
     style dates. The reports would not display the expected correct results if 
     $calendar_style = "euro" in config.inc.php.
 --- Fixed a bug in the Upgrade Database page. If magic_quotes_runtime was turned
-    on in php.ini, the script would tell you that your mysqli user did not have
+    on in php.ini, the script would tell you that your mysql user did not have
     the appropriate privileges to the PHP Timeclock database, even if the user 
     did.
 --- Fixed a bug where if the "Remember Me" checkbox is checked on the main page 
@@ -66,7 +66,7 @@ PHP Timeclock Changelog
 --- Added the ability to allow only certain networks or ip addresses to connect
     to PHP Timeclock. (Thanks for the idea Jim Blansett.)
 --- Added the option to utilize table prefixes within PHP Timeclock. This can 
-    be helpful if you have an existing mysqli database that you would like to 
+    be helpful if you have an existing mysql database that you would like to 
     use with this app. (Thanks for the idea Fred.)
 --- Added an option to export the reports in csv format.
 --- Removed the Admin user from the dropdown on the main page and from 
@@ -131,7 +131,7 @@ PHP Timeclock Changelog
 --- Added a way to edit user properties. 
 --- Added pages to allow for adding, deleting, and editing of punch-in/out statuses.
 --- Allowed for the ability for more than one login to have administrative access.
-    Authentication is performed via mysqli now, instead of a plaintext name and password
+    Authentication is performed via mysql now, instead of a plaintext name and password
     in config.inc.php. $admin_username and $admin_password have been removed from 
     config.inc.php.
 --- Allowed for the ability for more than one login to have access to ONLY add, edit, or 
@@ -140,7 +140,7 @@ PHP Timeclock Changelog
     permission or access to the reports. It simply means that the specified user has 
     permission to add, edit, or delete a user's time.
 --- Allowed for the ability for more than one login to have reporting access.
-    Authentication is performed via mysqli now, instead of a plaintext name and password
+    Authentication is performed via mysql now, instead of a plaintext name and password
     in config.inc.php. $reports_username and $reports_password have been removed from 
     config.inc.php.
 --- Each user can now be assigned as a Sys Admin user, Time Admin user, and/or a reports 
@@ -209,15 +209,15 @@ PHP Timeclock Changelog
     variable arrays ($_*), which were introduced in PHP 4.1.0. With PHP5's ability
     to disable the ($HTTP_*_VARS) arrays using 'register_long_arrays=Off' in php.ini,
     i felt it was time to make the switch everywhere in the code.  
---- Changed the way time was being stored in the database from a mysqli timestamp to a 
+--- Changed the way time was being stored in the database from a mysql timestamp to a 
     unix timestamp. This provides the ability to utilize timezone functionalities
     and quite possibly other functions for future use.
 --- Added a database upgrade script within the app, dbupgrade.php. You can now 
-    choose to upgrade the database via the command line using the mysqli statments
+    choose to upgrade the database via the command line using the mysql statments
     included in upgrade_database.sql (as you could have always done), or go to the 
     administration section of the app and choose to upgrade the db from there. FOR
     THIS RELEASE, YOU WILL NEED TO USE THE UPGRADE SCRIPT, dbupgrade.php. This is 
-    because of the need to convert all of your current mysqli timestamps into unix 
+    because of the need to convert all of your current mysql timestamps into unix 
     timestamps. Yes, you CAN do this without the script, but the script also takes 
     into account the timezone of the server so the new unix timestamps will be stored
     in GMT.
@@ -320,7 +320,7 @@ PHP Timeclock Changelog
     The php crypt() function is used for this. Unfortunately, doing it this way forces
     you to add users with passwords and/or change passwords using ONLY this app or some
     other php script using the crypt() function. Adding passwords directly into the 
-    mysqli database will not work. This option is set in config.inc.php with the 
+    mysql database will not work. This option is set in config.inc.php with the 
     $use_passwd variable.
 --- Added a field named 'employee_password' to the employees table. If "none" is chosen
     for $use_passwd in config.inc.php, then this field is ignored.

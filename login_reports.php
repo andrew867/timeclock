@@ -3,7 +3,8 @@ session_start();
 
 include 'config.inc.php';
 include 'header.php';
-
+include 'topmain.php';
+echo "<title>$title - Reports Login</title>\n";
 
 $self = $_SERVER['PHP_SELF'];
 
@@ -33,62 +34,22 @@ if (isset($_SESSION['valid_reports_user'])) {
     exit;
 
 } else {
- ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PHP TimeClock, Admin">
-    <meta name="author" content="Wael Ali">
-    <meta name="keyword" content="PHP TimeClock, Bootstrap, Responsive">
-    <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Admin Login</title>
+    // build form
 
-    <!-- Bootstrap CSS -->    
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- bootstrap theme -->
-    <link href="css/bootstrap-theme.css" rel="stylesheet">
-    <!--external css-->
-    <!-- font icon -->
-    <link href="css/elegant-icons-style.css" rel="stylesheet" />
-    <link href="css/font-awesome.css" rel="stylesheet" />
-    <!-- Custom styles -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/style-responsive.css" rel="stylesheet" />
+    echo "<form name='auth' method='post' action='$self'>\n";
+    echo "<table align=center width=210 border=0 cellpadding=7 cellspacing=1>\n";
+    echo "  <tr class=right_main_text><td colspan=2 height=35 align=center valign=top class=title_underline>PHP Timeclock Reports Login</td></tr>\n";
+    echo "  <tr class=right_main_text><td align=left>Username:</td><td align=right><input type='text' name='login_userid'></td></tr>\n";
+    echo "  <tr class=right_main_text><td align=left>Password:</td><td align=right><input type='password' name='login_password'></td></tr>\n";
+    echo "  <tr class=right_main_text><td align=center colspan=2><input type='submit' onClick='admin.php' value='Log In'></td></tr>\n";
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-</head>
-
-  <body class="login-img3-body">
-
-    <div class="container">
-
-      <form class="login-form" name='auth' method='post' action=''>        
-        <div class="login-wrap">
-            <p class="login-img"><i class="icon_lock_alt"></i></p>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="icon_profile"></i></span>
-              <input type="text" name='login_userid' class="form-control" placeholder="Username" autofocus>
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input type="password" name='login_password' class="form-control" placeholder="Password">
-            </div>
-           
-            <button class="btn btn-primary btn-lg btn-block" onClick='admin.php' type="submit">Login</button>
-           
-        </div>
-      </form>
-
-    </div>
-
-  <?php
+    if (isset($login_userid)) {
+        echo "  <tr class=right_main_text><td align=center colspan=2>Could not log you in. Either your username or password is incorrect.</td></tr>\n";
+    }
+    echo "</table>\n";
+    echo "</form>\n";
+    echo "<script language=\"javascript\">document.forms['auth'].login_userid.focus();</script>\n";
 }
 
 echo "</body>\n";

@@ -153,7 +153,11 @@ if ($request == 'GET') {
     }
 
     // begin double-checking of some of the settings in config.inc.php //
-
+    
+    if (!in_array(@$weather_units, array('c','f'))){
+    	$weather_units = 'c';
+    }        
+    
     if ($refresh != "none") {
         $tmp_refresh = intval($refresh);
         if (!empty($tmp_refresh)) {
@@ -339,31 +343,31 @@ if ($request == 'GET') {
     echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td>
                   <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td>
                   <td class=table_rows width=80% align=left style='padding-left:10px;color:#27408b;'><b><u>DESCRIPTION</u></b></td></tr>\n";
-    echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>mysqli DB Settings</th></tr>\n";
+    echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>MySql DB Settings</th></tr>\n";
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_hostname:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_hostname</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your 
-                      mysqli server, default is <b>localhost</b>.</td></tr>\n";
+                      mysql server, default is <b>localhost</b>.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_hostname\" value=\"$db_hostname\">\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_name:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_name</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysqli 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysql 
                       database you created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_name\" value=\"$db_name\">\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_username:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_username</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysqli username you 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql username you 
                       created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_username\" value=\"$db_username\">\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_password:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>********</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysqli password for 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql password for 
                       the username you created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_password\" value=\"$db_password\">\n";
     $row_count++;
@@ -371,7 +375,7 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_prefix:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_prefix</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This adds a prefix to the
-                      tablenames in the database. This can be helpful if you have an existing mysqli database that you would like to use with PHP
+                      tablenames in the database. This can be helpful if you have an existing mysql database that you would like to use with PHP
                       Timeclock. If you are unaware of what is meant by 'table prefix', then please leave this option as is. Default is to leave it
                       blank.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_prefix\" value=\"$db_prefix\">\n";
@@ -1042,6 +1046,17 @@ if ($request == 'GET') {
                  </td></tr>\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
+    echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>weather_units:</td>\n";    
+    echo "                  <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>";
+    echo	"							<select name=\"weather_units\">\n";
+    echo "						 		<option value=\"c\" " . ($weather_units == "c" ? "selected" : "") . ">Celsius</option>\n";
+    echo "						 		<option value=\"f\" " . ($weather_units == "f" ? "selected" : "") . ">Fahrenheit</option>\n";    
+    echo "							</select>";    
+    echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Display weather in US or metric measurements.
+    Options are Fahrenheit or Celsius. Default is Celsius\".
+             		</td></tr>\n";
+    $row_count++;
+    $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>metar:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"4\"
                       name=\"metar\" value=\"$metar\" /></td>
@@ -1260,6 +1275,8 @@ if ($request == 'GET') {
     $post_group_name = $_POST['group_name'];
     $post_display_current_users = $_POST['display_current_users'];
     $post_display_weather = $_POST['display_weather'];
+    $post_weather_units = $_POST['weather_units'];    
+    
     $post_show_display_name = $_POST['show_display_name'];
     $post_display_office_name = $_POST['display_office_name'];
     $post_display_group_name = $_POST['display_group_name'];
@@ -1364,6 +1381,7 @@ if ($request == 'GET') {
         echo "            </table>\n";
         $evil_post = "1";
     } elseif (($post_restrict_ips != '0') && ($post_restrict_ips != '1')) {
+        $evil_post = "1";
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td>
                   <td class=table_rows_red height=25><b>restrict_ips</b> does not equal \"yes\" or \"no\".</td></tr>\n";
@@ -1502,6 +1520,12 @@ if ($request == 'GET') {
                   <td class=table_rows_red height=25><b>display_weather</b> does not equal \"yes\" or \"no\".</td></tr>\n";
         echo "            </table>\n";
         $evil_post = "1";
+    } elseif (!in_array($post_weather_units, array('c','f'))){
+        echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
+        echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td>
+                  <td class=table_rows_red height=25><b>weather_units</b> does not equal \"Celsius\" or \"Fahrenheit\".</td></tr>\n";
+        echo "            </table>\n";
+        $evil_post = "1";
     } elseif ((isset($post_metar)) && (!preg_match('/' . "^([a-zA-Z]{4})+$" . '/i', $post_metar))) {
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td>
@@ -1573,14 +1597,14 @@ if ($request == 'GET') {
                 $evil_allowed_networks_length = "1";
                 $evil_post = "1";
             } elseif ((!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$" . '/i', $post_allowed_networks[$x], $net_regs)) &&
-                      (!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/([0-9]?[0-9]?[0-9])$" . '/i', $post_allowed_networks[$x], $net_regs)) &&
+                      (!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\/([0-9]?[0-9]?[0-9])$" . '/i', $post_allowed_networks[$x], $net_regs)) &&
                       (!preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.\[([0-9]?[0-9]?[0-9])\-([0-9]?[0-9]?[0-9])\]$" . '/i', $post_allowed_networks[$x], $net_regs)) &&
                       (!empty($post_allowed_networks[$x]))
             ) {
                 $evil_allowed_networks = "1";
                 $evil_post = "1";
             } elseif ((preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$" . '/i', $post_allowed_networks[$x], $net_regs)) ||
-                      (preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/([0-9]?[0-9]?[0-9])$" . '/i', $post_allowed_networks[$x], $net_regs)) ||
+                      (preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\/([0-9]?[0-9]?[0-9])$" . '/i', $post_allowed_networks[$x], $net_regs)) ||
                       (preg_match('/' . "^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.\[([0-9]?[0-9]?[0-9])\-([0-9]?[0-9]?[0-9])\]$" . '/i', $post_allowed_networks[$x], $net_regs)) ||
                       (!empty($post_allowed_networks[$x]))
             ) {
@@ -1680,31 +1704,31 @@ if ($request == 'GET') {
         echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td>
                   <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td>
                   <td class=table_rows width=80% align=left style='padding-left:10px;color:#27408b;'><b><u>DESCRIPTION</u></b></td></tr>\n";
-        echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>mysqli DB Settings</th></tr>\n";
+        echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>MySql DB Settings</th></tr>\n";
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_hostname:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_hostname</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your 
-                      mysqli server, default is <b>localhost</b>.</td></tr>\n";
+                      mysql server, default is <b>localhost</b>.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_hostname\" value=\"$post_db_hostname\">\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_name:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_name</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysqli 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysql 
                       database you created during the install.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_name\" value=\"$post_db_name\">\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_username:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_username</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysqli username you 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql username you 
                       created during the install.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_username\" value=\"$post_db_username\">\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_password:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>********</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysqli password for 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql password for 
                       the username you created during the install.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_password\" value=\"$post_db_password\">\n";
         $row_count++;
@@ -1712,7 +1736,7 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_prefix:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_prefix</td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This adds a prefix to the
-                      tablenames in the database. This can be helpful if you have an existing mysqli database that you would like to use with PHP
+                      tablenames in the database. This can be helpful if you have an existing mysql database that you would like to use with PHP
                       Timeclock. If you are unaware of what is meant by 'table prefix', then please leave this option as is. Default is to leave it
                       blank.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_prefix\" value=\"$post_db_prefix\">\n";
@@ -2372,6 +2396,17 @@ if ($request == 'GET') {
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>To display local weather
                       info on the left side of the application just below the submit button, set this to \"yes\". Default is \"<b>no</b>\".
                  </td></tr>\n";
+    	  $row_count++;
+    	  $row_color = ($row_count % 2) ? $color2 : $color1;
+   	  echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>weather_units:</td>\n";    
+   	  echo "                  <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>";
+    	  echo	"							<select name=\"weather_units\">\n";
+   	  echo "						 		<option value=\"c\" " . ($weather_units == "c" ? "selected" : "") . ">Celsius</option>\n";
+    	  echo "						 		<option value=\"f\" " . ($weather_units == "f" ? "selected" : "") . ">Fahrenheit</option>\n";    
+    	  echo "							</select>";    
+   	  echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Display weather in US or metric measurements.
+    Options are Fahrenheit or Celsius. Default is Celsius\".
+             		</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>metar:</td>
@@ -2787,11 +2822,11 @@ username and password information!
 /* --- REQUIRED CHANGES --- */
 
 
-/* mysqli info --- $db_hostname is the hostname for your mysqli server, default is localhost.
-              --- $db_username is the mysqli username you created during the install.
-              --- $db_password is the mysqli password for the username you created during
+/* mysql info --- $db_hostname is the hostname for your mysql server, default is localhost.
+              --- $db_username is the mysql username you created during the install.
+              --- $db_password is the mysql password for the username you created during
                   the install.
-              --- $db_name is the mysqli database you created during the install. */
+              --- $db_name is the mysql database you created during the install. */
 
 $db_hostname = "' . $post_db_hostname . '";
 $db_username = "' . $post_db_username . '";
@@ -2803,7 +2838,7 @@ $db_name = "' . $post_db_name . '";
 
 
 /* This adds a prefix to the tablenames in the database. This can be helpful if you
-   have an existing mysqli database that you would like to use with PHP Timeclock.
+   have an existing mysql database that you would like to use with PHP Timeclock.
    If you are unaware of what is meant by "table prefix", then please leave this
    option as is. Default is to leave it blank. */
 
@@ -3104,6 +3139,10 @@ $use_server_tz = "' . $post_use_server_tz . '";
    If you would like to include this feature, set $display_weather to "yes". Default is "no". */
 
 $display_weather = "' . $post_display_weather . '";
+
+/* Display weather in US or metric measurements. Options are "f" or "c". Default is "c" */
+
+$weather_units = "' . $post_weather_units . '";
 
 
 /* ICAO (International Civil Aviation Organization) for your local airport. This is the

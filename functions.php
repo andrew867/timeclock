@@ -209,7 +209,7 @@ function get_ipaddress() {
         // True IP without proxy
         return $direct_ip;
     } else {
-        $is_ip = preg_match('|^([0-9]{1,3}\.){3,3}[0-9]{1,3}|', $proxy_ip, $regs);
+        $is_ip = preg_match('/\|^([0-9]{1,3}\\.){3,3}[0-9]{1,3}\|/', $proxy_ip, $regs);
         if ($is_ip && (count($regs) > 0)) {
             // True IP behind a proxy
             return $regs[0];
@@ -247,7 +247,7 @@ function ip_range($network, $ip) {
 
     $result = true;
 
-    if (preg_match('|([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)/([0-9]+)|', $network, $regs)) {
+    if (preg_match('/\|([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)\/([0-9]+)\|/', $network, $regs)) {
         // performs a mask match
         $ipl = ip2long($ip);
         $rangel = ip2long($regs[1] . '.' . $regs[2] . '.' . $regs[3] . '.' . $regs[4]);
@@ -272,7 +272,7 @@ function ip_range($network, $ip) {
 
         // perform a range match
         for ($i = 0; $i < 4; $i++) {
-            if (preg_match('|\[([0-9]+)\-([0-9]+)\]|', $maskocts[$i], $regs)) {
+            if (preg_match('/\|\\[([0-9]+)\-([0-9]+)\\]\|/', $maskocts[$i], $regs)) {
                 if (($ipocts[$i] > $regs[2])
                     || ($ipocts[$i] < $regs[1])
                 ) {
@@ -289,7 +289,11 @@ function ip_range($network, $ip) {
     return $result;
 }
 
-function setTimeZone($use_client_tz,$use_server_tz ) {
+function setTimeZone() {
+
+    global $use_client_tz;
+    global $use_server_tz;
+
     if ($use_client_tz == "yes") {
         if (isset($_COOKIE['tzoffset'])) {
             $tzo = $_COOKIE['tzoffset'];

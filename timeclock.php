@@ -169,17 +169,17 @@ $tclock_time = date($timefmt, $tclock_stamp);
 $tclock_date = date($datefmt, $tclock_stamp);
 $report_name = "Current Status Report";
 
-//echo "            <table width=100% align=center class=misc_items border=0 cellpadding=3 cellspacing=0>\n";
+echo "            <table width=100% align=center class=misc_items border=0 cellpadding=3 cellspacing=0>\n";
 
 if (!isset($_GET['printer_friendly'])) {
-  //  echo "              <tr class=display_hide>\n";
+    echo "              <tr class=display_hide>\n";
 } else {
-   // echo "              <tr>\n";
+    echo "              <tr>\n";
 }
 
-//echo "                <td nowrap style='font-size:9px;color:#000000;padding-left:10px;'>$report_name&nbsp;&nbsp;---->&nbsp;&nbsp;As of: $tclock_time, 
-              //      $tclock_date</td></tr>\n";
-//echo "            </table>\n";
+echo "                <td nowrap style='font-size:9px;color:#000000;padding-left:10px;'>$report_name&nbsp;&nbsp;---->&nbsp;&nbsp;As of: $tclock_time, 
+                    $tclock_date</td></tr>\n";
+echo "            </table>\n";
 include 'display.php';
 
 if (!isset($_GET['printer_friendly'])) {

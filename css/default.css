@@ -60,7 +60,7 @@
 
 .current_left_rows {
     background-color: #eeeeee;
-    border: solid #1a2732;
+    border: solid #748771;
     border-width: 0px 0px 1px 0px;
     padding-left: 10px;
     color: #27408b;
@@ -69,11 +69,11 @@
 
 .current_left_rows_indent {
     text-decoration: none;
-    color: #1a2732;
+    color: #748771;
     font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
     font-size: 11px;
     background-color: #eeeeee;
-    border: solid #1a2732;
+    border: solid #748771;
     border-width: 0px 0px 0px 0px;
     padding-left: 32px;
     font-weight: bold;
@@ -100,7 +100,7 @@
 
 .header {
     height: 45px;
-    background-color: #1a2732;
+    background-color: #748771;
     border: solid #cdc0b0;
     border-width: 0px 0px 1px 0px;
 }
@@ -138,7 +138,7 @@
 
 .left_rows_indent {
     text-decoration: none;
-    color: #1a2732;
+    color: #748771;
     font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
     font-size: 11px;
     background-color: #FCFCFF;
@@ -257,12 +257,12 @@
     font-family: Tahoma, Verdana, Trebuchet MS, sans-serif;
     font-size: 11px;
     background-color: #cdc0b0;
-    border: solid #1a2732;
+    border: solid #748771;
     border-width: 1px 0px 1px 0px;
 }
 
 a:active {
-    color: #1a2732;
+    color: #748771;
     text-decoration: none;
 }
 
@@ -271,3 +271,4 @@ a:hover {
     font-size: 11px;
     color: #853d27;
 }
+

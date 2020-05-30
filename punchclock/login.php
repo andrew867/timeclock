@@ -37,7 +37,7 @@ if (!$empfullname)
     $empfullname = $emp; // from url or form entry
 
 if ($empfullname) {
-    $empfullname = lookup_employee($empfullname);
+    $empfullname = lookup_employee($db,$db_prefix,$empfullname);
     if (!$empfullname) {
         $error_msg .= "Name was not recognized. Please re-enter your name.\n";
     }

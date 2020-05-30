@@ -51,7 +51,7 @@ $cloud_condition_array = array(
  * are 2 hours off, then set this to -2.  */
 $weather_offset = 0;
 
-/* Make a connection to the mysqli database: */
+/* Make a connection to the MySQL database: */
 @ $db = mysqli_connect($db_hostname, $db_username, $db_password);
 if (!$db) {
     echo "Error: Could not connect to the database. Please try again later.";
@@ -120,15 +120,15 @@ function get_metar($db,$db_prefix,$station, $always_use_cache = 0) {
             return $metar;
         } else {
             /* We looked in the cache, but the metar was too old. */
-            return fetch_metar($db,$station, 0);
+            return fetch_metar($db,$db_prefix,$station, 0);
         }
     } else {
         /* The station is new - we fetch a new METAR */
-        return fetch_metar($db,$station, 1);
+        return fetch_metar($db,$db_prefix,$station, 1);
     }
 }
 
-function fetch_metar($db,$station, $new) {
+function fetch_metar($db,$db_prefix,$station, $new) {
     /*
      * Fetches a new METER from weather.noaa.gov. If the $new variable
      * is true, the metar is inserted, else it will replace the old
@@ -158,7 +158,7 @@ function fetch_metar($db,$station, $new) {
                                   0, $date_parts[1], $date_parts[2],
                                   $date_parts[0]);
 
-        if (!preg_match('[0-9]{6}Z', $metar)) {
+        if (!preg_match('/[0-9]{6}Z/', $metar)) {
             /* Some reports dont even have a time-part, so we insert the
              * current time. This might not be the time of the report, but
              * it was broken anyway :-) */
@@ -182,7 +182,7 @@ function fetch_metar($db,$station, $new) {
         $date_unixtime = time() - 3000;
     }
 
-    /* It might seam strange, that we make a local date, but mysqli
+    /* It might seam strange, that we make a local date, but MySQL
      * expects a local when we insert the METAR. */
     $date = date('Y/m/d H:i', $date_unixtime);
 
@@ -246,7 +246,7 @@ function process_metar($db,$db_prefix,$metar) {
              * Station Identifier
              */
             $decoded_metar['station'] = $part;
-        } elseif (preg_match('/^([0-9]{2})([0-9]{2})([0-9]{2})Z/', $part, $regs)) {
+        } elseif (preg_match('/([0-9]{2})([0-9]{2})([0-9]{2})Z/', $part, $regs)) {
             /*
              * Date and Time of Report
              * We return a standard Unix UTC/GMT timestamp suitable for
@@ -254,16 +254,16 @@ function process_metar($db,$db_prefix,$metar) {
              */
             $decoded_metar['time'] = gmmktime($regs[2] + $weather_offset, $regs[3], 0,
                                               gmdate('m'), $regs[1], gmdate('Y'));
-        } elseif (preg_match('(AUTO|COR|RTD|CC[A-Z]|RR[A-Z])', $part, $regs)) {
+        } elseif (preg_match('/(AUTO|COR|RTD|CC[A-Z]|RR[A-Z])/', $part, $regs)) {
             /*
              * Report Modifier: AUTO, COR, CCx or RRx
              */
             $decoded_metar['report_mod'] = $regs[1];
-        } elseif (preg_match('/^([0-9]{3}|VRB)([0-9]{2,3}).*(KT|MPS|KMH)/', $part, $regs)) {
+        } elseif (preg_match('/([0-9]{3}|VRB)([0-9]{2,3}).*(KT|MPS|KMH)/', $part, $regs)) {
             /* Wind Group */
             $windunit = $regs[3]; /* do ereg in two parts to retrieve unit first */
             /* now do ereg to get the actual values */
-            preg_match("([0-9]{3}|VRB)([0-9]{2,3})(G([0-9]{2,3})?$windunit)", $part, $regs);
+            preg_match("/([0-9]{3}|VRB)([0-9]{2,3})(G([0-9]{2,3})\?$windunit)/", $part, $regs);
             if ($regs[1] == 'VRB') {
                 $decoded_metar['wind_deg'] = $strings['wind_vrb_long'];
                 $decoded_metar['wind_dir_text'] = $strings['wind_vrb_long'];
@@ -313,7 +313,7 @@ function process_metar($db,$db_prefix,$metar) {
              * Temp Visibility Group, single digit followed by space
              */
             $temp_visibility_miles = $part;
-        } elseif (preg_match('/^M\?(([0-9]\?)[ ]\?([0-9])(\/\?)([0-9]*))SM$/',
+        } elseif (preg_match('/^M\?(([0-9]\?)[ ]?([0-9])(\/\?)([0-9]*))SM$/',
                        $temp_visibility_miles . ' ' .
                        $parts[$i], $regs)
         ) {
@@ -385,7 +385,7 @@ function process_metar($db,$db_prefix,$metar) {
                 $decoded_metar['runway_vis_ft'] = $prefix . number_format($regs[2]);
                 $decoded_metar['runway_vis_meter'] = $prefix . number_format($regs[2] * 0.3048);
             }
-        } elseif (preg_match('/^(-|\+|VC)\?(TS|SH|FZ|BL|DR|MI|BC|PR|RA|DZ|SN|SG|GR|' .
+        } elseif (preg_match('/^(-|\\+|VC)\?(TS|SH|FZ|BL|DR|MI|BC|PR|RA|DZ|SN|SG|GR|' .
                        'GS|PE|IC|UP|BR|FG|FU|VA|DU|SA|HZ|PY|PO|SQ|FC|SS|DS)+$/',
                        $part)
         ) {
@@ -418,7 +418,7 @@ function process_metar($db,$db_prefix,$metar) {
                    a new bite at top of the while-loop. */
                 $part = substr($part, 2);
             }
-        } elseif (preg_match('(SKC|CLR)', $part, $regs)) {
+        } elseif (preg_match('/(SKC|CLR)/', $part, $regs)) {
             /*
              * Cloud-layer-group.
              * There can be up to three of these groups, so we store them as
@@ -468,14 +468,12 @@ function process_metar($db,$db_prefix,$metar) {
              * Temperature/Dew Point Group
              * The temperature and dew-point measured in Celsius.
              */
-             if(isset($decoded_metar['temp_c']))$decoded_metar['temp_c'] = number_format(strtr($regs[1], 'M', '-'));
-
-
-            if(isset($decoded_metar['dew_c']))$decoded_metar['dew_c'] = number_format(strtr($regs[2], 'M', '-'));
+            $decoded_metar['temp_c'] = number_format(strtr($regs[1], 'M', '-'));
+          if(isset($decoded_metar['dew_c'])) $decoded_metar['dew_c'] = number_format(strtr($regs[2], 'M', '-'));
             /* The temperature and dew-point measured in Fahrenheit, rounded
                to the nearest degree. */
             if(isset($decoded_metar['temp_f']))$decoded_metar['temp_f'] = round(strtr($regs[1], 'M', '-') * (9 / 5) + 32);
-            if(isset($decoded_metar['dew_f']))$decoded_metar['dew_f'] = round(strtr($regs[2], 'M', '-') * (9 / 5) + 32);
+            if(isset($decoded_metar['dew_c']))$decoded_metar['dew_f'] = round(strtr($regs[2], 'M', '-') * (9 / 5) + 32);
         } elseif (preg_match('/A([0-9]{4})/', $part, $regs)) {
             /*
              * Altimeter
@@ -561,23 +559,22 @@ function process_metar($db,$db_prefix,$metar) {
     }
     /*
      * Relative humidity
-     */
-     if(isset($decoded_metar['dew_c'])&& isset($decoded_metar['temp_c'])){
+     */if(isset($decoded_metar['dew_c'])){
     $decoded_metar['rel_humidity'] = number_format(pow(10,
         (1779.75 * ($decoded_metar['dew_c'] - $decoded_metar['temp_c']) /
          ((237.3 + $decoded_metar['dew_c']) * (237.3 + $decoded_metar['temp_c']))
          + 2)), 1);
-       }
-
+}
     /*
      * Humidity index
-     */
-   if( isset($decoded_metar['temp_c'])){
+     */if(isset($decoded_metar['temp_c'])){
     $e = 6.112 * pow(10, 7.5 * $decoded_metar['temp_c']
                          / (237.7 + $decoded_metar['temp_c']))
          * $decoded_metar['rel_humidity'] / 100;
     $decoded_metar['humidex_c'] =
         number_format($decoded_metar['temp_c'] + 5 / 9 * ($e - 10), 1);
+      }
+      if(isset($decoded_metar['humidex_c'])){
     $decoded_metar['humidex_f'] =
         number_format($decoded_metar['humidex_c'] * 9 / 5 + 32, 1);
 }

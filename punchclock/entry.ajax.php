@@ -49,19 +49,19 @@ if ($authorized_to_post_time && isset($_POST['inout'])) {
     // Post employee time.
 
     $inout = $_POST['inout'];
-    $q_inout = mysqli_real_escape_string($inout);
+    $q_inout = mysqli_real_escape_string($db,$inout);
     $h_inout = htmlentities($inout);
 
     $notes = isset($_POST['notes']) ? $_POST['notes'] : '';
-    $q_notes = mysqli_real_escape_string($notes);
+    $q_notes = mysqli_real_escape_string($db,$notes);
     $h_notes = htmlentities($notes);
 
-    $q_empfullname = mysqli_real_escape_string($empfullname);
+    $q_empfullname = mysqli_real_escape_string($db,$empfullname);
 
     // Validate and get inout display color.
     $query = "select color from " . $db_prefix . "punchlist where punchitems = '$q_inout'";
     $punchlist_result = mysqli_query($db,$query);
-    $inout_color = mysqli_result($punchlist_result, 0, 0);
+    $inout_color = mysql_result($punchlist_result, 0, 0);
     if (!$inout_color) {
         #print error_msg("In/Out Status is not in the database.");
         trigger_error('In/Out Status is not in the database.', E_USER_WARNING);
@@ -83,11 +83,11 @@ set tstamp = '$tz_stamp'
 where empfullname = '$q_empfullname'
 End_Of_SQL;
 
-    if (mysqli_query($insert_query)) {
+    if (mysqli_query($db,$insert_query)) {
         mysqli_query($db,$update_query)
-        or trigger_error('punchclock: cannot update tstamp in employee record. ' . mysqli_error(), E_USER_WARNING);
+        or trigger_error('punchclock: cannot update tstamp in employee record. ' . mysql_error(), E_USER_WARNING);
     } else {
-        trigger_error('punchclock: cannot insert timestamp into info record. ' . mysqli_error(), E_USER_WARNING);
+        trigger_error('punchclock: cannot insert timestamp into info record. ' . mysql_error(), E_USER_WARNING);
     }
 
     // Update display line on punchclock list and close form.

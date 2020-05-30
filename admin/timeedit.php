@@ -158,7 +158,7 @@ if ($request == 'GET') {
     @$final_username = $_POST['final_username'];
     @$final_inout = $_POST['final_inout'];
     @$final_notes = $_POST['final_notes'];
-    @$final_mysqli_timestamp = $_POST['final_mysqli_timestamp'];
+    @$final_mysql_timestamp = $_POST['final_mysql_timestamp'];
     @$final_num_rows = $_POST['final_num_rows'];
     @$final_time = $_POST['final_time'];
     @$edit_time_textbox = $_POST['edit_time_textbox'];
@@ -283,7 +283,7 @@ if ($request == 'GET') {
         echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
                     A valid Date is required.</td></tr>\n";
         echo "            </table>\n";
-    } elseif (preg_match('/' . "^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$" . '/i', $post_date, $date_regs)) {
+    } elseif (preg_match('/' . "^([0-9]{1,2})[-\,\/,.]([0-9]{1,2})[-\,\/,.](([0-9]{2})|([0-9]{4}))$" . '/i', $post_date, $date_regs)) {
         if ($calendar_style == "amer") {
             if (isset($date_regs)) {
                 $month = $date_regs[1];
@@ -389,8 +389,8 @@ if ($request == 'GET') {
                     echo "Something is fishy heree.\n";
                     exit;
                 }
-                $final_mysqli_timestamp[$x] = intval($final_mysqli_timestamp[$x]);
-                if ((strlen($final_mysqli_timestamp[$x]) != "10") || (!is_integer($final_mysqli_timestamp[$x]))) {
+                $final_mysql_timestamp[$x] = intval($final_mysql_timestamp[$x]);
+                if ((strlen($final_mysql_timestamp[$x]) != "10") || (!is_integer($final_mysql_timestamp[$x]))) {
                     echo "Something is fishy here.\n";
                     exit;
                 }
@@ -407,10 +407,10 @@ if ($request == 'GET') {
                     exit;
                 }
 
-                $final_notes[$x] = ereg_replace("[^[:alnum:] \,\.\?-]", "", $final_notes[$x]);
+                $final_notes[$x] = preg_replace("[^[:alnum:] \,\.\?-]", "", $final_notes[$x]);
                 $final_username[$x] = addslashes($final_username[$x]);
 
-                $query5 = "select * from " . $db_prefix . "info where (fullname = '" . $final_username[$x] . "') and (timestamp = '" . $final_mysqli_timestamp[$x] . "') and
+                $query5 = "select * from " . $db_prefix . "info where (fullname = '" . $final_username[$x] . "') and (timestamp = '" . $final_mysql_timestamp[$x] . "') and
            (`inout` = '" . $final_inout[$x] . "')";
                 $result5 = mysqli_query($db,$query5);
                 @$tmp_num_rows = mysqli_num_rows($result5);
@@ -528,7 +528,7 @@ if ($request == 'GET') {
                     echo "              <input type='hidden' name='final_inout[$x]' value=\"$final_inout[$x]\">\n";
                     echo "              <input type='hidden' name='final_notes[$x]' value=\"$final_notes[$x]\">\n";
                     echo "              <input type='hidden' name='final_time[$x]' value=\"$final_time[$x]\">\n";
-                    echo "              <input type='hidden' name='final_mysqli_timestamp[$x]' value=\"$final_mysqli_timestamp[$x]\">\n";
+                    echo "              <input type='hidden' name='final_mysql_timestamp[$x]' value=\"$final_mysql_timestamp[$x]\">\n";
                     $row_count++;
                 }
                 echo "              <tr><td height=15></td></tr>\n";
@@ -647,19 +647,19 @@ if ($request == 'GET') {
                         }
 
                         $query3 = "update " . $db_prefix . "info set timestamp = '" . $new_tstamp[$x] . "' where ((fullname = '" . $final_username[$x] . "')
-             and (`inout` = '" . $final_inout[$x] . "') and (timestamp = '" . $final_mysqli_timestamp[$x] . "') and (notes = '" . $final_notes[$x] . "'))";
+             and (`inout` = '" . $final_inout[$x] . "') and (timestamp = '" . $final_mysql_timestamp[$x] . "') and (notes = '" . $final_notes[$x] . "'))";
                         $result3 = mysqli_query($db,$query3);
 
                         // add the results to the audit table
 
                         if (strtolower($ip_logging) == "yes") {
                             $query4 = "insert into " . $db_prefix . "audit (modified_by_ip, modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values
-           ('" . $connecting_ip . "', '" . $user . "', '" . $time_tz_stamp . "', '" . $final_mysqli_timestamp[$x] . "', '" . $new_tstamp[$x] . "', '" . $post_why . "',
+           ('" . $connecting_ip . "', '" . $user . "', '" . $time_tz_stamp . "', '" . $final_mysql_timestamp[$x] . "', '" . $new_tstamp[$x] . "', '" . $post_why . "',
            '" . $final_username[$x] . "')";
                             $result4 = mysqli_query($db,$query4);
                         } else {
                             $query4 = "insert into " . $db_prefix . "audit (modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values
-           ('" . $user . "', '" . $time_tz_stamp . "', '" . $final_mysqli_timestamp[$x] . "', '" . $new_tstamp[$x] . "', '" . $post_why . "', '" . $final_username[$x] . "')";
+           ('" . $user . "', '" . $time_tz_stamp . "', '" . $final_mysql_timestamp[$x] . "', '" . $new_tstamp[$x] . "', '" . $post_why . "', '" . $final_username[$x] . "')";
                             $result4 = mysqli_query($db,$query4);
                         }
 
@@ -707,7 +707,7 @@ if ($request == 'GET') {
             $username = array();
             $inout = array();
             $notes = array();
-            $mysqli_timestamp = array();
+            $mysql_timestamp = array();
 
             while ($row = mysqli_fetch_array($result)) {
 
@@ -715,7 +715,7 @@ if ($request == 'GET') {
                 $username[] = "" . $row['fullname'] . "";
                 $inout[] = "" . $row['inout'] . "";
                 $notes[] = "" . $row['notes'] . "";
-                $mysqli_timestamp[] = "" . $row['timestamp'] . "";
+                $mysql_timestamp[] = "" . $row['timestamp'] . "";
             }
             $num_rows = mysqli_num_rows($result);
         }
@@ -799,7 +799,7 @@ if ($request == 'GET') {
             for ($x = 0; $x < $num_rows; $x++) {
 
                 $row_color = ($row_count % 2) ? $color1 : $color2;
-                $time[$x] = date("$timefmt", $mysqli_timestamp[$x] + $tzo);
+                $time[$x] = date("$timefmt", $mysql_timestamp[$x] + $tzo);
                 $username[$x] = stripslashes($username[$x]);
 
                 echo "              <tr class=display_row>\n";
@@ -812,7 +812,7 @@ if ($request == 'GET') {
                 echo "              <input type='hidden' name='final_username[$x]' value=\"$username[$x]\">\n";
                 echo "              <input type='hidden' name='final_inout[$x]' value=\"$inout[$x]\">\n";
                 echo "              <input type='hidden' name='final_notes[$x]' value=\"$notes[$x]\">\n";
-                echo "              <input type='hidden' name='final_mysqli_timestamp[$x]' value=\"$mysqli_timestamp[$x]\">\n";
+                echo "              <input type='hidden' name='final_mysql_timestamp[$x]' value=\"$mysql_timestamp[$x]\">\n";
                 echo "              <input type='hidden' name='final_time[$x]' value=\"$time[$x]\">\n";
                 $row_count++;
             }

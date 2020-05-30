@@ -17,9 +17,9 @@ $end_local_timestamp = make_timestamp($to_date) + $one_day - 1; // through end o
 $begin_utm_timestamp = utm_timestamp($begin_local_timestamp);
 $end_utm_timestamp = utm_timestamp($end_local_timestamp);
 
-$employee_clause = $user_name == 'All' ? '' : "   and {$db_prefix}employees.empfullname = '" . mysqli_real_escape_string($user_name) . "'\n";
-$office_clause = $office_name == 'All' ? '' : "   and {$db_prefix}employees.office = '" . mysqli_real_escape_string($office_name) . "'\n";
-$groups_clause = $group_name == 'All' ? '' : "   and {$db_prefix}employees.groups = '" . mysqli_real_escape_string($group_name) . "'\n";
+$employee_clause = $user_name == 'All' ? '' : "   and {$db_prefix}employees.empfullname = '" . mysqli_real_escape_string($db,$user_name) . "'\n";
+$office_clause = $office_name == 'All' ? '' : "   and {$db_prefix}employees.office = '" . mysqli_real_escape_string($db,$office_name) . "'\n";
+$groups_clause = $group_name == 'All' ? '' : "   and {$db_prefix}employees.groups = '" . mysqli_real_escape_string($db,$group_name) . "'\n";
 
 // Select employees whose timecards need to be scanned.
 $query = <<<End_Of_SQL
@@ -31,7 +31,7 @@ where timestamp between $begin_utm_timestamp and $end_utm_timestamp
 End_Of_SQL;
 
 $result = mysqli_query($db,$query)
-or trigger_error("export_display: Cannot select employees. " . mysqli_error(), E_USER_WARNING);
+or trigger_error("export_display: Cannot select employees. " . mysql_error(), E_USER_WARNING);
 
 // Scan employee timecards between given dates and record computed hours.
 setup_record_hours();
@@ -84,7 +84,7 @@ select coalesce(sum(hours),0) as sum_hours $cols
 End_Of_SQL;
 
 $result = mysqli_query($db,$query)
-or trigger_error("export_display: Cannot select hours. " . mysqli_error(), E_USER_WARNING);
+or trigger_error("export_display: Cannot select hours. " . mysql_error(), E_USER_WARNING);
 
 // Print export page header.
 $begin_date = date('l F j, Y', $begin_local_timestamp);
@@ -256,7 +256,7 @@ create temporary table t_computed_hours (
 End_Of_SQL;
     mysqli_query($db,"DROP TABLE IF EXISTS t_computed_hours");
     mysqli_query($db,$sql)
-    or trigger_error("export_display: Cannot create temporary table t_computed_hours. " . mysqli_error(), E_USER_WARNING);
+    or trigger_error("export_display: Cannot create temporary table t_computed_hours. " . mysql_error(), E_USER_WARNING);
 }
 
 function record_hours($tc) {
@@ -288,12 +288,12 @@ function record_hours($tc) {
 
         if (round($hours, 3) > 0) {
             $reg_ot = 'R';
-            $q_inout = mysqli_real_escape_string($tc->row['inout']);
-            $q_color = mysqli_real_escape_string($tc->row['color']);
-            $q_employee = mysqli_real_escape_string($tc->row['fullname']);
-            $q_name = mysqli_real_escape_string($tc->row['displayname']);
-            $q_group = mysqli_real_escape_string($tc->row['groups']);
-            $q_office = mysqli_real_escape_string($tc->row['office']);
+            $q_inout = mysqli_real_escape_string($db,$tc->row['inout']);
+            $q_color = mysqli_real_escape_string($db,$tc->row['color']);
+            $q_employee = mysqli_real_escape_string($db,$tc->row['fullname']);
+            $q_name = mysqli_real_escape_string($db,$tc->row['displayname']);
+            $q_group = mysqli_real_escape_string($db,$tc->row['groups']);
+            $q_office = mysqli_real_escape_string($db,$tc->row['office']);
             #$date        = date('Y-m-d H:i',$start_time); ## debug
             $date = date('Y-m-d', $start_time);
             $sql = <<<End_Of_SQL
@@ -301,17 +301,17 @@ insert into t_computed_hours (hours,reg_ot,`inout`,color,hours_date,empfullname,
 values ($hours,'$reg_ot','$q_inout','$q_color','$date','$q_employee','$q_name','$q_group','$q_office')
 End_Of_SQL;
             mysqli_query($db,$sql)
-            or trigger_error("export_display: Cannot insert regular hours into temp table. " . mysqli_error(), E_USER_WARNING);
+            or trigger_error("export_display: Cannot insert regular hours into temp table. " . mysql_error(), E_USER_WARNING);
         }
 
         if (round($overtime, 3) > 0) {
             $reg_ot = 'O';
-            $q_inout = mysqli_real_escape_string($tc->row['inout']);
-            $q_color = mysqli_real_escape_string($tc->row['color']);
-            $q_employee = mysqli_real_escape_string($tc->row['fullname']);
-            $q_name = mysqli_real_escape_string($tc->row['displayname']);
-            $q_group = mysqli_real_escape_string($tc->row['groups']);
-            $q_office = mysqli_real_escape_string($tc->row['office']);
+            $q_inout = mysqli_real_escape_string($db,$tc->row['inout']);
+            $q_color = mysqli_real_escape_string($db,$tc->row['color']);
+            $q_employee = mysqli_real_escape_string($db,$tc->row['fullname']);
+            $q_name = mysqli_real_escape_string($db,$tc->row['displayname']);
+            $q_group = mysqli_real_escape_string($db,$tc->row['groups']);
+            $q_office = mysqli_real_escape_string($db,$tc->row['office']);
             #$date        = date('Y-m-d H:i',$start_time); ## debug
             $date = date('Y-m-d', $start_time);
             $sql = <<<End_Of_SQL
@@ -319,7 +319,7 @@ insert into t_computed_hours (hours,reg_ot,`inout`,color,hours_date,empfullname,
 values ($overtime,'$reg_ot','$q_inout','$q_color','$date','$q_employee','$q_name','$q_group','$q_office')
 End_Of_SQL;
             mysqli_query($db,$sql)
-            or trigger_error("export_display: Cannot insert overtime hours into temp table. " . mysqli_error(), E_USER_WARNING);
+            or trigger_error("export_display: Cannot insert overtime hours into temp table. " . mysql_error(), E_USER_WARNING);
         }
     }
 }

@@ -61,6 +61,4 @@ if ($use_client_tz == "yes") {
         include '../tzoffset.php';
         echo "<meta http-equiv='refresh' content='0;URL=index.php'>\n";
     }
-
 }
-include 'header.php';

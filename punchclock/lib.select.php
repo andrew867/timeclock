@@ -20,7 +20,7 @@
  *    Only <option> tags are returned.
  *
  *    If the global $db is set, it is used as the database resource link identifier,
- *    otherwise the mysqli internal default connection is used.
+ *    otherwise the mysql internal default connection is used.
  */
 
 ////////////////////////////////////////

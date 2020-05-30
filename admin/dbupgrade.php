@@ -476,15 +476,15 @@ if (!empty($count)) {
             }
         }
 
-        // convert mysqli timestamps to unix timestamps //
+        // convert mysql timestamps to unix timestamps //
 
         if (!empty($emp_tstamp_count)) {
             $emp_tstamp_result = mysqli_query($db,"update " . $db_prefix . "employees set tstamp = (unix_timestamp(tstamp) - '" . $gmt_offset . "')");
-            $employee_rows = mysqli_affected_rows();
+            $employee_rows = mysql_affected_rows();
 
             if (!empty($employee_rows)) {
                 echo "                <tr><td width=10 class=table_rows style='padding-left:25px;color:#FF9900;font-weight:bold;'>Converted</td><td class=table_rows
-                   align=left>:&nbsp;<b>$employee_rows rows</b> in the employees table were converted from a mysqli timestamp to a unix 
+                   align=left>:&nbsp;<b>$employee_rows rows</b> in the employees table were converted from a mysql timestamp to a unix 
                    timestamp.</td></tr>\n";
             }
         }
@@ -492,11 +492,11 @@ if (!empty($count)) {
 
         if (!empty($info_timestamp_count)) {
             $info_timestamp_result = mysqli_query($db,"update " . $db_prefix . "info set timestamp = (unix_timestamp(timestamp) - '" . $gmt_offset . "')");
-            $info_rows = mysqli_affected_rows();
+            $info_rows = mysql_affected_rows();
 
             if (!empty($info_rows)) {
                 echo "                <tr><td width=10 class=table_rows style='padding-left:25px;color:purple;font-weight:bold;'>Converted</td><td class=table_rows
-                   align=left>:<b>$info_rows rows</b> in the info table were converted from a mysqli timestamp to a unix timestamp.</b></td></tr>\n";
+                   align=left>:<b>$info_rows rows</b> in the info table were converted from a mysql timestamp to a unix timestamp.</b></td></tr>\n";
             }
         }
         unset($info_timestamp_count);
@@ -520,7 +520,7 @@ if (!empty($count)) {
     echo "              <tr><th class=rightside_heading nowrap halign=left colspan=3><img src='../images/icons/database_go.png' />&nbsp;&nbsp;&nbsp;Upgrade
                       Database </th></tr>\n";
     echo "              <tr><td height=15></td></tr>\n";
-    echo "              <tr><td colspan=2 class=table_rows align=left valign=bottom style='padding-left:32px;padding-right:32px;'>Your mysqli
+    echo "              <tr><td colspan=2 class=table_rows align=left valign=bottom style='padding-left:32px;padding-right:32px;'>Your mysql
                       user, $db_username@$db_hostname, does not have the required SELECT, INSERT, UPDATE, DELETE, CREATE, and ALTER 
                       privileges for the $db_name database.</td></tr>\n";
     echo "              <tr><td height=15></td></tr>\n";
