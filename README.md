@@ -1,4 +1,5 @@
 TimeClock PHP7
+
 *major refactor of DB functions ->mysqli
 *major refactor of project functions to adapt & work with mysqli functions
 * major upgrade to php code removed deprecated functions introduced compatible functions with PHP7
