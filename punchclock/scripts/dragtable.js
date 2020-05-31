@@ -394,9 +394,9 @@ dragtable = {
         if (!dragtable.cookiesEnabled()) return;
         var dragstr = dragtable.readCookie("dragtable-" + table.id);
         if (!dragstr) return;
-        var drags = dragstr.split(',');
+        var drags = dragstr.explode(',');
         for (var i = 0; i < drags.length; i++) {
-            var pair = drags[i].split("/");
+            var pair = drags[i].explode("/");
             if (pair.length != 2) continue;
             var a = parseInt(pair[0]);
             var b = parseInt(pair[1]);
@@ -425,7 +425,7 @@ dragtable = {
 
     readCookie: function (name) {
         var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
+        var ca = document.cookie.explode(';');
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
             while (c.charAt(0) == ' ') c = c.substring(1, c.length);
@@ -510,7 +510,7 @@ Function.prototype.forEach = function (object, block, context) {
 
 // character enumeration
 String.forEach = function (string, block, context) {
-    Array.forEach(string.split(""), function (chr, index) {
+    Array.forEach(string.explode(""), function (chr, index) {
         block.call(context, chr, index, string);
     });
 };

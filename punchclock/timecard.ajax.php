@@ -39,9 +39,9 @@ if (isset($_REQUEST['next']))
     $local_timestamp_in_week += $one_week;
 
 // Connect to db.
-$db = mysql_connect($db_hostname, $db_username, $db_password)
+$db = mysqli_connect($db_hostname, $db_username, $db_password)
 or die("Could not connect to the database.");
-mysql_select_db($db_name);
+mysqli_select_db($db,$db_name);
 
 $u_empfullname = rawurlencode($empfullname);
 
@@ -54,7 +54,7 @@ print <<<End_Of_HTML
 End_Of_HTML;
 
 // Print timecard.
-print timecard_html($empfullname, $local_timestamp_in_week);
+print timecard_html($db,$db_prefix,$empfullname, $local_timestamp_in_week);
 
 print "<a id=\"printer_friendly\" href=\"timecard.php?emp=$empfullname&t=$local_timestamp_in_week\" target=\"_blank\">Printer Friendly</a>";
 ?>

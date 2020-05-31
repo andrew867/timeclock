@@ -50,7 +50,7 @@ if ($request == 'GET') {
     echo "            <form name='form' action='$self' method='post' onsubmit=\"return isFromOrToDate();\">\n";
     echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
     echo "              <tr><td class=table_rows width=20 align=center><img src='../images/icons/information.png' /></td><td class=table_rows
-                      style='color:#3366CC;'>This report will display all information pertaining to punch-in/out times that have been 
+                      style='color:#3366CC;'>This report will display all information pertaining to punch-in/out times that have been
                       added, edited, or deleted from PHP Timeclock.</td></tr>\n";
     echo "            </table>\n";
     echo "            <br />\n";
@@ -390,9 +390,8 @@ if ($request == 'GET') {
                 style='font-size:9px;color:#000000;'>Audit Log</td></tr>\n";
     echo "  <tr><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'>Date Range: $from_date - $to_date</td></tr>\n";
     if (!empty($tmp_csv)) {
-        echo "  <tr class=notprint><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'><a style='color:#27408b;font-size:9px;
-                  text-decoration:underline;' 
-                  href=\"get_csv.php?rpt=auditlog&&csv=$tmp_csv&from=$from_timestamp&to=$to_timestamp&tzo=$tzo\">Download CSV File</a></td></tr>\n";
+      echo "<tr class=notprint><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'><a style='color:#27408b;font-size:9px;text-decoration:underline;'href=get_csv.php?rpt=timerpt&csv=".$tmp_csv."&from=".$from_timestamp."&to=".$to_timestamp."&tzo=".isset($tzo).">Download CSV File</a></td></tr>\n";
+
     }
     echo "</table>\n";
 
@@ -410,9 +409,9 @@ if ($request == 'GET') {
 
     $query = "select * from " . $db_prefix . "audit where modified_when >= '" . $from_timestamp . "' and modified_when <= '" . $to_timestamp . "'
           order by modified_when asc";
-    $result = mysql_query($query);
+    $result = mysqli_query($db,$query);
 
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
 
         $modified_when[] = "" . $row["modified_when"] . "";
         $modified_from[] = "" . $row["modified_from"] . "";

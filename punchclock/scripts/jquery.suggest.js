@@ -208,7 +208,7 @@
         function parseTxt(txt, q) {
 
             var items = [];
-            var tokens = txt.split(options.delimiter);
+            var tokens = txt.explode(options.delimiter);
 
             // parse returned data for non-empty items
             for (var i = 0; i < tokens.length; i++) {

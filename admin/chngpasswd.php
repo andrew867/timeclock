@@ -102,11 +102,11 @@ if ($request == 'GET') {
     $get_user = addslashes($get_user);
 
     $query = "select empfullname from " . $db_prefix . "employees where empfullname = '" . $get_user . "'";
-    $result = mysql_query($query);
-    while ($row = mysql_fetch_array($result)) {
+    $result = mysqli_query($db,$query);
+    while ($row = mysqli_fetch_array($result)) {
         $username = stripslashes("" . $row['empfullname'] . "");
     }
-    mysql_free_result($result);
+    mysqli_free_result($result);
     if (!isset($username)) {
         echo "username is not defined for this user.\n";
         exit;
@@ -114,11 +114,11 @@ if ($request == 'GET') {
 
     if (!empty($get_office)) {
         $query = "select * from " . $db_prefix . "offices where officename = '" . $get_office . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
+        $result = mysqli_query($db,$query);
+        while ($row = mysqli_fetch_array($result)) {
             $getoffice = "" . $row['officename'] . "";
         }
-        mysql_free_result($result);
+        mysqli_free_result($result);
     }
     if (!isset($getoffice)) {
         echo "Office is not defined for this user. Go back and associate this user with an office.\n";
@@ -158,11 +158,11 @@ if ($request == 'GET') {
 
     if (!empty($get_office)) {
         $query = "select * from " . $db_prefix . "offices where officename = '" . $get_office . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
+        $result = mysqli_query($db,$query);
+        while ($row = mysqli_fetch_array($result)) {
             $getoffice = "" . $row['officename'] . "";
         }
-        mysql_free_result($result);
+        mysqli_free_result($result);
     }
     if (!isset($getoffice)) {
         echo "Office is not defined for this user. Go back and associate this user with an office.\n";
@@ -229,11 +229,11 @@ if ($request == 'GET') {
 
     if (!empty($post_username)) {
         $query = "select * from " . $db_prefix . "employees where empfullname = '" . $post_username . "'";
-        $result = mysql_query($query);
-        while ($row = mysql_fetch_array($result)) {
+        $result = mysqli_query($db,$query);
+        while ($row = mysqli_fetch_array($result)) {
             $username = "" . $row['empfullname'] . "";
         }
-        mysql_free_result($result);
+        mysqli_free_result($result);
         if (!isset($username)) {
             echo "username is not defined for this user.\n";
             exit;
@@ -292,7 +292,7 @@ if ($request == 'GET') {
         $post_username = addslashes($post_username);
 
         $query = "update " . $db_prefix . "employees set employee_passwd = ('" . $new_password . "') where empfullname = ('" . $post_username . "')";
-        $result = mysql_query($query);
+        $result = mysqli_query($db,$query);
 
         $post_username = stripslashes($post_username);
 

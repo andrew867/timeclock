@@ -18,93 +18,105 @@ function unmake_id($id) {
 
 
 ////////////////////////////////////////
-function lookup_employee($empfullname) {
+function lookup_employee($db,$db_prefix,$empfullname) {
     // Return valid empfullname or null
-    global $db_prefix;
+    //global $db_prefix;
     $name = null;
-    $q_empfullname = mysql_real_escape_string($empfullname);
-    $result = mysql_query("SELECT empfullname FROM {$db_prefix}employees WHERE empfullname = '$q_empfullname'");
-    if (!$result || mysql_num_rows($result) == 0) {
+    $q_empfullname = mysqli_real_escape_string($db,$empfullname);
+    $result = mysqli_query($db,"SELECT empfullname FROM {$db_prefix}employees WHERE empfullname = '$q_empfullname'");
+    if (!$result || mysqli_num_rows($result) == 0) {
         // Check if displayname was entered.
-        $q_empfullname = mysql_real_escape_string(strtolower($empfullname));
-        $result = mysql_query("SELECT empfullname FROM {$db_prefix}employees WHERE lower(displayname) = '$q_empfullname'")
-        or trigger_error('lookup_employee: no result: ' . mysql_error(), E_USER_WARNING);
+        $q_empfullname = mysqli_real_escape_string($db,strtolower($empfullname));
+        $result = mysqli_query($db,"SELECT empfullname FROM {$db_prefix}employees WHERE lower(displayname) = '$q_empfullname'")
+        or trigger_error('lookup_employee: no result: ' . mysqli_error(), E_USER_WARNING);
     }
-    if ($result && mysql_num_rows($result) == 1) {
-        $name = mysql_result($result, 0, 0);
+    if ($result && mysqli_num_rows($result) == 1) {
+        $name = mysqli_fetch_assoc($result);
     }
     if ($result)
-        mysql_free_result($result);
+        mysqli_free_result($result);
 
     return $name;
 }
 
 ////////////////////////////////////////
-function get_employee_name($empfullname) {
+function get_employee_name($db,$db_prefix,$empfullname) {
     global $db_prefix;
-    $q_empfullname = mysql_real_escape_string($empfullname);
-    $result = mysql_query("SELECT displayname FROM {$db_prefix}employees WHERE empfullname = '$q_empfullname'");
+    $q_empfullname = mysqli_real_escape_string($db,$empfullname);
+    $result = mysqli_query($db,"SELECT displayname FROM {$db_prefix}employees WHERE empfullname = '$q_empfullname'");
     if (!$result) {
-        trigger_error('get_employee_name: no result: ' . mysql_error(), E_USER_WARNING);
+        trigger_error('get_employee_name: no result: ' . mysqli_error(), E_USER_WARNING);
 
         return false;
     }
-    $name = mysql_result($result, 0, 0);
-    mysql_free_result($result);
+    $name = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
 
     return $name;
 }
 
 ////////////////////////////////////////
-function get_employee_password($empfullname) {
-    global $db_prefix;
-    $q_empfullname = mysql_real_escape_string($empfullname);
-    $result = mysql_query("SELECT employee_passwd FROM {$db_prefix}employees WHERE empfullname = '$q_empfullname'");
+function get_employee_password($db,$db_prefix,$empfullname) {
+    global $db_prefix ,$q_empfullname;
+    if(is_array($empfullname))
+    {
+      $q_empfullname = mysqli_real_escape_string($db,$empfullname['empfullname']);
+
+    }
+      else{
+        $q_empfullname = mysqli_real_escape_string($db,$empfullname);
+
+      }
+    $result = mysqli_query($db,"SELECT employee_passwd FROM {$db_prefix}employees WHERE empfullname = '$q_empfullname'");
     if (!$result) {
-        trigger_error('get_employee_password: no result: ' . mysql_error(), E_USER_WARNING);
+        trigger_error('get_employee_password: no result: ' . mysqli_error(), E_USER_WARNING);
 
         return false;
     }
-    $password = mysql_result($result, 0, 0);
-    mysql_free_result($result);
+    $password = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
 
     return $password;
 }
 
 ////////////////////////////////////////
-function is_valid_password($empfullname, $password) {
+function is_valid_password($db,$db_prefix,$empfullname, $password) {
     global $use_passwd;
-    $employee_passwd = get_employee_password($empfullname);
+    $use_passwd=$password;
+
+    $employee_passwd = get_employee_password($db,$db_prefix,$empfullname);
     if ($use_passwd) {
-        $password = crypt($password, 'xy');
+
+        $use_passwd = crypt($use_passwd, 'xy');
+        //print_r($employee_passwd);
     }
 
-    return ($password == $employee_passwd);
+    return ($use_passwd == $employee_passwd["employee_passwd"]);
 }
 
 ////////////////////////////////////////
-function save_employee_password($empfullname, $new_password) {
+function save_employee_password($db,$db_prefix,$empfullname, $new_password) {
     global $db_prefix;
     $password = crypt($new_password, 'xy');
-    $q_empfullname = mysql_real_escape_string($empfullname);
-    $q_password = mysql_real_escape_string($password);
-    $result = mysql_query("UPDATE {$db_prefix}employees SET employee_passwd = '$q_password' WHERE empfullname = '$q_empfullname'");
+    $q_empfullname = mysqli_real_escape_string($db,$empfullname);
+    $q_password = mysqli_real_escape_string($db,$password);
+    $result = mysqli_query($db,"UPDATE {$db_prefix}employees SET employee_passwd = '$q_password' WHERE empfullname = '$q_empfullname'");
     if (!$result) {
-        trigger_error('save_employee_password: cannot save new password: ' . mysql_error(), E_USER_WARNING);
+        trigger_error('save_employee_password: cannot save new password: ' . mysqli_error(), E_USER_WARNING);
 
         return false;
     }
-    mysql_free_result($result);
+    mysqli_free_result($result);
 
     return true;
 }
 
 ////////////////////////////////////////
-function get_employee_status($empfullname) {
+function get_employee_status($db,$db_prefix,$empfullname) {
     // Get employee's current punch-in/out status and time.
     // Return array of in/out(1/0), punch code, timestamp, and notes.
-    global $db_prefix;
-    $q_empfullname = mysql_real_escape_string($empfullname);
+    //global $db_prefix;
+    $q_empfullname = mysqli_real_escape_string($db,$empfullname);
     $query = <<<End_Of_SQL
 select {$db_prefix}employees.*, {$db_prefix}info.*, {$db_prefix}punchlist.*
   from {$db_prefix}employees
@@ -114,14 +126,14 @@ select {$db_prefix}employees.*, {$db_prefix}info.*, {$db_prefix}punchlist.*
  where {$db_prefix}employees.disabled <> '1'
    and employees.empfullname = '$q_empfullname'
 End_Of_SQL;
-    $result = mysql_query($query);
+    $result = mysqli_query($db,$query);
     if (!$result) {
-        trigger_error('get_employee_status: no result: ' . mysql_error(), E_USER_WARNING);
+        trigger_error('get_employee_status: no result: ' . mysqli_error(), E_USER_WARNING);
 
         return false;
     }
-    $row = mysql_fetch_assoc($result);
-    mysql_free_result($result);
+    $row = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
 
     return array($row['in_or_out'], $row['color'], $row['inout'], $row['timestamp'], $row['notes']);
 }
@@ -230,7 +242,7 @@ function day_timestamp($local_timestamp = null) {
 function make_timestamp($date_str) {
     // Make local timestamp from date string of mm/dd/yyyy or dd/mm/yyyy.
     global $calendar_style;
-    $arr = preg_split('/\W/', $date_str);
+    $arr = preg_explode('/\W/', $date_str);
     $ts = $calendar_style == "euro" ? mktime(0, 0, 0, $arr[1], $arr[0], $arr[2]) : mktime(0, 0, 0, $arr[0], $arr[1], $arr[2]);
 
     return $ts;
@@ -312,7 +324,8 @@ function turn_off_magic_quotes() {
         remove_magic_quotes($_REQUEST);
         ini_set('magic_quotes_gpc', 0);
     }
-    set_magic_quotes_runtime(0);
+    //removed deprecated function
+    //set_magic_quotes_runtime(0);
 }
 
 function remove_magic_quotes(&$array) {
