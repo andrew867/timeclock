@@ -151,7 +151,8 @@ if (($_GET['rpt'] == 'timerpt') && (isset($_GET['display_ip'])) && (isset($_GET[
 
                 // display the query results //
 
-                $display_stamp = $display_stamp + @$tzo;
+                $display_stamp = $display_stamp + isset($tzo);
+
                 $time = date($timefmt, $display_stamp);
                 $date = date($datefmt, $display_stamp);
 

@@ -32,7 +32,8 @@ if (!$empfullname)
 
 // Lookup valid employee
 if ($empfullname) {
-    $empfullname = lookup_employee($empfullname);
+    $empfullname = lookup_employee($db,$db_prefix,$empfullname);
+if(is_array($empfullname)){$empfullname=$empfullname['empfullname'];}
     if (!$empfullname) {
         $error_msg .= "Name was not recognized. Please re-enter your name.\n";
         unset($_SESSION['authenticated']);
@@ -41,6 +42,7 @@ if ($empfullname) {
 
 // Authorize employee
 $authorized = $empfullname && isset($_SESSION['authenticated']) ? ($_SESSION['authenticated'] == $empfullname) : false;
+//echo "hello";print_r($empfullname);exit;
 if (!$authorized)
     $authorized = ($empfullname && isset($_SESSION['valid_user'])) ? true : false; // check if administrator
 if (!$authorized)
@@ -82,7 +84,7 @@ End_Of_HTML;
 
 include 'header.php';
 
-print timecard_html($empfullname, $local_timestamp_in_week);
+print timecard_html($db,$db_prefix,$empfullname, $local_timestamp_in_week);
 
 print <<<End_Of_HTML
 

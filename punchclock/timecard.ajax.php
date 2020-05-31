@@ -54,7 +54,7 @@ print <<<End_Of_HTML
 End_Of_HTML;
 
 // Print timecard.
-print timecard_html($empfullname, $local_timestamp_in_week);
+print timecard_html($db,$db_prefix,$empfullname, $local_timestamp_in_week);
 
 print "<a id=\"printer_friendly\" href=\"timecard.php?emp=$empfullname&t=$local_timestamp_in_week\" target=\"_blank\">Printer Friendly</a>";
 ?>

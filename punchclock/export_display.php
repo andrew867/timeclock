@@ -31,7 +31,7 @@ where timestamp between $begin_utm_timestamp and $end_utm_timestamp
 End_Of_SQL;
 
 $result = mysqli_query($db,$query)
-or trigger_error("export_display: Cannot select employees. " . mysql_error(), E_USER_WARNING);
+or trigger_error("export_display: Cannot select employees. " . mysqli_error(), E_USER_WARNING);
 
 // Scan employee timecards between given dates and record computed hours.
 setup_record_hours();
@@ -48,8 +48,8 @@ while ($row = mysqli_fetch_array($result)) {
         $end = min(($begin + $one_week), $end_local_timestamp);
 
         // Walk each timecard and insert records into temporary database table t_computed_hours.
-        $tc = new Timecard($empfullname, $begin, $end);
-        list($timecard_row_count, $total_hours, $overtime_hours) = $tc->walk(null, record_hours, null);
+        $tc = new Timecard($db,$db_prefix,$empfullname, $begin, $end);
+        list($timecard_row_count, $total_hours, $overtime_hours) = $tc->walk($db,$db_prefix,null, record_hours, null);
 
         $begin = $end;
     }
@@ -84,7 +84,7 @@ select coalesce(sum(hours),0) as sum_hours $cols
 End_Of_SQL;
 
 $result = mysqli_query($db,$query)
-or trigger_error("export_display: Cannot select hours. " . mysql_error(), E_USER_WARNING);
+or trigger_error("export_display: Cannot select hours. " . mysqli_error(), E_USER_WARNING);
 
 // Print export page header.
 $begin_date = date('l F j, Y', $begin_local_timestamp);
@@ -256,7 +256,7 @@ create temporary table t_computed_hours (
 End_Of_SQL;
     mysqli_query($db,"DROP TABLE IF EXISTS t_computed_hours");
     mysqli_query($db,$sql)
-    or trigger_error("export_display: Cannot create temporary table t_computed_hours. " . mysql_error(), E_USER_WARNING);
+    or trigger_error("export_display: Cannot create temporary table t_computed_hours. " . mysqli_error(), E_USER_WARNING);
 }
 
 function record_hours($tc) {
@@ -301,7 +301,7 @@ insert into t_computed_hours (hours,reg_ot,`inout`,color,hours_date,empfullname,
 values ($hours,'$reg_ot','$q_inout','$q_color','$date','$q_employee','$q_name','$q_group','$q_office')
 End_Of_SQL;
             mysqli_query($db,$sql)
-            or trigger_error("export_display: Cannot insert regular hours into temp table. " . mysql_error(), E_USER_WARNING);
+            or trigger_error("export_display: Cannot insert regular hours into temp table. " . mysqli_error(), E_USER_WARNING);
         }
 
         if (round($overtime, 3) > 0) {
@@ -319,7 +319,7 @@ insert into t_computed_hours (hours,reg_ot,`inout`,color,hours_date,empfullname,
 values ($overtime,'$reg_ot','$q_inout','$q_color','$date','$q_employee','$q_name','$q_group','$q_office')
 End_Of_SQL;
             mysqli_query($db,$sql)
-            or trigger_error("export_display: Cannot insert overtime hours into temp table. " . mysql_error(), E_USER_WARNING);
+            or trigger_error("export_display: Cannot insert overtime hours into temp table. " . mysqli_error(), E_USER_WARNING);
         }
     }
 }

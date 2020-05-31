@@ -33,7 +33,7 @@ function select_options($arg, $val = null) {
         return _select_options_arr($arg, $lookup);
     $html = ''; // initialize return string
     $db = isset($GLOBALS['db']) ? $GLOBALS['db'] : null;
-    $result = mysqli_query($db,$arg, $db);
+    $result = mysqli_query($db,$arg);
     while ($row = mysqli_fetch_row($result)) {
         if (count($row) < 2)
             $row[1] = $row[0];

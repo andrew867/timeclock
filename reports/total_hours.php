@@ -123,12 +123,12 @@ if ($request == 'GET') {
     if (strtolower($ip_logging) == "yes") {
         if ($show_details == 'yes') {
             echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_show_details' value='1'
-                      checked onFocus=\"javascript:form.tmp_display_ip[0].disabled=false;form.tmp_display_ip[1].disabled=false;\">&nbsp;Yes&nbsp;<input 
+                      checked onFocus=\"javascript:form.tmp_display_ip[0].disabled=false;form.tmp_display_ip[1].disabled=false;\">&nbsp;Yes&nbsp;<input
                       type='radio' name='tmp_show_details' value='0' onFocus=\"javascript:form.tmp_display_ip[0].disabled=true;
                       form.tmp_display_ip[1].disabled=true;\">&nbsp;No</td></tr>\n";
         } else {
             echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_show_details' value='1'
-                      onFocus=\"javascript:form.tmp_display_ip[0].disabled=false;form.tmp_display_ip[1].disabled=false;\">&nbsp;Yes&nbsp;<input 
+                      onFocus=\"javascript:form.tmp_display_ip[0].disabled=false;form.tmp_display_ip[1].disabled=false;\">&nbsp;Yes&nbsp;<input
                       type='radio' name='tmp_show_details' value='0' checked onFocus=\"javascript:form.tmp_display_ip[0].disabled=true;
                       form.tmp_display_ip[1].disabled=true;\">&nbsp;No</td></tr>\n";
         }
@@ -642,12 +642,12 @@ if ($request == 'GET') {
         if (strtolower($ip_logging) == "yes") {
             if ($tmp_show_details == '1') {
                 echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_show_details' value='1'
-                      checked onFocus=\"javascript:form.tmp_display_ip[0].disabled=false;form.tmp_display_ip[1].disabled=false;\">&nbsp;Yes&nbsp;<input 
+                      checked onFocus=\"javascript:form.tmp_display_ip[0].disabled=false;form.tmp_display_ip[1].disabled=false;\">&nbsp;Yes&nbsp;<input
                       type='radio' name='tmp_show_details' value='0' onFocus=\"javascript:form.tmp_display_ip[0].disabled=true;
                       form.tmp_display_ip[1].disabled=true;\">&nbsp;No</td></tr>\n";
             } else {
                 echo "              <tr><td class=table_rows align=left nowrap style='padding-left:15px;'><input type='radio' name='tmp_show_details' value='1'
-                      onFocus=\"javascript:form.tmp_display_ip[0].disabled=false;form.tmp_display_ip[1].disabled=false;\">&nbsp;Yes&nbsp;<input 
+                      onFocus=\"javascript:form.tmp_display_ip[0].disabled=false;form.tmp_display_ip[1].disabled=false;\">&nbsp;Yes&nbsp;<input
                       type='radio' name='tmp_show_details' value='0' checked onFocus=\"javascript:form.tmp_display_ip[0].disabled=true;
                       form.tmp_display_ip[1].disabled=true;\">&nbsp;No</td></tr>\n";
             }
@@ -742,21 +742,21 @@ if ($request == 'GET') {
 
     if (!empty($from_date)) {
         $from_date = "$from_month/$from_day/$from_year";
-        $from_timestamp = strtotime($from_date . " " . $report_start_time) - $tzo;
+        $from_timestamp = strtotime($from_date . " " . $report_start_time) - isset($tzo);
         $from_date = $_POST['from_date'];
     }
 
     if (!empty($to_date)) {
         $to_date = "$to_month/$to_day/$to_year";
-        $to_timestamp = strtotime($to_date . " " . $report_end_time) - $tzo + 60;
+        $to_timestamp = strtotime($to_date . " " . $report_end_time) - isset($tzo) + 60;
         $to_date = $_POST['to_date'];
     }
 
-    //if (!empty($from_date)) {$from_timestamp = strtotime($from_date . " " . $report_start_time) - $tzo;}
-    //if (!empty($from_date)) {$to_timestamp = strtotime($to_date . " " . $report_end_time) - $tzo + 60;}
+    //if (!empty($from_date)) {$from_timestamp = strtotime($from_date . " " . $report_start_time) - isset($tzo);}
+    //if (!empty($from_date)) {$to_timestamp = strtotime($to_date . " " . $report_end_time) - isset($tzo) + 60;}
 
-    //if (!empty($from_date)) {$from_timestamp = strtotime($from_date) - @$tzo;}
-    //if (!empty($to_date)) {$to_timestamp = strtotime($to_date) + 86400 - @$tzo;}
+    //if (!empty($from_date)) {$from_timestamp = strtotime($from_date) - @isset($tzo);}
+    //if (!empty($to_date)) {$to_timestamp = strtotime($to_date) + 86400 - @isset($tzo);}
 
     /*
     $time = time();
@@ -771,7 +771,7 @@ if ($request == 'GET') {
 
     $rpt_stamp = time();
 
-    $rpt_stamp = $rpt_stamp + @$tzo;
+    $rpt_stamp = $rpt_stamp + @isset($tzo);
     $rpt_time = date($timefmt, $rpt_stamp);
     $rpt_date = date($datefmt, $rpt_stamp);
 
@@ -798,11 +798,7 @@ if ($request == 'GET') {
           $rpt_name</td></tr>\n";
     echo "  <tr><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'>Date Range: $from_date - $to_date</td></tr>\n";
     if (!empty($tmp_csv)) {
-        echo "               <tr class=notprint><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'><a style='color:#27408b;font-size:9px;
-                         text-decoration:underline;'
-                         href=\"get_csv.php?rpt=hrs_wkd&display_ip=$tmp_display_ip&csv=$tmp_csv&office=$office_name&group=$group_name&fullname=$fullname
-&from=$from_timestamp&to=$to_timestamp&tzo=$tzo&paginate=$tmp_paginate&round=$tmp_round_time&details=$tmp_show_details&rpt_run_on=$rpt_stamp
-&rpt_date=$rpt_date&from_date=$from_date\">Download CSV File</a></td></tr>\n";
+        echo "<tr class=notprint><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'><a style='color:#27408b;font-size:9px;text-decoration:underline;'href=get_csv.php?rpt=timerpt&display_ip=".$tmp_display_ip."&csv=".$tmp_csv."&office=".$office_name."&group=".$group_name."&fullname=".$fullname."&from=".$from_timestamp."&to=".$to_timestamp."&tzo=".isset($tzo).">Download CSV File</a></td></tr>\n";
     }
     echo "</table>\n";
     echo "<table width=80% align=center class=misc_items border=0 cellpadding=3 cellspacing=0>\n";
@@ -952,7 +948,7 @@ if ($request == 'GET') {
 
                 $info_fullname[] = stripslashes("" . $row['fullname'] . "");
                 $info_inout[] = "" . $row['inout'] . "";
-                $info_timestamp[] = "" . $row['timestamp'] . "" + $tzo;
+                $info_timestamp[] = "" . $row['timestamp'] . "" + isset($tzo);
                 $info_notes[] = "" . $row['notes'] . "";
                 $info_ipaddress[] = "" . $row['ipaddress'] . "";
                 $punchlist_in_or_out[] = "" . $row['in_or_out'] . "";
@@ -1058,7 +1054,7 @@ if ($request == 'GET') {
                         } else {
                             $punch_cnt++;
                             if ($y == $info_cnt - 1) {
-                                if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp + $tzo)) && ($x_info_date[$y] == $rpt_date)) {
+                                if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp + isset($tzo))) && ($x_info_date[$y] == $rpt_date)) {
                                     if ($status == "in") {
                                         $secs = $secs + ($rpt_stamp - $info_timestamp[$y]) + ($info_timestamp[$y] - $in_time);
                                     } elseif ($status == "out") {
@@ -1067,9 +1063,9 @@ if ($request == 'GET') {
                                     $currently_punched_in = '1';
                                 } elseif (($info_timestamp[$y] <= $rpt_stamp) && ($x_info_date[$y] == $rpt_date)) {
                                     if ($status == "in") {
-                                        $secs = $secs + (($to_timestamp + $tzo) - $info_timestamp[$y]) + ($info_timestamp[$y] - $in_time);
+                                        $secs = $secs + (($to_timestamp + isset($tzo)) - $info_timestamp[$y]) + ($info_timestamp[$y] - $in_time);
                                     } elseif ($status == "out") {
-                                        $secs = $secs + (($to_timestamp + $tzo) - $info_timestamp[$y]);
+                                        $secs = $secs + (($to_timestamp + isset($tzo)) - $info_timestamp[$y]);
                                     }
                                     $currently_punched_in = '1';
                                 } else {
@@ -1338,11 +1334,11 @@ if ($request == 'GET') {
                             }
                         } else {
                             if ($y == $info_cnt - 1) {
-                                if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp + $tzo)) && ($x_info_date[$y] == $rpt_date)) {
+                                if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp + isset($tzo))) && ($x_info_date[$y] == $rpt_date)) {
                                     $secs = $secs + ($rpt_stamp - $info_timestamp[$y]);
                                     $currently_punched_in = '1';
                                 } elseif (($info_timestamp[$y] <= $rpt_stamp) && ($x_info_date[$y] == $rpt_date)) {
-                                    $secs = $secs + (($to_timestamp + $tzo) - $info_timestamp[$y]);
+                                    $secs = $secs + (($to_timestamp + isset($tzo)) - $info_timestamp[$y]);
                                     $currently_punched_in = '1';
                                 } else {
                                     $secs = $secs + (($info_end_time[$y] + 1) - $info_timestamp[$y]);
@@ -1442,7 +1438,7 @@ if ($request == 'GET') {
                         $out = 1;
                         $status = "out";
                         if ($info_date[$y] == $from_date) {
-                            $secs = $info_timestamp[$y] - $from_timestamp - $tzo;
+                            $secs = $info_timestamp[$y] - $from_timestamp - isset($tzo);
                         } else {
                             $secs = $info_timestamp[$y] - $info_start_time[$y];
                         }
@@ -1526,11 +1522,11 @@ if ($request == 'GET') {
                         $in_time = $info_timestamp[$y];
                         $previous_days_end_time = $info_end_time[$y] + 1;
                         if ($y == $info_cnt - 1) {
-                            if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp + $tzo)) && ($x_info_date[$y] == $rpt_date)) {
+                            if (($info_timestamp[$y] <= $rpt_stamp) && ($rpt_stamp < ($to_timestamp + isset($tzo))) && ($x_info_date[$y] == $rpt_date)) {
                                 $secs = $secs + ($rpt_stamp - $info_timestamp[$y]);
                                 $currently_punched_in = '1';
                             } elseif (($info_timestamp[$y] <= $rpt_stamp) && ($x_info_date[$y] == $rpt_date)) {
-                                $secs = $secs + (($to_timestamp + $tzo) - $info_timestamp[$y]);
+                                $secs = $secs + (($to_timestamp + isset($tzo)) - $info_timestamp[$y]);
                                 $currently_punched_in = '1';
                             } else {
                                 $secs = $secs + (($info_end_time[$y] + 1) - $info_timestamp[$y]);

@@ -8,18 +8,18 @@ require_once 'lib.common.php';
 require_once 'class.Timecard.php';
 
 ////////////////////////////////////////
-function current_week_hours($empfullname) {
+function current_week_hours($db,$db_prefix,$empfullname) {
     global $one_week;
     $begin_local_timestamp = work_week_begin();
     $end_local_timestamp = $begin_local_timestamp + $one_week;
-    $tc = new Timecard($empfullname, $begin_local_timestamp, $end_local_timestamp);
-    list($row_count, $total_hours, $overtime_hours, $today_hours) = $tc->tally();
+    $tc = new Timecard($db,$db_prefix,$empfullname, $begin_local_timestamp, $end_local_timestamp);
+    list($row_count, $total_hours, $overtime_hours, $today_hours) = $tc->tally($db,$db_prefix);
 
     return array($today_hours, $total_hours, $overtime_hours);
 }
 
 ////////////////////////////////////////
-function timecard_html($empfullname, $local_timestamp_in_week) {
+function timecard_html($db,$db_prefix,$empfullname, $local_timestamp_in_week) {
     // Return html of employee's timecard.
     global $show_display_name, $one_week;
 
@@ -149,7 +149,7 @@ End_Of_HTML;
     // End of helper function definitions.
 
     // Print timecard page header.
-    $h_name_header = htmlentities(($show_display_name == 'yes' ? get_employee_name($empfullname) : $empfullname));
+    $h_name_header = htmlentities(($show_display_name == 'yes' ? get_employee_name($db,$db_prefix,$empfullname) : $empfullname));
     $begin_date = date('l F j, Y', $begin_local_timestamp);
     print <<<End_Of_HTML
 
@@ -160,8 +160,8 @@ End_Of_HTML;
 End_Of_HTML;
 
     // Print timecard.
-    $tc = new Timecard($empfullname, $begin_local_timestamp, $end_local_timestamp);
-    list($row_count, $total_hours, $overtime_hours, $today_hours) = $tc->walk(print_header, print_row, print_footer);
+    $tc = new Timecard($db,$db_prefix,$empfullname, $begin_local_timestamp, $end_local_timestamp);
+    list($row_count, $total_hours, $overtime_hours, $today_hours) = $tc->walk($db,$db_prefix,'print_header', 'print_row', 'print_footer');
     if ($row_count <= 0)
         print error_msg("No records were found.");
 

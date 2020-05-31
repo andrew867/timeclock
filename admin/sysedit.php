@@ -153,11 +153,11 @@ if ($request == 'GET') {
     }
 
     // begin double-checking of some of the settings in config.inc.php //
-    
+
     if (!in_array(@$weather_units, array('c','f'))){
     	$weather_units = 'c';
-    }        
-    
+    }
+
     if ($refresh != "none") {
         $tmp_refresh = intval($refresh);
         if (!empty($tmp_refresh)) {
@@ -338,7 +338,7 @@ if ($request == 'GET') {
     echo "            <table width=100% border=0 cellpadding=0 cellspacing=0>\n";
     echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>Edit System Settings</th></tr>\n";
     echo "              <tr><td colspan=3 class=table_rows width=10% align=left style='padding-left:4px;'>Listed below are the
-                      settings that have been chosen within config.inc.php, the config file for PHP Timeclock. Edit as you see fit. Then 
+                      settings that have been chosen within config.inc.php, the config file for PHP Timeclock. Edit as you see fit. Then
                       click the \"Next\" button near the bottom of the page to continue.</td></tr>\n";
     echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td>
                   <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td>
@@ -346,28 +346,28 @@ if ($request == 'GET') {
     echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>MySql DB Settings</th></tr>\n";
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_hostname:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_hostname</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your
                       mysql server, default is <b>localhost</b>.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_hostname\" value=\"$db_hostname\">\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_name:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_name</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysql 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysql
                       database you created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_name\" value=\"$db_name\">\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_username:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_username</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql username you 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql username you
                       created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_username\" value=\"$db_username\">\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_password:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>********</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql password for 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql password for
                       the username you created during the install.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"db_password\" value=\"$db_password\">\n";
     $row_count++;
@@ -383,7 +383,7 @@ if ($request == 'GET') {
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>dbversion:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$dbversion</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the versioning number of 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the versioning number of
                       the current database for PHP Timeclock.</td></tr>\n";
     echo "              <input type=\"hidden\" name=\"dbversion\" value=\"$dbversion\">\n";
     $row_count = '0';
@@ -403,7 +403,7 @@ if ($request == 'GET') {
         echo "              <input type=\"hidden\" name=\"use_passwd\" value=\"2\">\n";
     }
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This provides the option
-                      for the users to input their password when individually punching in/out of the timeclock. Default 
+                      for the users to input their password when individually punching in/out of the timeclock. Default
                       is \"<b>no</b>\".</td></tr>\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -460,8 +460,8 @@ if ($request == 'GET') {
     }
     echo "                  </td>\n";
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>These are the networks or ip
-                      addresses you wish to allow to connect to PHP Timeclock. This will currently only work for ipv4 addresses, ipv6 may be supported 
-                      in a future release. If <b>restrict_ips</b> is set to \"<b>no</b>\", this option is ignored. To add more than 5 networks, you 
+                      addresses you wish to allow to connect to PHP Timeclock. This will currently only work for ipv4 addresses, ipv6 may be supported
+                      in a future release. If <b>restrict_ips</b> is set to \"<b>no</b>\", this option is ignored. To add more than 5 networks, you
                       will need to add them manually in config.inc.php.<p>
                       <b><u>examples that will work</u></b>:<br>10.0.0.4<br>192.168.1.[11-20]<br>192.168.1.0/24<br>192.0.0.0/8<br><br>
                       <b><u>examples that will NOT work</u></b>:<br>10.1.1.15[0-9]<br>10.1.1.1 - 10.1.1.254<br>10.1.1.</p><br></td></tr>\n";
@@ -507,22 +507,22 @@ if ($request == 'GET') {
     if ($tmp_datefmt == "d.m.yyyy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"1\" checked />&nbsp;d.m.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"3\" />&nbsp;d-m-yyyy</td></tr>\n";
     } elseif ($tmp_datefmt == "d/m/yyyy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"1\" />&nbsp;d.m.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" checked />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" checked />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color'
                       class=table_rows width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"3\" />&nbsp;d-m-yyyy</td></tr>\n";
     } elseif ($tmp_datefmt == "d-m-yyyy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"1\" />&nbsp;d.m.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"3\" checked />&nbsp;d-m-yyyy</td></tr>\n";
     } else {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"1\" />&nbsp;d.m.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"3\" />&nbsp;d-m-yyyy</td></tr>\n";
     }
     $row_count++;
@@ -530,22 +530,22 @@ if ($request == 'GET') {
     if ($tmp_datefmt == "d.m.yy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"4\" checked />&nbsp;d.m.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"6\" />&nbsp;d-m-yy</td></tr>\n";
     } elseif ($tmp_datefmt == "d/m/yy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"4\" />&nbsp;d.m.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" checked />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" checked />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"6\" />&nbsp;d-m-yy</td></tr>\n";
     } elseif ($tmp_datefmt == "d-m-yy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"4\" />&nbsp;d.m.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"6\" checked />&nbsp;d-m-yy</td></tr>\n";
     } else {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"4\" />&nbsp;d.m.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"6\" />&nbsp;d-m-yy</td></tr>\n";
     }
     $row_count++;
@@ -553,22 +553,22 @@ if ($request == 'GET') {
     if ($tmp_datefmt == "m.d.yyyy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"7\" checked />&nbsp;m.d.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"9\" />&nbsp;m-d-yyyy</td></tr>\n";
     } elseif ($tmp_datefmt == "m/d/yyyy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"7\" />&nbsp;m.d.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" checked />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" checked />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"9\" />&nbsp;m-d-yyyy</td></tr>\n";
     } elseif ($tmp_datefmt == "m-d-yyyy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"7\" />&nbsp;m.d.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"9\" checked />&nbsp;m-d-yyyy</td></tr>\n";
     } else {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"7\" />&nbsp;m.d.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"9\"  />&nbsp;m-d-yyyy</td></tr>\n";
     }
     $row_count++;
@@ -576,22 +576,22 @@ if ($request == 'GET') {
     if ($tmp_datefmt == "m.d.yy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"10\" checked />&nbsp;m.d.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"12\" />&nbsp;m-d-yy</td></tr>";
     } elseif ($tmp_datefmt == "m/d/yy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=15% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"10\" />&nbsp;m.d.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=15% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" checked />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" checked />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=70% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"12\" />&nbsp;m-d-yy</td></tr>";
     } elseif ($tmp_datefmt == "m-d-yy") {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"10\" />&nbsp;m.d.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"12\" checked />&nbsp;m-d-yy</td></tr>";
     } else {
         echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"10\" />&nbsp;m.d.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"12\" />&nbsp;m-d-yy</td></tr>";
     }
     if (($tmp_datefmt != "d.m.yyyy") && ($tmp_datefmt != "d/m/yyyy") && ($tmp_datefmt != "d-m-yyyy") && ($tmp_datefmt != "d.m.yy") &&
@@ -626,22 +626,22 @@ if ($request == 'GET') {
     $row_color = ($row_count % 2) ? $color2 : $color1;
     if ($timefmt == "g:i A") {
         echo "              <tr><td colspan=3 bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"timefmt\"
-                      value=\"3\" checked />12 hour format with uppercase am/pm indicator, including a space between the minutes and 
+                      value=\"3\" checked />12 hour format with uppercase am/pm indicator, including a space between the minutes and
                       meridiems</td></tr>\n";
     } else {
         echo "              <tr><td colspan=3 bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"timefmt\"
-                      value=\"3\" />12 hour format with uppercase am/pm indicator, including a space between the minutes and 
+                      value=\"3\" />12 hour format with uppercase am/pm indicator, including a space between the minutes and
                       meridiems</td></tr>\n";
     }
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     if ($timefmt == "g:i a") {
         echo "              <tr><td colspan=3 bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"timefmt\"
-                      value=\"4\" checked />12 hour format with lowercase am/pm indicator, including a space between the minutes and 
+                      value=\"4\" checked />12 hour format with lowercase am/pm indicator, including a space between the minutes and
                       meridiems</td></tr>\n";
     } else {
         echo "              <tr><td colspan=3 bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"timefmt\"
-                      value=\"4\" />12 hour format with lowercase am/pm indicator, including a space between the minutes and 
+                      value=\"4\" />12 hour format with lowercase am/pm indicator, including a space between the minutes and
                       meridiems</td></tr>\n";
     }
     $row_count++;
@@ -679,17 +679,17 @@ if ($request == 'GET') {
     echo "              <tr><td width=100% colspan=3><table width=100% border=0 cellpadding=0 cellspacing=0>\n";
     if ($round_time == '1') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"1\" checked />&nbsp;To the nearest 5 minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"1\" checked />&nbsp;To the nearest 5 minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"4\" />&nbsp;To the nearest 20 minutes (1/3rd of an hour)</td></tr>\n";
     } elseif ($round_time == '4') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"1\" />&nbsp;To the nearest minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"1\" />&nbsp;To the nearest minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"4\" checked/>&nbsp;To the nearest 20 minutes (1/3rd of an hour)</td></tr>\n";
     } else {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"1\" />&nbsp;To the nearest 5 minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"1\" />&nbsp;To the nearest 5 minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"4\" />&nbsp;To the nearest 20 minutes (1/3rd of an hour)</td></tr>\n";
     }
@@ -697,17 +697,17 @@ if ($request == 'GET') {
     $row_color = ($row_count % 2) ? $color2 : $color1;
     if ($round_time == '2') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"2\" checked />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"2\" checked />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"5\" />&nbsp;To the nearest 30 minutes (1/2 of an hour)</td></tr>\n";
     } elseif ($round_time == '5') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"2\" />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"2\" />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"5\" checked/>&nbsp;To the nearest 30 minutes (1/2 of an hour)</td></tr>\n";
     } else {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"2\" />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"2\" />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"5\" />&nbsp;To the nearest 30 minutes (1/2 of an hour)</td></tr>\n";
     }
@@ -715,17 +715,17 @@ if ($request == 'GET') {
     $row_color = ($row_count % 2) ? $color2 : $color1;
     if ($round_time == '3') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"3\" checked />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"3\" checked />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"0\" />&nbsp;Do not round.</td></tr>\n";
     } elseif (empty($round_time)) {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"3\" />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"3\" />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"0\" checked />&nbsp;Do not round.</td></tr>\n";
     } else {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"3\" />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"3\" />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"0\" />&nbsp;Do not round.</td></tr>\n";
     }
@@ -753,7 +753,7 @@ if ($request == 'GET') {
         echo "              <input type=\"hidden\" name=\"paginate\" value=\"2\">\n";
     }
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Choose whether to paginate
-                      the Hours Worked report or not. Setting this option to \"yes\" will print each user's time on their own separate page. 
+                      the Hours Worked report or not. Setting this option to \"yes\" will print each user's time on their own separate page.
                       Default is \"<b>yes</b>\".</td></tr>\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -778,7 +778,7 @@ if ($request == 'GET') {
                       name=\"report_start_time\" value=\"$report_start_time\" /></td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>These two variables,
                       report_start_time and report_end_time, are designed to work with the Hours Worked report. They are there to provide a starting
-                      time to go along with the starting date, and an ending time to go along with the ending date for the dates specified when the 
+                      time to go along with the starting date, and an ending time to go along with the ending date for the dates specified when the
                       report is run. Default is \"<b>00:00</b>\" (12:00am). 12 hour and 24 hour formats are supported.
                  </td></tr>\n";
     $row_count++;
@@ -786,7 +786,7 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>report_end_time:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"8\"
                       name=\"report_end_time\" value=\"$report_end_time\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Default is \"<b>23:59</b>\" 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Default is \"<b>23:59</b>\"
                       (11:59pm). 12 hour and 24 hour formats are supported.
                  </td></tr>\n";
     $row_count++;
@@ -804,9 +804,9 @@ if ($request == 'GET') {
         echo "              <input type=\"hidden\" name=\"username_dropdown_only\" value=\"2\">\n";
     }
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Setting this variable to
-                      \"yes\" will display a single dropdown box containing usernames to choose from when running the reports. Setting this 
-                      variable to \"no\" will instead display a triple dropdown box containing offices, groups, and usernames to choose from when running 
-                      the reports. A single dropdown box works well if there are just a few usernames in the system, and a triple dropdown 
+                      \"yes\" will display a single dropdown box containing usernames to choose from when running the reports. Setting this
+                      variable to \"no\" will instead display a triple dropdown box containing offices, groups, and usernames to choose from when running
+                      the reports. A single dropdown box works well if there are just a few usernames in the system, and a triple dropdown
                       works well if multiple offices and/or groups are in the system. Default is \"<b>no</b>\".</td></tr>\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -841,7 +841,7 @@ if ($request == 'GET') {
     }
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Choose whether to include
                       in the reports the ip addresses of the systems that connect to sign-in/out into PHP Timeclock or not. This option
-                      is useful for auditing purposes. The <b>ip_logging</b> option must be set to \"<b>yes</b>\" in order for this option to 
+                      is useful for auditing purposes. The <b>ip_logging</b> option must be set to \"<b>yes</b>\" in order for this option to
                       work as expected. Default is \"<b>yes</b>\".</td></tr>\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -876,7 +876,7 @@ if ($request == 'GET') {
         echo "              <input type=\"hidden\" name=\"use_client_tz\" value=\"2\">\n";
     }
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Setting this option to
-                      \"yes\" will display the punch-in/out times according to the timezone of the connecting computer, providing javascript is 
+                      \"yes\" will display the punch-in/out times according to the timezone of the connecting computer, providing javascript is
                       enabled in the user's browser. Default is \"<b>no</b>\".
                  </td></tr>\n";
     $row_count++;
@@ -894,10 +894,10 @@ if ($request == 'GET') {
         echo "              <input type=\"hidden\" name=\"use_server_tz\" value=\"2\">\n";
     }
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Setting this option to
-                        \"no\" AND setting 'use_client_tz' to \"no\" will display the punch-in/out times according to your php.ini's date.timezone setting.  
-                        If using PHP 5.1+ then choose \"no\" and set date.timezone in your php.ini file. 
-                        Leaving date.timezone unset may cause PHP to choose the wrong timezone. 
-                        Otherwise setting this option to \"yes\" will display the punch-in/out times according to the timezone of the web server through date(\"Z\"). 
+                        \"no\" AND setting 'use_client_tz' to \"no\" will display the punch-in/out times according to your php.ini's date.timezone setting.
+                        If using PHP 5.1+ then choose \"no\" and set date.timezone in your php.ini file.
+                        Leaving date.timezone unset may cause PHP to choose the wrong timezone.
+                        Otherwise setting this option to \"yes\" will display the punch-in/out times according to the timezone of the web server through date(\"Z\").
                         Default is \"<b>no</b>\".
                  </td></tr>\n";
     $row_count = '0';
@@ -907,7 +907,7 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>color1:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"7\"
                       name=\"color1\" value=\"$color1\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>When times are displayed 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>When times are displayed
                       anywhere within PHP Timeclock, they are displayed with these two alternating row colors. Default is \"<b>#EFEFEF</b>\".
                  </td></tr>\n";
     $row_count++;
@@ -915,7 +915,7 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>color2:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"7\"
                       name=\"color2\" value=\"$color2\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% alitn=left style='padding-left:10px;' valign=top>Default is 
+                  <td bgcolor='$row_color' class=table_rows width=80% alitn=left style='padding-left:10px;' valign=top>Default is
                       \"<b>#FBFBFB</b>\".</td></tr>\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -988,9 +988,9 @@ if ($request == 'GET') {
         echo "                      </select></td>\n";
     }
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Display only a certain
-                      group on the main page of the application, instead of a particular office, or all the users. If \"all\" is chosen for the 
-                      office, then you can choose any group in the list. This is there for if you have 2 or more groups with the same name, but with 
-                      each having a different parent office. In this case, if you wanted to display all members of the groups with the same name, you 
+                      group on the main page of the application, instead of a particular office, or all the users. If \"all\" is chosen for the
+                      office, then you can choose any group in the list. This is there for if you have 2 or more groups with the same name, but with
+                      each having a different parent office. In this case, if you wanted to display all members of the groups with the same name, you
                       could do this without having to choose an office. Default is \"<b>all</b>\".</td></tr>\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -1046,12 +1046,12 @@ if ($request == 'GET') {
                  </td></tr>\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
-    echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>weather_units:</td>\n";    
+    echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>weather_units:</td>\n";
     echo "                  <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>";
     echo	"							<select name=\"weather_units\">\n";
     echo "						 		<option value=\"c\" " . ($weather_units == "c" ? "selected" : "") . ">Celsius</option>\n";
-    echo "						 		<option value=\"f\" " . ($weather_units == "f" ? "selected" : "") . ">Fahrenheit</option>\n";    
-    echo "							</select>";    
+    echo "						 		<option value=\"f\" " . ($weather_units == "f" ? "selected" : "") . ">Fahrenheit</option>\n";
+    echo "							</select>";
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Display weather in US or metric measurements.
     Options are Fahrenheit or Celsius. Default is Celsius\".
              		</td></tr>\n";
@@ -1060,12 +1060,12 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>metar:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"4\"
                       name=\"metar\" value=\"$metar\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the ICAO (International 
-                      Civil Aviation Organization) for your local airport. This is the unique four letter international ID for the airport. METAR 
-                      reports are created at roughly 4500 airports from around the world, so you probably live near one of them. The airports make a 
-                      report once or twice an hour, and these reports are stored at the National Weather Service and are publically available via HTTP 
-                      or FTP. Visit <a href='https://pilotweb.nas.faa.gov/qryhtml/icao/' class=admin_headings style='text-decoration:underline;'> 
-                      https://pilotweb.nas.faa.gov/qryhtml/icao/</a> to find a corresponding ICAO near you. If 'display_weather' is set 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the ICAO (International
+                      Civil Aviation Organization) for your local airport. This is the unique four letter international ID for the airport. METAR
+                      reports are created at roughly 4500 airports from around the world, so you probably live near one of them. The airports make a
+                      report once or twice an hour, and these reports are stored at the National Weather Service and are publically available via HTTP
+                      or FTP. Visit <a href='https://pilotweb.nas.faa.gov/qryhtml/icao/' class=admin_headings style='text-decoration:underline;'>
+                      https://pilotweb.nas.faa.gov/qryhtml/icao/</a> to find a corresponding ICAO near you. If 'display_weather' is set
                       to \"no\", this option is ignored. If 'display_weather' is set to \"yes\", you must provide an ICAO here.
                  </td></tr>\n";
     $row_count++;
@@ -1074,8 +1074,8 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>city:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"30\" maxlength=\"100\"
                       name=\"city\" value=\"$city\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the city and state (or 
-                      can be city and country, or really can be anything you want) of the airport for the ICAO used above. If 'display_weather' is set 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the city and state (or
+                      can be city and country, or really can be anything you want) of the airport for the ICAO used above. If 'display_weather' is set
                       to \"no\", this option is ignored.
                  </td></tr>\n";
     $row_count++;
@@ -1083,7 +1083,7 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>links:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>\n";
     if ($links == "none") {
-        $links = "0";
+        $links = array();
     }
     for ($x = 0; $x < count($links); $x++) {
         $links[$x] = htmlentities($links[$x]);
@@ -1100,8 +1100,8 @@ if ($request == 'GET') {
     }
     echo "                  </td>\n";
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>These are links to
-                      websites, other web-based applications, etc., that you wish to display in the topleft of the application just below the 
-                      logo. To display these links accordingly, use the 'display_links' option in conjunction with this option. To add more than 10 
+                      websites, other web-based applications, etc., that you wish to display in the topleft of the application just below the
+                      logo. To display these links accordingly, use the 'display_links' option in conjunction with this option. To add more than 10
                       links, you will need to add them manually in config.inc.php. Leave all 10 blanks empty to ignore this option.
                  </td></tr>\n";
     $row_count++;
@@ -1110,7 +1110,7 @@ if ($request == 'GET') {
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>\n";
 
     if ($display_links == "none") {
-        $display_links = "0";
+        $display_links = array();
     }
     for ($x = 0; $x < count($display_links); $x++) {
         $display_links[$x] = htmlentities($display_links[$x]);
@@ -1127,8 +1127,8 @@ if ($request == 'GET') {
     }
     echo "                  </td>\n";
     echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>These are the display names
-                      for the links chosen above, meaning these are the items that are actually displayed in PHP Timeclock. The number of 
-                      display_links MUST equal the number of links you have chosen above, in order for this option to work as expected. To add more 
+                      for the links chosen above, meaning these are the items that are actually displayed in PHP Timeclock. The number of
+                      display_links MUST equal the number of links you have chosen above, in order for this option to work as expected. To add more
                       than 10 links, you will need to add them manually in config.inc.php. Leave all 10 blanks empty to ignore this option.
                  </td></tr>\n";
     $row_count++;
@@ -1137,7 +1137,7 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>logo:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"30\" maxlength=\"200\"
                       name=\"logo\" value=\"$logo\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is a logo or graphic 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is a logo or graphic
                       displayed in the top left of each page. Set it to \"none\" to ignore this option.
                  </td></tr>\n";
     $row_count++;
@@ -1145,8 +1145,8 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>refresh:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"10\"
                       name=\"refresh\" value=\"$refresh\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the refresh rate (in 
-                      seconds) for the application. If PHP Timeclock is kept open, it will refresh this number of seconds to display the most current 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the refresh rate (in
+                      seconds) for the application. If PHP Timeclock is kept open, it will refresh this number of seconds to display the most current
                       information. Set it to \"none\" to ignore this option. Default is <b>300</b>.
                  </td></tr>\n";
     $row_count = '0';
@@ -1156,7 +1156,7 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>email:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"32\" maxlength=\"100\"
                       name=\"email\" value=\"$email\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is an email address to 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is an email address to
                       display in the footer. Set it to \"none\" to ignore this option.
                  </td></tr>\n";
     $row_count++;
@@ -1165,8 +1165,8 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>date_link:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"32\" maxlength=\"100\"
                       name=\"date_link\" value=\"$date_link\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>If your users click on the 
-                      displayed date in the top right of the application, they will be taken to this website. Set it to \"none\" to ignore this option. 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>If your users click on the
+                      displayed date in the top right of the application, they will be taken to this website. Set it to \"none\" to ignore this option.
                       Default is 'This Day in History', <b>http://www.historychannel.com/tdih</b>.
                  </td></tr>\n";
     $row_count++;
@@ -1175,7 +1175,7 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>app_name:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"25\" maxlength=\"100\"
                       name=\"app_name\" value=\"$app_name\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the first half of the 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the first half of the
                       'title' shown below.
                   </td></tr>\n";
     $row_count++;
@@ -1184,15 +1184,15 @@ if ($request == 'GET') {
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>app_version:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"25\" maxlength=\"100\"
                       name=\"app_version\" value=\"$app_version\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the second half of the 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the second half of the
                       'title' shown below.
                   </td></tr>\n";
     $row_count++;
     $row_color = ($row_count % 2) ? $color2 : $color1;
     echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>title:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$title</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the title in the header. 
-                      This is what is displayed in the title bar of your web browser, and it is what the page will be named by default when you make a 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the title in the header.
+                      This is what is displayed in the title bar of your web browser, and it is what the page will be named by default when you make a
                       \"favorite\" or \"bookmark\" in your web browser.
                   </td></tr>\n";
     echo "          </table>\n";
@@ -1202,7 +1202,7 @@ if ($request == 'GET') {
     echo "            <table width=100% border=0 cellpadding=0 cellspacing=0>\n";
     echo "              <tr><td height=40>&nbsp;</td></tr>\n";
     echo "              <tr><td width=62 valign=middle><input type='image' name='submit' value='Add Time' align='middle'
-                      src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png' 
+                      src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png'
                       border='0'></td></tr></table></form></td></tr>\n";
     include '../footer.php';
     exit;
@@ -1275,8 +1275,8 @@ if ($request == 'GET') {
     $post_group_name = $_POST['group_name'];
     $post_display_current_users = $_POST['display_current_users'];
     $post_display_weather = $_POST['display_weather'];
-    $post_weather_units = $_POST['weather_units'];    
-    
+    $post_weather_units = $_POST['weather_units'];
+
     $post_show_display_name = $_POST['show_display_name'];
     $post_display_office_name = $_POST['display_office_name'];
     $post_display_group_name = $_POST['display_group_name'];
@@ -1555,7 +1555,7 @@ if ($request == 'GET') {
     } elseif ((!preg_match('/' . "^([[:alnum:]]|_|\.|-)+@([[:alnum:]]|\.|-)+(\.)([a-z]{2,4})$" . '/i', $post_email)) && ($post_email != "none")) {
         echo "            <table align=center class=table_border width=100% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr><td width=20 align=center height=25 class=table_rows><img src='../images/icons/cancel.png' /></td>
-                  <td class=table_rows_red height=25>Only alphanumeric characters, underscores, periods, and hyphens are allowed when creating an Email 
+                  <td class=table_rows_red height=25>Only alphanumeric characters, underscores, periods, and hyphens are allowed when creating an Email
                       Address.</td></tr>\n";
         echo "            </table>\n";
         $evil_post = "1";
@@ -1699,7 +1699,7 @@ if ($request == 'GET') {
         echo "            <table width=100% border=0 cellpadding=0 cellspacing=0>\n";
         echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>Edit System Settings</th></tr>\n";
         echo "              <tr><td colspan=3 class=table_rows width=10% align=left style='padding-left:4px;'>Listed below are the
-                      settings that have been chosen within config.inc.php, the config file for PHP Timeclock. Edit as you see fit. Then 
+                      settings that have been chosen within config.inc.php, the config file for PHP Timeclock. Edit as you see fit. Then
                       click the \"Next\" button near the bottom of the page to continue.</td></tr>\n";
         echo "              <tr><td height=40 class=table_rows width=10% align=left style='padding-left:4px;color:#27408b;'><b><u>VARIABLE</u></b></td>
                   <td class=table_rows width=10% align=left style='color:#27408b;'><b><u>VALUE</u></b></td>
@@ -1707,28 +1707,28 @@ if ($request == 'GET') {
         echo "              <tr><th colspan=3 class=table_heading_no_color nowrap align=left>MySql DB Settings</th></tr>\n";
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_hostname:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_hostname</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the hostname for your
                       mysql server, default is <b>localhost</b>.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_hostname\" value=\"$post_db_hostname\">\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_name:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_name</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysql 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the name of the mysql
                       database you created during the install.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_name\" value=\"$post_db_name\">\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_username:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$db_username</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql username you 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql username you
                       created during the install.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_username\" value=\"$post_db_username\">\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>db_password:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>********</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql password for 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the mysql password for
                       the username you created during the install.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"db_password\" value=\"$post_db_password\">\n";
         $row_count++;
@@ -1744,7 +1744,7 @@ if ($request == 'GET') {
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>dbversion:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$dbversion</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the versioning number of 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the versioning number of
                       the current database for PHP Timeclock.</td></tr>\n";
         echo "              <input type=\"hidden\" name=\"dbversion\" value=\"$post_dbversion\">\n";
         $row_count = '0';
@@ -1764,7 +1764,7 @@ if ($request == 'GET') {
             echo "              <input type=\"hidden\" name=\"use_passwd\" value=\"2\">\n";
         }
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This provides the option
-                      for the users to input their password when individually punching in/out of the timeclock. Default 
+                      for the users to input their password when individually punching in/out of the timeclock. Default
                       is \"<b>no</b>\".</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -1814,8 +1814,8 @@ if ($request == 'GET') {
         }
         echo "                  </td>\n";
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>These are the networks or ip
-                      addresses you wish to allow to connect to PHP Timeclock. This will currently only work for ipv4 addresses, ipv6 may be supported 
-                      in a future release. If <b>restrict_ips</b> is set to \"<b>no</b>\", this option is ignored. To add more than 5 networks, you 
+                      addresses you wish to allow to connect to PHP Timeclock. This will currently only work for ipv4 addresses, ipv6 may be supported
+                      in a future release. If <b>restrict_ips</b> is set to \"<b>no</b>\", this option is ignored. To add more than 5 networks, you
                       will need to add them manually in config.inc.php.<p>
                       <b><u>examples that will work</u></b>:<br>10.0.0.4<br>192.168.1.[11-20]<br>192.168.1.0/24<br>192.0.0.0/8<br><br>
                       <b><u>examples that will NOT work</u></b>:<br>10.1.1.15[0-9]<br>10.1.1.1 - 10.1.1.254<br>10.1.1.</p><br></td></tr>\n";
@@ -1864,22 +1864,22 @@ if ($request == 'GET') {
         if ($post_tmp_datefmt == "1") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"1\" checked />&nbsp;d.m.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"3\" />&nbsp;d-m-yyyy</td></tr>\n";
         } elseif ($post_tmp_datefmt == "2") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"1\" />&nbsp;d.m.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" checked />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" checked />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color'
                       class=table_rows width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"3\" />&nbsp;d-m-yyyy</td></tr>\n";
         } elseif ($post_tmp_datefmt == "3") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"1\" />&nbsp;d.m.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"3\" checked />&nbsp;d-m-yyyy</td></tr>\n";
         } else {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"1\" />&nbsp;d.m.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"2\" />&nbsp;d/m/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"3\" />&nbsp;d-m-yyyy</td></tr>\n";
         }
         $row_count++;
@@ -1887,22 +1887,22 @@ if ($request == 'GET') {
         if ($post_tmp_datefmt == "4") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"4\" checked />&nbsp;d.m.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"6\" />&nbsp;d-m-yy</td></tr>\n";
         } elseif ($post_tmp_datefmt == "5") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"4\" />&nbsp;d.m.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" checked />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" checked />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"6\" />&nbsp;d-m-yy</td></tr>\n";
         } elseif ($post_tmp_datefmt == "6") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"4\" />&nbsp;d.m.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"6\" checked />&nbsp;d-m-yy</td></tr>\n";
         } else {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"4\" />&nbsp;d.m.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"5\" />&nbsp;d/m/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"6\" />&nbsp;d-m-yy</td></tr>\n";
         }
         $row_count++;
@@ -1910,22 +1910,22 @@ if ($request == 'GET') {
         if ($post_tmp_datefmt == "7") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"7\" checked />&nbsp;m.d.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"9\" />&nbsp;m-d-yyyy</td></tr>\n";
         } elseif ($post_tmp_datefmt == "8") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"7\" />&nbsp;m.d.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" checked />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" checked />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=80% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"9\" />&nbsp;m-d-yyyy</td></tr>\n";
         } elseif ($post_tmp_datefmt == "9") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"7\" />&nbsp;m.d.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"9\" checked />&nbsp;m-d-yyyy</td></tr>\n";
         } else {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"7\" />&nbsp;m.d.yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"8\" />&nbsp;m/d/yyyy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"9\"  />&nbsp;m-d-yyyy</td></tr>\n";
         }
         $row_count++;
@@ -1933,22 +1933,22 @@ if ($request == 'GET') {
         if ($post_tmp_datefmt == "10") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"10\" checked />&nbsp;m.d.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"12\" />&nbsp;m-d-yy</td></tr>";
         } elseif ($post_tmp_datefmt == "11") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=15% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"10\" />&nbsp;m.d.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=15% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" checked />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" checked />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows
                       width=70% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"12\" />&nbsp;m-d-yy</td></tr>";
         } elseif ($post_tmp_datefmt == "12") {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"10\" />&nbsp;m.d.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"12\" checked />&nbsp;m-d-yy</td></tr>";
         } else {
             echo "              <tr><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\"
                       value=\"10\" />&nbsp;m.d.yy</td><td nowrap bgcolor='$row_color' class=table_rows width=10% align=left valign=top>
-                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80% 
+                      <input type=\"radio\" name=\"tmp_datefmt\" value=\"11\" />&nbsp;m/d/yy</td><td nowrap bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top><input type=\"radio\" name=\"tmp_datefmt\" value=\"12\" />&nbsp;m-d-yy</td></tr>";
         }
         if (($post_tmp_datefmt != "1") && ($post_tmp_datefmt != "2") && ($post_tmp_datefmt != "3") && ($post_tmp_datefmt != "4") &&
@@ -1983,22 +1983,22 @@ if ($request == 'GET') {
         $row_color = ($row_count % 2) ? $color2 : $color1;
         if ($post_timefmt == "3") {
             echo "              <tr><td colspan=3 bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"timefmt\"
-                      value=\"3\" checked />12 hour format with uppercase am/pm indicator, including a space between the minutes and 
+                      value=\"3\" checked />12 hour format with uppercase am/pm indicator, including a space between the minutes and
                       meridiems</td></tr>\n";
         } else {
             echo "              <tr><td colspan=3 bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"timefmt\"
-                      value=\"3\" />12 hour format with uppercase am/pm indicator, including a space between the minutes and 
+                      value=\"3\" />12 hour format with uppercase am/pm indicator, including a space between the minutes and
                       meridiems</td></tr>\n";
         }
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         if ($post_timefmt == "4") {
             echo "              <tr><td colspan=3 bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"timefmt\"
-                      value=\"4\" checked />12 hour format with lowercase am/pm indicator, including a space between the minutes and 
+                      value=\"4\" checked />12 hour format with lowercase am/pm indicator, including a space between the minutes and
                       meridiems</td></tr>\n";
         } else {
             echo "              <tr><td colspan=3 bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"radio\" name=\"timefmt\"
-                      value=\"4\" />12 hour format with lowercase am/pm indicator, including a space between the minutes and 
+                      value=\"4\" />12 hour format with lowercase am/pm indicator, including a space between the minutes and
                       meridiems</td></tr>\n";
         }
         $row_count++;
@@ -2036,17 +2036,17 @@ if ($request == 'GET') {
         echo "              <tr><td width=100% colspan=3><table width=100% border=0 cellpadding=0 cellspacing=0>\n";
         if ($post_round_time == '1') {
             echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"1\" checked />&nbsp;To the nearest 5 minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"1\" checked />&nbsp;To the nearest 5 minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"4\" />&nbsp;To the nearest 20 minutes (1/3rd of an hour)</td></tr>\n";
         } elseif ($post_round_time == '4') {
             echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"1\" />&nbsp;To the nearest 5 minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"1\" />&nbsp;To the nearest 5 minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"4\" checked/>&nbsp;To the nearest 20 minutes (1/3rd of an hour)</td></tr>\n";
         } else {
             echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"1\" />&nbsp;To the nearest 5 minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"1\" />&nbsp;To the nearest 5 minutes (1/12th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"4\" />&nbsp;To the nearest 20 minutes (1/3rd of an hour)</td></tr>\n";
         }
@@ -2054,17 +2054,17 @@ if ($request == 'GET') {
         $row_color = ($row_count % 2) ? $color2 : $color1;
         if ($post_round_time == '2') {
             echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"2\" checked />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"2\" checked />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"5\" />&nbsp;To the nearest 30 minutes (1/2 of an hour)</td></tr>\n";
         } elseif ($post_round_time == '5') {
             echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"2\" />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"2\" />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"5\" checked/>&nbsp;To the nearest 30 minutes (1/2 of an hour)</td></tr>\n";
         } else {
             echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"2\" />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"2\" />&nbsp;To the nearest 10 minutes (1/6th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"5\" />&nbsp;To the nearest 30 minutes (1/2 of an hour)</td></tr>\n";
         }
@@ -2072,17 +2072,17 @@ if ($request == 'GET') {
         $row_color = ($row_count % 2) ? $color2 : $color1;
         if ($post_round_time == '3') {
             echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"3\" checked />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"3\" checked />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"0\" />&nbsp;Do not round.</td></tr>\n";
         } elseif (empty($post_round_time)) {
             echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"3\" />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"3\" />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"0\" checked />&nbsp;Do not round.</td></tr>\n";
         } else {
             echo "              <tr><td bgcolor='$row_color' class=table_rows width=20% align=left valign=top nowrap><input type=\"radio\" name=\"round_time\"
-                      value=\"3\" />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80% 
+                      value=\"3\" />&nbsp;To the nearest 15 minutes (1/4th of an hour)</td><td bgcolor='$row_color' class=table_rows width=80%
                       align=left valign=top>
                       <input type=\"radio\" name=\"round_time\" value=\"0\" />&nbsp;Do not round.</td></tr>\n";
         }
@@ -2112,7 +2112,7 @@ if ($request == 'GET') {
             echo "              <input type=\"hidden\" name=\"paginate\" value=\"2\">\n";
         }
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Choose whether to paginate
-                      the Hours Worked report or not. Setting this option to \"yes\" will print each user's time on their own separate page. 
+                      the Hours Worked report or not. Setting this option to \"yes\" will print each user's time on their own separate page.
                       Default is \"<b>yes</b>\".</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -2137,7 +2137,7 @@ if ($request == 'GET') {
                       name=\"report_start_time\" value=\"$post_report_start_time\" /></td>
                   <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>These two variables,
                       report_start_time and report_end_time, are designed to work with the Hours Worked report. They are there to provide a starting
-                      time to go along with the starting date, and an ending time to go along with the ending date for the dates specified when the 
+                      time to go along with the starting date, and an ending time to go along with the ending date for the dates specified when the
                       report is run. Default is \"<b>00:00</b>\" (12:00am). 12 hour and 24 hour formats are supported.
                  </td></tr>\n";
         $row_count++;
@@ -2145,7 +2145,7 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>report_end_time:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"8\"
                       name=\"report_end_time\" value=\"$post_report_end_time\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Default is \"<b>23:59</b>\" 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Default is \"<b>23:59</b>\"
                       (11:59pm). 12 hour and 24 hour formats are supported.
                  </td></tr>\n";
         $row_count++;
@@ -2163,9 +2163,9 @@ if ($request == 'GET') {
             echo "              <input type=\"hidden\" name=\"username_dropdown_only\" value=\"2\">\n";
         }
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Setting this variable to
-                      \"yes\" will display a single dropdown box containing usernames to choose from when running the reports. Setting this 
-                      variable to \"no\" will instead display a triple dropdown box containing offices, groups, and usernames to choose from when running 
-                      the reports. A single dropdown box works well if there are just a few usernames in the system, and a triple dropdown 
+                      \"yes\" will display a single dropdown box containing usernames to choose from when running the reports. Setting this
+                      variable to \"no\" will instead display a triple dropdown box containing offices, groups, and usernames to choose from when running
+                      the reports. A single dropdown box works well if there are just a few usernames in the system, and a triple dropdown
                       works well if multiple offices and/or groups are in the system. Default is \"<b>no</b>\".</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -2182,7 +2182,7 @@ if ($request == 'GET') {
             echo "              <input type=\"hidden\" name=\"user_or_display\" value=\"2\">\n";
         }
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Choose whether to print
-                      displaynames or usernames for each user when reports are run. Options for this variable are \"user\" and \"display\". 
+                      displaynames or usernames for each user when reports are run. Options for this variable are \"user\" and \"display\".
                       Default is \"<b>user</b>\".</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -2235,7 +2235,7 @@ if ($request == 'GET') {
             echo "              <input type=\"hidden\" name=\"use_client_tz\" value=\"2\">\n";
         }
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Setting this option to
-                      \"yes\" will display the punch-in/out times according to the timezone of the connecting computer, providing javascript is 
+                      \"yes\" will display the punch-in/out times according to the timezone of the connecting computer, providing javascript is
                       enabled in the user's browser. Default is \"<b>no</b>\".</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -2252,7 +2252,7 @@ if ($request == 'GET') {
             echo "              <input type=\"hidden\" name=\"use_server_tz\" value=\"2\">\n";
         }
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Setting this option to
-                      \"yes\" will display the punch-in/out times according to the timezone of the web server. Setting this option to \"no\" AND setting 
+                      \"yes\" will display the punch-in/out times according to the timezone of the web server. Setting this option to \"no\" AND setting
                       'use_client_tz' to \"no\" will display the punch-in/out times in GMT. Default is \"<b>yes</b>\".
                  </td></tr>\n";
         $row_count = '0';
@@ -2262,7 +2262,7 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>color1:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"7\"
                       name=\"color1\" value=\"$post_color1\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>When times are displayed 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>When times are displayed
                       anywhere within PHP Timeclock, they are displayed with these two alternating row colors. Default is \"<b>#EFEFEF</b>\".
                  </td></tr>\n";
         $row_count++;
@@ -2270,7 +2270,7 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>color2:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"7\"
                       name=\"color2\" value=\"$post_color2\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% alitn=left style='padding-left:10px;' valign=top>Default is 
+                  <td bgcolor='$row_color' class=table_rows width=80% alitn=left style='padding-left:10px;' valign=top>Default is
                       \"<b>#FBFBFB</b>\".</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -2341,9 +2341,9 @@ if ($request == 'GET') {
             echo "                      </select></td>\n";
         }
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Display only a certain
-                      group on the main page of the application, instead of a particular office, or all the users. If \"all\" is chosen for the 
-                      office, then you can choose any group in the list. This is there for if you have 2 or more groups with the same name, but with 
-                      each having a different parent office. In this case, if you wanted to display all members of the groups with the same name, you 
+                      group on the main page of the application, instead of a particular office, or all the users. If \"all\" is chosen for the
+                      office, then you can choose any group in the list. This is there for if you have 2 or more groups with the same name, but with
+                      each having a different parent office. In this case, if you wanted to display all members of the groups with the same name, you
                       could do this without having to choose an office. Default is \"<b>all</b>\".</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -2398,12 +2398,12 @@ if ($request == 'GET') {
                  </td></tr>\n";
     	  $row_count++;
     	  $row_color = ($row_count % 2) ? $color2 : $color1;
-   	  echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>weather_units:</td>\n";    
+   	  echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>weather_units:</td>\n";
    	  echo "                  <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>";
     	  echo	"							<select name=\"weather_units\">\n";
    	  echo "						 		<option value=\"c\" " . ($weather_units == "c" ? "selected" : "") . ">Celsius</option>\n";
-    	  echo "						 		<option value=\"f\" " . ($weather_units == "f" ? "selected" : "") . ">Fahrenheit</option>\n";    
-    	  echo "							</select>";    
+    	  echo "						 		<option value=\"f\" " . ($weather_units == "f" ? "selected" : "") . ">Fahrenheit</option>\n";
+    	  echo "							</select>";
    	  echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Display weather in US or metric measurements.
     Options are Fahrenheit or Celsius. Default is Celsius\".
              		</td></tr>\n";
@@ -2412,12 +2412,12 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>metar:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"4\"
                       name=\"metar\" value=\"$post_metar\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the ICAO (International 
-                      Civil Aviation Organization) for your local airport. This is the unique four letter international ID for the airport. METAR 
-                      reports are created at roughly 4500 airports from around the world, so you probably live near one of them. The airports make a 
-                      report once or twice an hour, and these reports are stored at the National Weather Service and are publically available via HTTP 
-                      or FTP. Visit <a href='https://pilotweb.nas.faa.gov/qryhtml/icao/' class=admin_headings style='text-decoration:underline;'> 
-                      https://pilotweb.nas.faa.gov/qryhtml/icao/</a> to find a corresponding ICAO near you. If 'display_weather' is set 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the ICAO (International
+                      Civil Aviation Organization) for your local airport. This is the unique four letter international ID for the airport. METAR
+                      reports are created at roughly 4500 airports from around the world, so you probably live near one of them. The airports make a
+                      report once or twice an hour, and these reports are stored at the National Weather Service and are publically available via HTTP
+                      or FTP. Visit <a href='https://pilotweb.nas.faa.gov/qryhtml/icao/' class=admin_headings style='text-decoration:underline;'>
+                      https://pilotweb.nas.faa.gov/qryhtml/icao/</a> to find a corresponding ICAO near you. If 'display_weather' is set
                       to \"no\", this option is ignored. If 'display_weather' is set to \"yes\", you must provide an ICAO here.
                  </td></tr>\n";
         $row_count++;
@@ -2427,8 +2427,8 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>city:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"30\" maxlength=\"100\"
                       name=\"city\" value=\"$post_city\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the city and state (or 
-                      can be city and country, or really can be anything you want) of the airport for the ICAO used above. If 'display_weather' is set 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is the city and state (or
+                      can be city and country, or really can be anything you want) of the airport for the ICAO used above. If 'display_weather' is set
                       to \"no\", this option is ignored.
                  </td></tr>\n";
         $row_count++;
@@ -2447,8 +2447,8 @@ if ($request == 'GET') {
         }
         echo "                  </td>\n";
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>These are links to
-                      websites, other web-based applications, etc., that you wish to display in the topleft of the application just below the 
-                      logo. To display these links accordingly, use the 'display_links' option in conjunction with this option. To add more than 10 
+                      websites, other web-based applications, etc., that you wish to display in the topleft of the application just below the
+                      logo. To display these links accordingly, use the 'display_links' option in conjunction with this option. To add more than 10
                       links, you will need to add them manually in config.inc.php. Leave all 10 blanks empty to ignore this option.</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -2466,8 +2466,8 @@ if ($request == 'GET') {
         }
         echo "                  </td>\n";
         echo "                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>These are the display names
-                      for the links chosen above, meaning these are the items that are actually displayed in PHP Timeclock. The number of 
-                      display_links MUST equal the number of links you have chosen above, in order for this option to work as expected. To add more 
+                      for the links chosen above, meaning these are the items that are actually displayed in PHP Timeclock. The number of
+                      display_links MUST equal the number of links you have chosen above, in order for this option to work as expected. To add more
                       than 10 links, you will need to add them manually in config.inc.php. Leave all 10 blanks empty to ignore this option.</td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
@@ -2476,7 +2476,7 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>logo:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"30\" maxlength=\"200\"
                       name=\"logo\" value=\"$post_logo\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is a logo or graphic 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is a logo or graphic
                       displayed in the top left of each page. Set it to \"none\" to ignore this option.
                  </td></tr>\n";
         $row_count++;
@@ -2484,8 +2484,8 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>refresh:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"10\" maxlength=\"10\"
                       name=\"refresh\" value=\"$post_refresh\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the refresh rate (in 
-                      seconds) for the application. If PHP Timeclock is kept open, it will refresh this number of seconds to display the most current 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the refresh rate (in
+                      seconds) for the application. If PHP Timeclock is kept open, it will refresh this number of seconds to display the most current
                       information. Set it to \"none\" to ignore this option. Default is <b>300</b>.
                  </td></tr>\n";
         $row_count = '0';
@@ -2495,7 +2495,7 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>email:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"32\" maxlength=\"100\"
                       name=\"email\" value=\"$post_email\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is an email address to 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>This is an email address to
                       display in the footer. Set it to \"none\" to ignore this option.
                  </td></tr>\n";
         $row_count++;
@@ -2505,8 +2505,8 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>date_link:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"32\" maxlength=\"100\"
                       name=\"date_link\" value=\"$post_date_link\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>If your users click on the 
-                      displayed date in the top right of the application, they will be taken to this website. Set it to \"none\" to ignore this option. 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>If your users click on the
+                      displayed date in the top right of the application, they will be taken to this website. Set it to \"none\" to ignore this option.
                       Default is 'This Day in History', <b>http://www.historychannel.com/tdih</b>.
                  </td></tr>\n";
         $row_count++;
@@ -2516,7 +2516,7 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>app_name:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"25\" maxlength=\"100\"
                       name=\"app_name\" value=\"$post_app_name\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the first half of the 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the first half of the
                       'title' shown below.
                   </td></tr>\n";
         $row_count++;
@@ -2526,15 +2526,15 @@ if ($request == 'GET') {
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>app_version:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top><input type=\"text\" size=\"25\" maxlength=\"100\"
                       name=\"app_version\" value=\"$post_app_version\" /></td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the second half of the 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the second half of the
                       'title' shown below.
                   </td></tr>\n";
         $row_count++;
         $row_color = ($row_count % 2) ? $color2 : $color1;
         echo "              <tr><td bgcolor='$row_color' class=table_rows width=10% align=left style='padding-left:4px;' valign=top>title:</td>
                   <td bgcolor='$row_color' class=table_rows width=10% align=left valign=top>$post_app_name $post_app_version</td>
-                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the title in the header. 
-                      This is what is displayed in the title bar of your web browser, and it is what the page will be named by default when you make a 
+                  <td bgcolor='$row_color' class=table_rows width=80% align=left style='padding-left:10px;' valign=top>Sets the title in the header.
+                      This is what is displayed in the title bar of your web browser, and it is what the page will be named by default when you make a
                       \"favorite\" or \"bookmark\" in your web browser.
                   </td></tr>\n";
         echo "          </table>\n";
@@ -2544,7 +2544,7 @@ if ($request == 'GET') {
         echo "            <table width=100% border=0 cellpadding=0 cellspacing=0>\n";
         echo "              <tr><td height=40>&nbsp;</td></tr>\n";
         echo "              <tr><td width=62 valign=middle><input type='image' name='submit' value='Add Time' align='middle'
-                      src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png' 
+                      src='../images/buttons/next_button.png'></td><td><a href='index.php'><img src='../images/buttons/cancel_button.png'
                       border='0'></td></tr></table></form></td></tr>\n";
         include '../footer.php';
         exit;
@@ -2876,10 +2876,10 @@ $restrict_ips = "' . $post_restrict_ips . '";
 $allowed_networks = ' . $post_allowed_networks . '
 
 
-/* Choose "yes" if you want to disable the Edit System Settings page within PHP 
-   Timeclock. This page allows you to make *most* of your changes to the 
-   config.inc.php file through the PHP Timeclock interface instead of editing 
-   the config.inc.php file by hand. Many will view this as a possible security risk  
+/* Choose "yes" if you want to disable the Edit System Settings page within PHP
+   Timeclock. This page allows you to make *most* of your changes to the
+   config.inc.php file through the PHP Timeclock interface instead of editing
+   the config.inc.php file by hand. Many will view this as a possible security risk
    and might would rather disable this functionality. Default is "no". */
 
 $disable_sysedit = "' . $post_disable_sysedit . '";
@@ -2892,7 +2892,7 @@ $disable_sysedit = "' . $post_disable_sysedit . '";
 $use_passwd = "' . $post_use_passwd . '";
 
 
-/* If you only want certain users to have the ability to view and run the reports, 
+/* If you only want certain users to have the ability to view and run the reports,
    change $use_reports_password to "yes". Default is "no"; */
 
 $use_reports_password = "' . $post_use_reports_password . '";
@@ -2914,16 +2914,16 @@ $email = "' . $post_email . '";
 /* --- OPTIONAL CHANGES --- */
 
 
-/* Choose the way dates are displayed. DO NOT EDIT THESE DATE VARIABLES MANUALLY UNLESS YOU 
+/* Choose the way dates are displayed. DO NOT EDIT THESE DATE VARIABLES MANUALLY UNLESS YOU
    KNOW WHAT YOU ARE DOING. Instead, change these date variables via the Edit System Settings
-   page in the Administration section of PHP Timeclock (sysedit.php). $datefmt default is 
-   "n/j/y", $js_datefmt default is "M/d/yy", $tmp_datefmt default is "m/d/yy", and 
-   $calendar_style default is "amer". You will need to choose date formats with matching 
-   numbers, ie: if format number 10 is used for $datefmt, then format number 10 will need to 
-   be used for $js_format and $tmp_format as well. "euro" will need to be chosen for date 
-   format numbers 1-6, and "amer" will need to be chosen for date format numbers 7-12. 
-   Again, if you are confused, i urge you to change these settings via the Edit System 
-   Settings page in the Administration Section. Choosing mismatched options will lead to 
+   page in the Administration section of PHP Timeclock (sysedit.php). $datefmt default is
+   "n/j/y", $js_datefmt default is "M/d/yy", $tmp_datefmt default is "m/d/yy", and
+   $calendar_style default is "amer". You will need to choose date formats with matching
+   numbers, ie: if format number 10 is used for $datefmt, then format number 10 will need to
+   be used for $js_format and $tmp_format as well. "euro" will need to be chosen for date
+   format numbers 1-6, and "amer" will need to be chosen for date format numbers 7-12.
+   Again, if you are confused, i urge you to change these settings via the Edit System
+   Settings page in the Administration Section. Choosing mismatched options will lead to
    much confusion and plenty of headaches later.
 
    Possibilities for these variables are:
@@ -2988,13 +2988,13 @@ $display_office = "' . $post_office_name . '";
 $display_group = "' . $post_group_name . '";
 
 
-/* Display a column on the main page that shows the office each person is affiliated with. 
+/* Display a column on the main page that shows the office each person is affiliated with.
    Default is "no". */
 
 $display_office_name = "' . $post_display_office_name . '";
 
 
-/* Display a column on the main page that shows the group each person is affiliated with. 
+/* Display a column on the main page that shows the group each person is affiliated with.
    Default is "no". */
 
 $display_group_name = "' . $post_display_group_name . '";
@@ -3013,7 +3013,7 @@ $logo = "' . $post_logo . '";
 $refresh = "' . $post_refresh . '";
 
 
-/* This creates a clickable date in the top right of each page. By Default, it links to 
+/* This creates a clickable date in the top right of each page. By Default, it links to
    "This Day in History" on the historychannel.com website. Set it to "none" to ignore this option. */
 
 $date_link = "' . $post_date_link . '";
@@ -3033,7 +3033,7 @@ $color2 = "' . $post_color2 . '";
 $links = ' . $post_links . '
 
 
-/* Insert/change/delete below the display names for the links you inserted above. 
+/* Insert/change/delete below the display names for the links you inserted above.
    If $links is set to "none", this option is ignored. */
 
 $display_links = ' . $post_display_links . '
@@ -3051,7 +3051,7 @@ $display_links = ' . $post_display_links . '
 $paginate = "' . $post_paginate . '";
 
 
-/* Choose whether to show the punch-in/out details for each punch for each user on the 
+/* Choose whether to show the punch-in/out details for each punch for each user on the
    Hours Worked report or not. Default is "yes". */
 
 $show_details = "' . $post_show_details . '";
@@ -3083,11 +3083,11 @@ $report_start_time = "' . $post_report_start_time . '";
 $report_end_time = "' . $post_report_end_time . '";
 
 
-/* Setting this variable to "yes" will display a single dropdown box containing usernames 
-   to choose from when running the reports. Setting this variable to "no" will instead 
-   display a triple dropdown box containing offices, groups, and usernames to choose from 
-   when running the reports. A single dropdown box works well if there are just a few 
-   usernames in the system, and a triple dropdown works well if multiple offices and/or 
+/* Setting this variable to "yes" will display a single dropdown box containing usernames
+   to choose from when running the reports. Setting this variable to "no" will instead
+   display a triple dropdown box containing offices, groups, and usernames to choose from
+   when running the reports. A single dropdown box works well if there are just a few
+   usernames in the system, and a triple dropdown works well if multiple offices and/or
    groups are in the system. Default is "no". */
 
 $username_dropdown_only = "' . $post_username_dropdown_only . '";
@@ -3099,8 +3099,8 @@ $username_dropdown_only = "' . $post_username_dropdown_only . '";
 $user_or_display = "' . $post_user_or_display . '";
 
 
-/* Choose whether to include in the reports the ip addresses of the systems that connect to 
-   sign-in/out into PHP Timeclock or not. This option is useful for auditing purposes. The 
+/* Choose whether to include in the reports the ip addresses of the systems that connect to
+   sign-in/out into PHP Timeclock or not. This option is useful for auditing purposes. The
    ip_logging option must be set to "yes" in order for this option to work as expected.
    Default is "yes". */
 

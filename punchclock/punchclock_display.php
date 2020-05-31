@@ -28,7 +28,7 @@ select {$db_prefix}employees.*, {$db_prefix}info.*, {$db_prefix}punchlist.*
 End_Of_SQL;
 
 $result = mysqli_query($db,$query)
-or trigger_error("punchclock_display: Cannot select employees. " . mysql_error(), E_USER_WARNING);
+or trigger_error("punchclock_display: Cannot select employees. " . mysqli_error(), E_USER_WARNING);
 
 $row_count = 0;
 while ($row = mysqli_fetch_array($result)) {

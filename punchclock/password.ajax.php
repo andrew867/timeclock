@@ -33,10 +33,10 @@ if (!$empfullname)
 if (!$empfullname)
     die(error_msg("Unrecognized employee.")); // no employee specified
 
-$h_empfullname = htmlentities($empfullname);
-$u_empfullname = rawurlencode($empfullname);
+$h_empfullname = htmlentities($empfullname['empfullname']);
+$u_empfullname = rawurlencode($empfullname['empfullname']);
 
-$displayname = get_employee_name($empfullname);
+$displayname = get_employee_name($db,$db_prefix,$empfullname);
 $h_displayname = htmlentities($displayname);
 
 $name_header = $show_display_name == 'yes' ? $h_displayname : $h_empfullname;
@@ -45,17 +45,17 @@ $name_header = $show_display_name == 'yes' ? $h_displayname : $h_empfullname;
 if ($old_password) {
 
     // Validate password
-    if (is_valid_password($empfullname, $old_password)) {
+    if (is_valid_password($db,$db_prefix,$empfullname, $old_password)) {
 
         // Check if new password is same as confirm password entry
         if ($new_password === $confirm_password) {
 
             // Save password.
-            if (save_employee_password($empfullname, $new_password)) {
+            if (save_employee_password($db,$db_prefix,$empfullname, $new_password)) {
                 $_SESSION['authenticated'] = $empfullname;
                 exit_next("entry.ajax.php?emp=$u_empfullname");
             } else {
-                print error_msg("Cannot save your new password. " . mysql_error());
+                print error_msg("Cannot save your new password. " . mysqli_error());
             }
         } else {
             print error_msg("Your new password and the confirm password do not match.<br/>Please re-enter and confirm your new password.");

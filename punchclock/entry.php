@@ -38,17 +38,18 @@ if (!$empfullname)
 
 // Lookup valid employee
 if ($empfullname) {
-    $empfullname = lookup_employee($empfullname);
+    $empfullname = lookup_employee($db,$db_prefix,$empfullname);
     if (!$empfullname) {
         $error_msg .= "Name was not recognized. Please re-enter your name.\n";
         unset($_SESSION['authenticated']);
     }
 }
-
+if(is_array($empfullname)){$empfullname=$empfullname['empfullname'];}
 if ($empfullname) {
+  //print_r($empfullname);exit;
     $u_empfullname = rawurlencode($empfullname);
     $h_empfullname = htmlentities($empfullname);
-    $h_name_header = $show_display_name == 'yes' ? htmlentities(get_employee_name($empfullname)) : $h_empfullname;
+    $h_name_header = $show_display_name == 'yes' ? htmlentities(get_employee_name($db,$db_prefix,$empfullname)) : $h_empfullname;
 }
 
 // Authorize employee
@@ -77,8 +78,9 @@ if ($authorized && isset($_POST['inout'])) {
 
     // Validate and get inout display color.
     $query = "select color from " . $db_prefix . "punchlist where punchitems = '$q_inout'";
-    $punchlist_result = mysqli_query($db,$query);
-    $inout_color = mysql_result($punchlist_result, 0, 0);
+    $punchlist_result = mysqli_fetch_assoc(mysqli_query($db,$query));
+    //print_r($punchlist_result);
+    $inout_color = $punchlist_result['color'];
     if (!$inout_color) {
         #print error_msg("In/Out Status is not in the database.");
         trigger_error('In/Out Status is not in the database.', E_USER_WARNING);
@@ -103,9 +105,9 @@ End_Of_SQL;
 
     if (mysqli_query($db,$insert_query)) {
         mysqli_query($db,$update_query)
-        or trigger_error('entry: cannot update tstamp in employee record. ' . mysql_error(), E_USER_WARNING);
+        or trigger_error('entry: cannot update tstamp in employee record. ' . mysqli_error(), E_USER_WARNING);
     } else {
-        trigger_error('entry: cannot insert timestamp into info record. ' . mysql_error(), E_USER_WARNING);
+        trigger_error('entry: cannot insert timestamp into info record. ' . mysqli_error(), E_USER_WARNING);
     }
 
     # Uncomment next to display success message. The entry status display also shows last punch-in/out.
@@ -122,7 +124,7 @@ $PAGE_TITLE = "My Time Entry - $title";
 if ($entry_display_timecard == 'yes') {
 
     // Summarize employee hours for the current week.
-    list ($today_hours, $week_hours, $overtime_hours) = current_week_hours($empfullname);
+    list ($today_hours, $week_hours, $overtime_hours) = current_week_hours($db,$db_prefix,$empfullname);
     if ($timecard_display_hours_minutes == 'yes') {
         $today_hours = hrs_min($today_hours) . " hrs:min";
         $week_hours = hrs_min($week_hours) . " hrs:min";

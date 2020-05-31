@@ -30,10 +30,10 @@ if (!$empfullname)
 if (!$empfullname)
     die(error_msg("Unrecognized employee.")); // no employee specified
 
-$h_empfullname = htmlentities($empfullname);
-$u_empfullname = rawurlencode($empfullname);
+$h_empfullname = htmlentities($empfullname['empfullname']);
+$u_empfullname = rawurlencode($empfullname['empfullname']);
 
-$h_name_header = $show_display_name == 'yes' ? htmlentities(get_employee_name($empfullname)) : $h_empfullname;
+$h_name_header = $show_display_name == 'yes' ? htmlentities(get_employee_name($db,$db_prefix,$empfullname)) : $h_empfullname;
 
 // Authentication and authorization flags.
 $authenticated = isset($_SESSION['authenticated']) ? ($_SESSION['authenticated'] == $empfullname) : false;
@@ -85,9 +85,9 @@ End_Of_SQL;
 
     if (mysqli_query($db,$insert_query)) {
         mysqli_query($db,$update_query)
-        or trigger_error('punchclock: cannot update tstamp in employee record. ' . mysql_error(), E_USER_WARNING);
+        or trigger_error('punchclock: cannot update tstamp in employee record. ' . mysqli_error(), E_USER_WARNING);
     } else {
-        trigger_error('punchclock: cannot insert timestamp into info record. ' . mysql_error(), E_USER_WARNING);
+        trigger_error('punchclock: cannot insert timestamp into info record. ' . mysqli_error(), E_USER_WARNING);
     }
 
     // Update display line on punchclock list and close form.
@@ -132,7 +132,7 @@ if ($use_passwd == 'yes') {
     if ((!$authenticated || !$authorized_to_enter_time) && $password) {
 
         // Validate password
-        if (is_valid_password($empfullname, $password)) {
+        if (is_valid_password($db,$db_prefix,$empfullname, $password)) {
             $_SESSION['authenticated'] = $empfullname;
             $_SESSION['authorized_to_enter_time'] = $empfullname;
             $_SESSION['authorized_to_post_time'] = $empfullname;
@@ -198,7 +198,7 @@ if (isset($_SESSION['authorized_to_enter_time']))
 if ($punchclock_display_timecard == 'yes') {
 
     // Summarize employee hours for the current week.
-    list ($today_hours, $week_hours, $overtime_hours) = current_week_hours($empfullname);
+    list ($today_hours, $week_hours, $overtime_hours) = current_week_hours($db,$db_prefix,$empfullname);
     if ($timecard_display_hours_minutes == 'yes') {
         $today_hours = hrs_min($today_hours) . " hrs:min";
         $week_hours = hrs_min($week_hours) . " hrs:min";

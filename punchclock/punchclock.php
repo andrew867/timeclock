@@ -15,7 +15,7 @@ require_once 'lib.common.php';
 require_once 'lib.select.php';
 turn_off_magic_quotes();
 
-# Uncomment next to force logout and always run punchclock without privileges 
+# Uncomment next to force logout and always run punchclock without privileges
 #session_stop();
 
 session_start();
@@ -35,7 +35,7 @@ if (isset($_REQUEST['office'])) {
     $display_office = $office ? $office : 'all'; // override config option
     $PAGE_TITLE = "Punchclock - $h_office - $title"; // browser window title
 }
-
+$group="";
 if (isset($_REQUEST['group'])) {
     $group = $_REQUEST['group'];
     $h_group = htmlentities($group);
@@ -63,7 +63,7 @@ if ($punchclock_select_groups == "yes") {
           . " where {$db_prefix}offices.officename = '$q_office'"
           . " order by groupname"
         : "SELECT groupname FROM {$db_prefix}groups ORDER BY groupname";
-    $select_options = select_options($sql, $group);
+    $select_options = select_options($sql,$group);
     $select_groups = <<<End_Of_HTML
 <select id="select_groups" onchange="location.href='?office=$u_office&amp;group='+encodeURIComponent(this.value)">
 <option value="">-- All Groups --</option>

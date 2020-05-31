@@ -556,9 +556,7 @@ if ($request == 'GET') {
                       style='font-size:9px;color:#000000;'>$rpt_name</td></tr>\n";
     echo "               <tr><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'>Date Range: $from_date - $to_date</td></tr>\n";
     if (!empty($tmp_csv)) {
-        echo "               <tr class=notprint><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'><a style='color:#27408b;font-size:9px;
-                         text-decoration:underline;' 
-                         href=\"get_csv.php?rpt=timerpt&display_ip=$tmp_display_ip&csv=$tmp_csv&office=$office_name&group=$group_name&fullname=$fullname&from=$from_timestamp&to=$to_timestamp&tzo=$tzo\">Download CSV File</a></td></tr>\n";
+        echo "<tr class=notprint><td width=80%></td><td nowrap style='font-size:9px;color:#000000;'><a style='color:#27408b;font-size:9px;text-decoration:underline;'href=get_csv.php?rpt=timerpt&display_ip=".$tmp_display_ip."&csv=".$tmp_csv."&office=".$office_name."&group=".$group_name."&fullname=".$fullname."&from=".$from_timestamp."&to=".$to_timestamp."&tzo=".isset($tzo).">Download CSV File</a></td></tr>\n";
     }
     echo "            </table>\n";
 
