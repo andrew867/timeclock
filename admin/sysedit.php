@@ -153,7 +153,11 @@ if ($request == 'GET') {
     }
 
     // begin double-checking of some of the settings in config.inc.php //
-
+    
+    if (!in_array(@$weather_units, array('c','f'))){
+    	$weather_units = 'c';
+    }        
+    
     if (!in_array(@$weather_units, array('c','f'))){
     	$weather_units = 'c';
     }

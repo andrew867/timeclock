@@ -104,7 +104,7 @@ function get_metar($db,$db_prefix,$station, $always_use_cache = 0) {
      * Aalborg, Denmark.
      */
 
-    global $conn, $dbmMetar, $dbmTimestamp;
+    global $conn, $dbmMetar, $dbmTimestamp, $db_prefix;
 
     $query = "SELECT metar, UNIX_TIMESTAMP(timestamp) FROM " . $db_prefix . "metars WHERE station = '$station'";
     $result = mysqli_query($db,$query);
