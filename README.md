@@ -7,13 +7,13 @@ This project is the PHP7 compatible PHP Timeclock v1.04 with the Punchclock add-
 
 This Fork - What Is It?
 =======================
--major refactor of DB functions ->mysqli
--major refactor of project functions to adapt & work with mysqli functions
--major upgrade to php code removed deprecated functions introduced compatible functions with PHP7
--refactored code that was ambiguous simplified some code
--fixed all warning and notices that caused some issues and bugs on the project
--changes may not be optimal but are enough to get the project working with php7
--audit log page does not display data for me on my tests (this could be an issue from before) could be fixed not a major issue
+-  major refactor of DB functions ->mysqli.
+-  major refactor of project functions to adapt & work with mysqli functions.
+-  major upgrade to php code removed deprecated functions introduced compatible functions with PHP7.
+-  refactored code that was ambiguous simplified some code.
+-  fixed all warning and notices that caused some issues and bugs on the project.
+-  changes may not be optimal but are enough to get the project working with php7.
+-  audit log page does not display data for me on my tests (this could be an issue from before) could be fixed not a major issue.
 
 Timeclock - What Is It?
 =======================
