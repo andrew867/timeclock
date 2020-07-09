@@ -15,7 +15,7 @@ require_once 'lib.common.php';
 global $timefmt, $datefmt, $timecard_display_hours_minutes;
 
 // Get status
-list($in_or_out, $color, $inout, $timestamp, $notes) = get_employee_status($empfullname);
+list($in_or_out, $color, $inout, $timestamp, $notes) = get_employee_status($db,$db_prefix,$empfullname);
 
 // Compute hours
 $punch_time = local_timestamp($timestamp);

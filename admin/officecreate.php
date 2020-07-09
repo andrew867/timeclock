@@ -156,9 +156,9 @@ if ($request == 'GET') {
     // check for duplicate officenames //
 
     $query = "select * from " . $db_prefix . "offices where officename = '" . $post_officename . "'";
-    $result = mysql_query($query);
+    $result = mysqli_query($db,$query);
 
-    while ($row = mysql_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result)) {
         $tmp_officename = "" . $row['officename'] . "";
     }
 
@@ -315,20 +315,20 @@ if ($request == 'GET') {
         if ((@$empty_groupname != '1') && (@$evil_groupname != '1') && (@$groupname_array_cnt == @$unique_groupname_array_cnt)) {
 
             $query = "insert into " . $db_prefix . "offices (officename) values ('" . $post_officename . "')";
-            $result = mysql_query($query);
+            $result = mysqli_query($db,$query);
 
             $query2 = "select * from " . $db_prefix . "offices where officename = '" . $post_officename . "'";
-            $result2 = mysql_query($query2);
+            $result2 = mysqli_query($db,$query2);
 
-            while ($row = mysql_fetch_array($result2)) {
+            while ($row = mysqli_fetch_array($result2)) {
                 $tmp_officeid = "" . $row['officeid'] . "";
             }
-            mysql_free_result($result2);
+            mysqli_free_result($result2);
 
             for ($x = 0; $x < $how_many; $x++) {
                 $y = $x + 1;
                 $query3 = "insert into " . $db_prefix . "groups (groupname, officeid) values ('" . $input_group_name[$y] . "', '" . $tmp_officeid . "')";
-                $result3 = mysql_query($query3);
+                $result3 = mysqli_query($db,$query3);
             }
 
             echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
@@ -431,7 +431,7 @@ if ($request == 'GET') {
         if (!isset($how_many)) {
 
             $query = "insert into " . $db_prefix . "offices (officename) values ('" . $post_officename . "')";
-            $result = mysql_query($query);
+            $result = mysqli_query($db,$query);
 
             echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
             echo "              <tr>\n";

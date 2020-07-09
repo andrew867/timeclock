@@ -33,8 +33,8 @@ function select_options($arg, $val = null) {
         return _select_options_arr($arg, $lookup);
     $html = ''; // initialize return string
     $db = isset($GLOBALS['db']) ? $GLOBALS['db'] : null;
-    $result = mysql_query($arg, $db);
-    while ($row = mysql_fetch_row($result)) {
+    $result = mysqli_query($db,$arg);
+    while ($row = mysqli_fetch_row($result)) {
         if (count($row) < 2)
             $row[1] = $row[0];
         $selected = isset($lookup[$row[0]]) ? ' selected="selected"' : '';

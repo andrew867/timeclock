@@ -161,9 +161,9 @@ if ($request == 'GET') {
 
     if (empty($string)) {
         $query = "select punchitems from " . $db_prefix . "punchlist where punchitems = '" . $post_statusname . "'";
-        $result = mysql_query($query);
+        $result = mysqli_query($db,$query);
 
-        while ($row = mysql_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {
             $dupe = '1';
         }
     }
@@ -266,7 +266,7 @@ if ($request == 'GET') {
     } else {
 
         $query = "insert into " . $db_prefix . "punchlist (punchitems, color, in_or_out) values ('" . $post_statusname . "', '" . $post_color . "', '" . $create_status . "')";
-        $result = mysql_query($query);
+        $result = mysqli_query($db,$query);
 
         echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr>\n";
