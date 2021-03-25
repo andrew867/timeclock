@@ -69,6 +69,8 @@ if ($use_client_tz == "yes") {
 
 echo "<link rel='stylesheet' type='text/css' media='screen' href='css/default.css' />\n";
 echo "<link rel='stylesheet' type='text/css' media='print' href='css/print.css' />\n";
+if(file_exists(__DIR__ . '/css/override.css') )
+    echo "<link rel='stylesheet' type='text/css' media='screen' href='css/override.css' />\n";
 
 // set refresh rate for each page //  
 
