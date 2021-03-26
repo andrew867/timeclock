@@ -278,22 +278,30 @@ if ($request == 'GET') {
 
     // begin post validation //
 
-    if (empty($post_date)) {
+    if (empty($post_date))
+    {
         $evil_post = '1';
         echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr>\n";
         echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
                     A valid Date is required.</td></tr>\n";
         echo "            </table>\n";
-    } elseif (preg_match('/' . "^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$" . '/i', $post_date, $date_regs)) {
-        if ($calendar_style == "amer") {
-            if (isset($date_regs)) {
-                $month = $date_regs[1];
-                $day = $date_regs[2];
-                $year = $date_regs[3];
-            }
-            if ($month > 12 || $day > 31) {
+    }
+
+    else
+    {
+        $date_regs = explode('/', $post_date);
+
+        if ($calendar_style == "amer")
+        {
+            $month = $date_regs[0];
+            $day = $date_regs[1];
+            $year = $date_regs[2];
+
+            if ($month > 12 || $day > 31)
+            {
                 $evil_post = '1';
+
                 if (!isset($evil_post)) {
                     echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
                     echo "              <tr>\n";
@@ -302,15 +310,20 @@ if ($request == 'GET') {
                     echo "            </table>\n";
                 }
             }
-        } elseif ($calendar_style == "euro") {
-            if (isset($date_regs)) {
-                $month = $date_regs[2];
-                $day = $date_regs[1];
-                $year = $date_regs[3];
-            }
-            if ($month > 12 || $day > 31) {
+        }
+
+        elseif ($calendar_style == "euro")
+        {
+            $month = $date_regs[1];
+            $day = $date_regs[0];
+            $year = $date_regs[2];
+
+            if ($month > 12 || $day > 31)
+            {
                 $evil_post = '1';
-                if (!isset($evil_post)) {
+
+                if (!isset($evil_post))
+                {
                     echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
                     echo "              <tr>\n";
                     echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
@@ -624,18 +637,8 @@ if ($request == 'GET') {
 
         } else {
 
-            // configure timestamp to insert/update //
-
-            if ($calendar_style == "euro") {
-                //  $post_date = "$day/$month/$year";
-                @$post_date = "$month/$day/$year";
-            } elseif ($calendar_style == "amer") {
-                @$post_date = "$month/$day/$year";
-            }
-
             $row_count = '0';
-            $timestamp = strtotime($post_date) - @$tzo;
-            //$calc = $timestamp + 86400 - @$tzo;
+            $timestamp = strtotime("$month/$day/$year");
             $calc = $timestamp + 86400;
             $post_username = stripslashes($post_username);
             $post_displayname = stripslashes($post_displayname);
