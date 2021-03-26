@@ -182,7 +182,7 @@ if ($request == 'GET') {
             $tmp_get_user = "" . $row['empfullname'] . "";
         }
         if (!isset($tmp_get_user)) {
-            echo "Something is fishy here.\n";
+            echo "Error: User not found.\n";
             exit;
         }
     }
@@ -194,7 +194,7 @@ if ($request == 'GET') {
             $tmp_username = "" . $row['empfullname'] . "";
         }
         if (!isset($tmp_username)) {
-            echo "Something is fishy here.\n";
+            echo "Error: User not found.\n";
             exit;
         }
     }
@@ -206,7 +206,7 @@ if ($request == 'GET') {
             $tmp_post_displayname = "" . $row['displayname'] . "";
         }
         if (!isset($tmp_post_displayname)) {
-            echo "Something is fishy here.\n";
+            echo "Error: User and display name not found.\n";
             exit;
         }
     }
@@ -423,10 +423,9 @@ if ($request == 'GET') {
 
                 $final_username[$x] = stripslashes($final_username[$x]);
                 if ($final_username[$x] != $tmp_username) {
-                    echo "Something is fishy here.\n";
+                    echo "Something is fishy here A.\n";
                     exit;
                 }
-                //if ((strlen($final_mysql_timestamp[$x]) != "10") || (!is_integer($final_mysql_timestamp[$x]))) {echo "Something is fishy here.\n"; exit;}
 
                 $query_sel = "select * from " . $db_prefix . "punchlist where punchitems = '" . $final_inout[$x] . "'";
                 $result_sel = mysql_query($query_sel);
@@ -436,7 +435,7 @@ if ($request == 'GET') {
                 }
                 mysql_free_result($result_sel);
                 if (!isset($punchitems)) {
-                    echo "Something is fishy here.\n";
+                    echo "Something is fishy here B.\n";
                     exit;
                 }
 
@@ -449,7 +448,7 @@ if ($request == 'GET') {
                 @$tmp_num_rows = mysql_num_rows($result5);
 
                 if ((isset($tmp_num_rows)) && (@$tmp_num_rows != '1')) {
-                    echo "Something is fishy here.\n";
+                    echo "Something is fishy here C.\n";
                     exit;
                 }
 
@@ -463,7 +462,7 @@ if ($request == 'GET') {
 
                     $tmp_time[$x] = date("$timefmt", $final_mysql_timestamp[$x] + $tzo);
                     if ($tmp_time[$x] != $final_time[$x]) {
-                        echo "Something is fishy here.\n";
+                        echo "Something is fishy here D.\n";
                         exit;
                     }
 
@@ -536,17 +535,17 @@ if ($request == 'GET') {
             // begin post validation //
 
             if ($_POST['tmp_var'] != '1') {
-                echo "Something is fishy here.\n";
+                echo "Something is fishy here E.\n";
                 exit;
             }
             $tmp_calc = intval($calc);
             $tmp_timestamp = intval($timestamp);
             if ((strlen($tmp_calc) != "10") || (!is_integer($tmp_calc))) {
-                echo "Something is fishy here.\n";
+                echo "Something is fishy here F.\n";
                 exit;
             }
             if ((strlen($tmp_timestamp) != "10") || (!is_integer($tmp_timestamp))) {
-                echo "Something is fishy here.\n";
+                echo "Something is fishy here G.\n";
                 exit;
             }
 
@@ -637,8 +636,9 @@ if ($request == 'GET') {
 
         } else {
 
+            $post_date = "$month/$day/$year";
             $row_count = '0';
-            $timestamp = strtotime("$month/$day/$year");
+            $timestamp = strtotime($post_date);
             $calc = $timestamp + 86400;
             $post_username = stripslashes($post_username);
             $post_displayname = stripslashes($post_displayname);
