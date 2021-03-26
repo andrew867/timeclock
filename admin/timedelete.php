@@ -403,11 +403,17 @@ if ($request == 'GET') {
 
             // determine who the authenticated user is for audit log
 
-            if (isset($_SESSION['valid_user'])) {
+            if (isset($_SESSION['valid_user']))
+            {
                 $user = $_SESSION['valid_user'];
-            } elseif (isset($_SESSION['time_admin_valid_user'])) {
+            }
+
+            elseif (isset($_SESSION['time_admin_valid_user']))
+            {
                 $user = $_SESSION['time_admin_valid_user'];
-            } else {
+            }
+
+            else {
                 $user = "";
             }
 
@@ -416,59 +422,9 @@ if ($request == 'GET') {
 
             for ($x = 0; $x < $final_num_rows; $x++) {
 
-                // begin post validation //
-
-                $final_username[$x] = stripslashes($final_username[$x]);
-                $tmp_username = stripslashes($tmp_username);
-
-                $final_username[$x] = stripslashes($final_username[$x]);
-                if ($final_username[$x] != $tmp_username) {
-                    echo "Something is fishy here A.\n";
-                    exit;
-                }
-
-                $query_sel = "select * from " . $db_prefix . "punchlist where punchitems = '" . $final_inout[$x] . "'";
-                $result_sel = mysql_query($query_sel);
-
-                while ($row = mysql_fetch_array($result_sel)) {
-                    $punchitems = "" . $row['punchitems'] . "";
-                }
-                mysql_free_result($result_sel);
-                if (!isset($punchitems)) {
-                    echo "Something is fishy here B.\n";
-                    exit;
-                }
-
-                $final_notes[$x] = ereg_replace("[^[:alnum:] \,\.\?-]", "", $final_notes[$x]);
-                $final_username[$x] = addslashes($final_username[$x]);
-
-                $query5 = "select * from " . $db_prefix . "info where (fullname = '" . $final_username[$x] . "') and (timestamp = '" . $final_mysql_timestamp[$x] . "') and
-           (`inout` = '" . $final_inout[$x] . "') and (notes = '" . $final_notes[$x] . "')";
-                $result5 = mysql_query($query5);
-                @$tmp_num_rows = mysql_num_rows($result5);
-
-                if ((isset($tmp_num_rows)) && (@$tmp_num_rows != '1')) {
-                    echo "Something is fishy here C.\n";
-                    exit;
-                }
-
-                // end post validation //
-
                 $row_color = ($row_count % 2) ? $color1 : $color2;
 
                 if (@$delete_time_checkbox[$x] == '1') {
-
-                    // begin post validation //
-
-                    $tmp_time[$x] = date("$timefmt", $final_mysql_timestamp[$x] + $tzo);
-                    if ($tmp_time[$x] != $final_time[$x]) {
-                        echo "Something is fishy here D.\n";
-                        exit;
-                    }
-
-                    // end post validation //
-
-                    //if (!get_magic_quotes_gpc()) {$final_username[$x] = addslashes($final_username[$x]);}
 
                     $query = "select * from " . $db_prefix . "employees where empfullname = '" . $final_username[$x] . "'";
                     $result = mysql_query($query);
