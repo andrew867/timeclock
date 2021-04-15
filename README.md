@@ -1,3 +1,12 @@
+NOTE
+====
+
+This version/fork of Timeclock is abandoned, please consider using the fork linked below.
+
+https://github.com/BoatrightTBC/timeclock
+
+
+
 About
 =====
 
