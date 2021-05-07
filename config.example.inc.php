@@ -325,7 +325,7 @@ $use_client_tz = "no";
 $use_server_tz = "no";
 
 
-/* If you are using PHP 5.1+ and do not have access to chance your php.ini config file then
+/* If you are using PHP 5.1+ and do not have access to change your php.ini config file then
    uncomment the following line and change it to the correct time zone. */
 //date_default_timezone_set("America/St_Johns");
 

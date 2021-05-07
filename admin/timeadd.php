@@ -656,17 +656,6 @@ if ($request == 'GET') {
             $user = "";
         }
 
-        // configure current time to insert for audit log
-
-        $time = time();
-        $time_hour = gmdate('H', $time);
-        $time_min = gmdate('i', $time);
-        $time_sec = gmdate('s', $time);
-        $time_month = gmdate('m', $time);
-        $time_day = gmdate('d', $time);
-        $time_year = gmdate('Y', $time);
-        $time_tz_stamp = mktime($time_hour, $time_min, $time_sec, $time_month, $time_day, $time_year);
-
         // this needs to be changed later
         $post_why = "";
 
@@ -680,11 +669,11 @@ if ($request == 'GET') {
 
         if (strtolower($ip_logging) == "yes") {
             $query2 = "insert into " . $db_prefix . "audit (modified_by_ip, modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values
-           ('" . $connecting_ip . "', '" . $user . "', '" . $time_tz_stamp . "', '0', '" . $timestamp . "', '" . $post_why . "', '" . $post_username . "')";
+           ('" . $connecting_ip . "', '" . $user . "', UNIX_TIMESTAMP(), '0', '" . $timestamp . "', '" . $post_why . "', '" . $post_username . "')";
             $result2 = mysql_query($query2);
         } else {
             $query2 = "insert into " . $db_prefix . "audit (modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values
-           ('" . $user . "', '" . $time_tz_stamp . "', '0', '" . $timestamp . "', '" . $post_why . "', '" . $post_username . "')";
+           ('" . $user . "', UNIX_TIMESTAMP(), '0', '" . $timestamp . "', '" . $post_why . "', '" . $post_username . "')";
             $result2 = mysql_query($query2);
         }
 

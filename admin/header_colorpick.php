@@ -3,6 +3,8 @@ include "header.admin.inc.php";
 
 echo "<link rel='stylesheet' type='text/css' media='screen' href='../css/default.css' />\n";
 echo "<link rel='stylesheet' type='text/css' media='print' href='../css/print.css' />\n";
+if(file_exists(__DIR__ . '/../css/override.css') )
+    echo "<link rel='stylesheet' type='text/css' media='screen' href='../css/override.css' />\n";
 echo "<script language=\"javascript\" src=\"../scripts/ColorPicker2.js\"></script>\n";
 echo "<script language=\"javascript\">var cp = new ColorPicker();</script>\n";
 echo "<script language=\"javascript\" src=\"../scripts/pnguin.js\"></script>\n";

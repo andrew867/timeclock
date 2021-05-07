@@ -469,17 +469,6 @@ if ($request == 'POST') {
     @$fullname = addslashes($fullname);
     @$displayname = addslashes($displayname);
 
-    // configure timestamp to insert/update //
-
-    $time = time();
-    $hour = gmdate('H', $time);
-    $min = gmdate('i', $time);
-    $sec = gmdate('s', $time);
-    $month = gmdate('m', $time);
-    $day = gmdate('d', $time);
-    $year = gmdate('Y', $time);
-    $tz_stamp = mktime($hour, $min, $sec, $month, $day, $year);
-
     if ($use_passwd == "no") {
 
         if ($show_display_name == "yes") {
@@ -495,15 +484,15 @@ if ($request == 'POST') {
 
         if (strtolower($ip_logging) == "yes") {
             $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes, ipaddress) values ('" . $fullname . "', '" . $inout . "',
-                      '" . $tz_stamp . "', '" . $notes . "', '" . $connecting_ip . "')";
+                      UNIX_TIMESTAMP(), '" . $notes . "', '" . $connecting_ip . "')";
         } else {
-            $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes) values ('" . $fullname . "', '" . $inout . "', '" . $tz_stamp . "',
+            $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes) values ('" . $fullname . "', '" . $inout . "', UNIX_TIMESTAMP(),
                       '" . $notes . "')";
         }
 
         $result = mysql_query($query);
 
-        $update_query = "update " . $db_prefix . "employees set tstamp = '" . $tz_stamp . "' where empfullname = '" . $fullname . "'";
+        $update_query = "update " . $db_prefix . "employees set tstamp = UNIX_TIMESTAMP() where empfullname = '" . $fullname . "'";
         $other_result = mysql_query($update_query);
 
         echo "<head>\n";
@@ -539,15 +528,15 @@ if ($request == 'POST') {
 
             if (strtolower($ip_logging) == "yes") {
                 $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes, ipaddress) values ('" . $fullname . "', '" . $inout . "',
-                      '" . $tz_stamp . "', '" . $notes . "', '" . $connecting_ip . "')";
+                      UNIX_TIMESTAMP(), '" . $notes . "', '" . $connecting_ip . "')";
             } else {
-                $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes) values ('" . $fullname . "', '" . $inout . "', '" . $tz_stamp . "',
+                $query = "insert into " . $db_prefix . "info (fullname, `inout`, timestamp, notes) values ('" . $fullname . "', '" . $inout . "', UNIX_TIMESTAMP(),
                       '" . $notes . "')";
             }
 
             $result = mysql_query($query);
 
-            $update_query = "update " . $db_prefix . "employees set tstamp = '" . $tz_stamp . "' where empfullname = '" . $fullname . "'";
+            $update_query = "update " . $db_prefix . "employees set tstamp = UNIX_TIMESTAMP() where empfullname = '" . $fullname . "'";
             $other_result = mysql_query($update_query);
 
             echo "<head>\n";

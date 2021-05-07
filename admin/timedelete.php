@@ -182,7 +182,7 @@ if ($request == 'GET') {
             $tmp_get_user = "" . $row['empfullname'] . "";
         }
         if (!isset($tmp_get_user)) {
-            echo "Something is fishy here.\n";
+            echo "Error: User not found.\n";
             exit;
         }
     }
@@ -194,7 +194,7 @@ if ($request == 'GET') {
             $tmp_username = "" . $row['empfullname'] . "";
         }
         if (!isset($tmp_username)) {
-            echo "Something is fishy here.\n";
+            echo "Error: User not found.\n";
             exit;
         }
     }
@@ -206,7 +206,7 @@ if ($request == 'GET') {
             $tmp_post_displayname = "" . $row['displayname'] . "";
         }
         if (!isset($tmp_post_displayname)) {
-            echo "Something is fishy here.\n";
+            echo "Error: User and display name not found.\n";
             exit;
         }
     }
@@ -278,22 +278,30 @@ if ($request == 'GET') {
 
     // begin post validation //
 
-    if (empty($post_date)) {
+    if (empty($post_date))
+    {
         $evil_post = '1';
         echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
         echo "              <tr>\n";
         echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
                     A valid Date is required.</td></tr>\n";
         echo "            </table>\n";
-    } elseif (preg_match('/' . "^([0-9]{1,2})[-,/,.]([0-9]{1,2})[-,/,.](([0-9]{2})|([0-9]{4}))$" . '/i', $post_date, $date_regs)) {
-        if ($calendar_style == "amer") {
-            if (isset($date_regs)) {
-                $month = $date_regs[1];
-                $day = $date_regs[2];
-                $year = $date_regs[3];
-            }
-            if ($month > 12 || $day > 31) {
+    }
+
+    else
+    {
+        $date_regs = explode('/', $post_date);
+
+        if ($calendar_style == "amer")
+        {
+            $month = $date_regs[0];
+            $day = $date_regs[1];
+            $year = $date_regs[2];
+
+            if ($month > 12 || $day > 31)
+            {
                 $evil_post = '1';
+
                 if (!isset($evil_post)) {
                     echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
                     echo "              <tr>\n";
@@ -302,15 +310,20 @@ if ($request == 'GET') {
                     echo "            </table>\n";
                 }
             }
-        } elseif ($calendar_style == "euro") {
-            if (isset($date_regs)) {
-                $month = $date_regs[2];
-                $day = $date_regs[1];
-                $year = $date_regs[3];
-            }
-            if ($month > 12 || $day > 31) {
+        }
+
+        elseif ($calendar_style == "euro")
+        {
+            $month = $date_regs[1];
+            $day = $date_regs[0];
+            $year = $date_regs[2];
+
+            if ($month > 12 || $day > 31)
+            {
                 $evil_post = '1';
-                if (!isset($evil_post)) {
+
+                if (!isset($evil_post))
+                {
                     echo "            <table align=center class=table_border width=60% border=0 cellpadding=0 cellspacing=3>\n";
                     echo "              <tr>\n";
                     echo "                <td class=table_rows width=20 align=center><img src='../images/icons/cancel.png' /></td><td class=table_rows_red>
@@ -390,84 +403,28 @@ if ($request == 'GET') {
 
             // determine who the authenticated user is for audit log
 
-            if (isset($_SESSION['valid_user'])) {
+            if (isset($_SESSION['valid_user']))
+            {
                 $user = $_SESSION['valid_user'];
-            } elseif (isset($_SESSION['time_admin_valid_user'])) {
-                $user = $_SESSION['time_admin_valid_user'];
-            } else {
-                $user = "";
             }
 
-            // configure current time to insert for audit log
+            elseif (isset($_SESSION['time_admin_valid_user']))
+            {
+                $user = $_SESSION['time_admin_valid_user'];
+            }
 
-            $time = time();
-            $time_hour = gmdate('H', $time);
-            $time_min = gmdate('i', $time);
-            $time_sec = gmdate('s', $time);
-            $time_month = gmdate('m', $time);
-            $time_day = gmdate('d', $time);
-            $time_year = gmdate('Y', $time);
-            $time_tz_stamp = mktime($time_hour, $time_min, $time_sec, $time_month, $time_day, $time_year);
+            else {
+                $user = "";
+            }
 
             // this needs to be changed later
             $post_why = "";
 
             for ($x = 0; $x < $final_num_rows; $x++) {
 
-                // begin post validation //
-
-                $final_username[$x] = stripslashes($final_username[$x]);
-                $tmp_username = stripslashes($tmp_username);
-
-                $final_username[$x] = stripslashes($final_username[$x]);
-                if ($final_username[$x] != $tmp_username) {
-                    echo "Something is fishy here.\n";
-                    exit;
-                }
-                //if ((strlen($final_mysql_timestamp[$x]) != "10") || (!is_integer($final_mysql_timestamp[$x]))) {echo "Something is fishy here.\n"; exit;}
-
-                $query_sel = "select * from " . $db_prefix . "punchlist where punchitems = '" . $final_inout[$x] . "'";
-                $result_sel = mysql_query($query_sel);
-
-                while ($row = mysql_fetch_array($result_sel)) {
-                    $punchitems = "" . $row['punchitems'] . "";
-                }
-                mysql_free_result($result_sel);
-                if (!isset($punchitems)) {
-                    echo "Something is fishy here.\n";
-                    exit;
-                }
-
-                $final_notes[$x] = ereg_replace("[^[:alnum:] \,\.\?-]", "", $final_notes[$x]);
-                $final_username[$x] = addslashes($final_username[$x]);
-
-                $query5 = "select * from " . $db_prefix . "info where (fullname = '" . $final_username[$x] . "') and (timestamp = '" . $final_mysql_timestamp[$x] . "') and
-           (`inout` = '" . $final_inout[$x] . "') and (notes = '" . $final_notes[$x] . "')";
-                $result5 = mysql_query($query5);
-                @$tmp_num_rows = mysql_num_rows($result5);
-
-                if ((isset($tmp_num_rows)) && (@$tmp_num_rows != '1')) {
-                    echo "Something is fishy here.\n";
-                    exit;
-                }
-
-                // end post validation //
-
                 $row_color = ($row_count % 2) ? $color1 : $color2;
 
                 if (@$delete_time_checkbox[$x] == '1') {
-
-                    // begin post validation //
-
-                    $tmp_time[$x] = date("$timefmt", $final_mysql_timestamp[$x] + $tzo);
-                    if ($tmp_time[$x] != $final_time[$x]) {
-                        echo "Something is fishy here.\n";
-                        exit;
-                    }
-
-                    // end post validation //
-
-                    //if (!get_magic_quotes_gpc()) {$final_username[$x] = addslashes($final_username[$x]);}
 
                     $query = "select * from " . $db_prefix . "employees where empfullname = '" . $final_username[$x] . "'";
                     $result = mysql_query($query);
@@ -504,11 +461,11 @@ if ($request == 'GET') {
 
                     if (strtolower($ip_logging) == "yes") {
                         $query6 = "insert into " . $db_prefix . "audit (modified_by_ip, modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values
-           ('" . $connecting_ip . "', '" . $user . "', '" . $time_tz_stamp . "', '" . $final_mysql_timestamp[$x] . "', '0', '" . $post_why . "', '" . $final_username[$x] . "')";
+           ('" . $connecting_ip . "', '" . $user . "', UNIX_TIMESTAMP(), '" . $final_mysql_timestamp[$x] . "', '0', '" . $post_why . "', '" . $final_username[$x] . "')";
                         $result6 = mysql_query($query6);
                     } else {
                         $query6 = "insert into " . $db_prefix . "audit (modified_by_user, modified_when, modified_from, modified_to, modified_why, user_modified) values
-           ('" . $user . "', '" . $time_tz_stamp . "', '" . $final_mysql_timestamp[$x] . "', '0', '" . $post_why . "', '" . $final_username[$x] . "')";
+           ('" . $user . "', UNIX_TIMESTAMP(), '" . $final_mysql_timestamp[$x] . "', '0', '" . $post_why . "', '" . $final_username[$x] . "')";
                         $result6 = mysql_query($query6);
                     }
 
@@ -534,17 +491,17 @@ if ($request == 'GET') {
             // begin post validation //
 
             if ($_POST['tmp_var'] != '1') {
-                echo "Something is fishy here.\n";
+                echo "Something is fishy here E.\n";
                 exit;
             }
             $tmp_calc = intval($calc);
             $tmp_timestamp = intval($timestamp);
             if ((strlen($tmp_calc) != "10") || (!is_integer($tmp_calc))) {
-                echo "Something is fishy here.\n";
+                echo "Something is fishy here F.\n";
                 exit;
             }
             if ((strlen($tmp_timestamp) != "10") || (!is_integer($tmp_timestamp))) {
-                echo "Something is fishy here.\n";
+                echo "Something is fishy here G.\n";
                 exit;
             }
 
@@ -635,18 +592,9 @@ if ($request == 'GET') {
 
         } else {
 
-            // configure timestamp to insert/update //
-
-            if ($calendar_style == "euro") {
-                //  $post_date = "$day/$month/$year";
-                @$post_date = "$month/$day/$year";
-            } elseif ($calendar_style == "amer") {
-                @$post_date = "$month/$day/$year";
-            }
-
+            $post_date = "$month/$day/$year";
             $row_count = '0';
-            $timestamp = strtotime($post_date) - @$tzo;
-            //$calc = $timestamp + 86400 - @$tzo;
+            $timestamp = strtotime($post_date);
             $calc = $timestamp + 86400;
             $post_username = stripslashes($post_username);
             $post_displayname = stripslashes($post_displayname);
